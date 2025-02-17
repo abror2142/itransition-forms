@@ -1,0 +1,11 @@
+api_refresh_token:
+    path: /api/token/refresh
+
+api_login_check:
+    path: /auth
+
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute

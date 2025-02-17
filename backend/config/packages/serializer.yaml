@@ -1,0 +1,7 @@
+framework:
+    serializer:
+        default_context:
+            default_constructor_arguments:
+                App\DTO\UserDto:
+                    id: null
+                    email: null
