@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Question;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -15,6 +17,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class ElementChild
 {
+    public function __construct() {
+        $this->answers = new ArrayCollection();
+    }
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -31,6 +37,9 @@ class ElementChild
 
     #[ORM\ManyToOne(targetEntity: Question::class, inversedBy: "options")]
     private ?Question $question = null;
+
+    #[ORM\ManyToMany(targetEntity: Answer::class, mappedBy: "options")]
+    private Collection $answers;
 
     public function getId() {
         return $this->id;
@@ -60,6 +69,25 @@ class ElementChild
 
     public function setQuestion(?Question $question) {
         $this->question = $question;
+        return $this;
+    }
+
+    public function getAnswers(){
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $newAnswer){
+        if(!$this->answers->contains($newAnswer)){
+            $this->answers->add($newAnswer);
+            $newAnswer->addOption($this);
+        }
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer){
+        if($this->answers->removeElement($answer)){
+            $answer->removeOption($this);
+        }
         return $this;
     }
 

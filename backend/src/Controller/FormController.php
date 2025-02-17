@@ -99,14 +99,29 @@ final class FormController extends AbstractController
 
         foreach ($answerDto->answers as $questionId => $answerContent) {
             $question = $this->entityManager->getRepository(Question::class)->findOneBy(['id' => $questionId]);
+            
+            $typeId = $question->getQuestionType();
+            $type = $this->entityManager->getRepository(Element::class)->findOneBy(['id' => $typeId]);
+
             $answer = new Answer();
             $answer->setQuestion($question);
             $answer->setResponse($response);
-            if (!is_array($answerContent)) {
-                $answerContent = [$answerContent];
-            }
-            // dd($answerContent);
-            $answer->setContent($answerContent);
+            
+            if($type->getName() == "Multiple Choice"){
+                $option = $this->entityManager->getRepository(ElementChild::class)->findOneBy(['id' => $answerContent]);
+                $answer->setAnswerMultipleChoice($option);
+            }else if($type->getName() == "Text"){
+                $answer->setAnswerText($answerContent);
+            }else if($type->getName() == "Paragraph"){
+                $answer->setAnswerParagraph($answerContent);
+            }else if($type->getName() == "Integer"){
+                $answer->setAnswerInteger($answerContent); 
+            }else if($type->getName() == "Checkbox"){
+                foreach ($answerContent as $optionId) {
+                    $option = $this->entityManager->getRepository(ElementChild::class)->findOneBy(['id' => $optionId]);
+                    $answer->addOption($option);
+                }
+            } 
             
             $this->entityManager->persist($answer);
             $this->entityManager->flush();
