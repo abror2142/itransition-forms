@@ -10,6 +10,7 @@ use App\Entity\Tag;
 use App\Entity\Topic;
 use App\Entity\Question;
 use App\Entity\Response;
+use App\Entity\Comment;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeImmutable;
@@ -22,6 +23,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Form
 {
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->imageFields = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+        $this->textFields = new ArrayCollection();
+        $this->responses = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }  
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -93,15 +105,9 @@ class Form
     #[ORM\JoinColumn(nullable: true)]
     private Collection $responses;
 
-    public function __construct()
-    {
-        $this->tags = new ArrayCollection();
-        $this->imageFields = new ArrayCollection();
-        $this->questions = new ArrayCollection();
-        $this->textFields = new ArrayCollection();
-        $this->responses = new ArrayCollection();
-        $this->users = new ArrayCollection();
-    }   
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "form")]
+    #[ORM\JoinColumn(nullable: true)]
+    private Collection $comments; 
 
     public function getId(): ?int
     {
@@ -380,5 +386,24 @@ class Form
         if($this->responses->removeElement($response)){
             $response->setForm(null);
         }
+        return $this;
+    }
+
+    public function getComments () {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment){
+        if(!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+        }
+        return $this;
+    }
+
+    public function removeComment(Comment $comment) {
+        if($this->comments->removeElement($comment)) {
+            $comment->setForm(null);
+        }
+        return $this;
     }
 }

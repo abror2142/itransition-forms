@@ -62,22 +62,22 @@ function FormCard ({ form }) {
                 }}
                 >{() => (
                 <Form className="flex flex-col gap-4 ">
-                    {form?.formFields.map((formField, index) => {
+                    {form?.formFields.map((formField, index: number) => {
                         if(formField?.type == "text")
-                            return (<FormTextFieldCard field={formField} />)
+                            return (<FormTextFieldCard field={formField} key={"form-key-"+index}/>)
                         if(formField?.type == "image")
-                            return (<FormImageFieldCard field={formField} />)
+                            return (<FormImageFieldCard field={formField} key={"form-key-"+index}/>)
                         if(formField?.type == 'question'){
                             if(formField?.questionType?.name == 'Multiple Choice')
-                                return (<FormMultipleChoiceFieldCard field={formField} />)
+                                return (<FormMultipleChoiceFieldCard field={formField} key={"form-key-"+index}/>)
                             if(formField?.questionType?.name == 'Checkbox')
-                                return (<FormCheckBoxFieldCard field={formField} />)
+                                return (<FormCheckBoxFieldCard field={formField} key={"form-key-"+index}/>)
                             if(formField?.questionType.name == 'Paragraph')
-                                return (<FormParagraphFieldCard field={formField} />)
+                                return (<FormParagraphFieldCard field={formField} key={"form-key-"+index}/>)
                             if(formField?.questionType?.name == 'Text')
-                                return (<FormShortTextFieldCard field={formField} />)
+                                return (<FormShortTextFieldCard field={formField} key={"form-key-"+index}/>)
                             if(formField?.questionType?.name == 'Integer')
-                                return (<FormIntegerFieldCard field={formField} />)
+                                return (<FormIntegerFieldCard field={formField} key={"form-key-"+index}/>)
                         }
                     })}
                     <div className="flex justify-between items-center">

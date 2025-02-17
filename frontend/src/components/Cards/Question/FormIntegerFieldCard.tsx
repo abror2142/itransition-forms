@@ -10,7 +10,7 @@ function FormIntegerFieldCard ({ field }) {
                 name={`${field.id}`} 
                 type="number"
                 className="outline-none border-b border-gray-400 px-2 max-w-min"
-                placeholder="Your answer"
+                placeholder="0"
             />
         </div>
     )

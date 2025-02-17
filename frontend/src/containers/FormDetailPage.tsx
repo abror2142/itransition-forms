@@ -2,6 +2,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import axios from "../utils/axios";
 import FormCard from "../components/Cards/FormCard";
 import { useAuth } from "../hooks/useAuth";
+import FormComments from "../components/FormComments";
 
 export const loader = async ({ params }) => {
     const resp = await axios.get(`/form/${params.id}`);
@@ -11,7 +12,7 @@ export const loader = async ({ params }) => {
 function FormDetailPage () {
     const form = useLoaderData();
     const { user } = useAuth();
-    console.log(form)
+
     return (
         <div className="flex flex-col gap-4 mt-5 items-center max-w-2xl mx-auto">
             { user?.id === form?.formInfo?.owner?.id 
@@ -20,6 +21,7 @@ function FormDetailPage () {
                 </div>
             }
             <FormCard form={form} />
+            <FormComments formId={form.formInfo.id} />
         </div>
     )
 }

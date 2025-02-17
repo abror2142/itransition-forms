@@ -25,17 +25,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct() {
         $this->forms = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         
     }
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'meta:read', 'form:read'])]
+    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['user:read', 'meta:read', 'form:read'])]
+    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
     private ?string $email = null;
 
     #[ORM\ManyToMany(targetEntity: Form::class, inversedBy: "users")]
@@ -57,6 +58,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Comment>
+     */
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'owner')]
+    private Collection $comments;
 
     public function getId(): ?int
     {
@@ -168,5 +175,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if($this->responses->removeElement($response)){
             $response->setOwner(null);
         }
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getOwner() === $this) {
+                $comment->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }
