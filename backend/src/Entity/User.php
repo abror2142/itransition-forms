@@ -26,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct() {
         $this->forms = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->formLikes = new ArrayCollection();
         
     }
 
@@ -64,6 +65,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'owner')]
     private Collection $comments;
+
+    /**
+     * @var Collection<int, FormLike>
+     */
+    #[ORM\OneToMany(targetEntity: FormLike::class, mappedBy: 'owner')]
+    private Collection $formLikes;
 
     public function getId(): ?int
     {
@@ -201,6 +208,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getOwner() === $this) {
                 $comment->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FormLike>
+     */
+    public function getFormLikes(): Collection
+    {
+        return $this->formLikes;
+    }
+
+    public function addFormLike(FormLike $formLike): static
+    {
+        if (!$this->formLikes->contains($formLike)) {
+            $this->formLikes->add($formLike);
+            $formLike->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormLike(FormLike $formLike): static
+    {
+        if ($this->formLikes->removeElement($formLike)) {
+            // set the owning side to null (unless already changed)
+            if ($formLike->getOwner() === $this) {
+                $formLike->setOwner(null);
             }
         }
 

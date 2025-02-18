@@ -32,6 +32,7 @@ class Form
         $this->responses = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->formLikes = new ArrayCollection();
     }  
 
     #[ORM\Id]
@@ -107,7 +108,13 @@ class Form
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "form")]
     #[ORM\JoinColumn(nullable: true)]
-    private Collection $comments; 
+    private Collection $comments;
+
+    /**
+     * @var Collection<int, FormLike>
+     */
+    #[ORM\OneToMany(targetEntity: FormLike::class, mappedBy: 'form')]
+    private Collection $formLikes; 
 
     public function getId(): ?int
     {
@@ -404,6 +411,36 @@ class Form
         if($this->comments->removeElement($comment)) {
             $comment->setForm(null);
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FormLike>
+     */
+    public function getFormLikes(): Collection
+    {
+        return $this->formLikes;
+    }
+
+    public function addFormLike(FormLike $formLike): static
+    {
+        if (!$this->formLikes->contains($formLike)) {
+            $this->formLikes->add($formLike);
+            $formLike->setForm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFormLike(FormLike $formLike): static
+    {
+        if ($this->formLikes->removeElement($formLike)) {
+            // set the owning side to null (unless already changed)
+            if ($formLike->getForm() === $this) {
+                $formLike->setForm(null);
+            }
+        }
+
         return $this;
     }
 }
