@@ -3,6 +3,7 @@ import axios from "../utils/axios";
 import FormCard from "../components/Cards/FormCard";
 import { useAuth } from "../hooks/useAuth";
 import FormComments from "../components/FormComments";
+import FormBottomBar from "./FormBottomBar";
 
 export const loader = async ({ params }) => {
     const resp = await axios.get(`/form/${params.id}`);
@@ -21,6 +22,7 @@ function FormDetailPage () {
                 </div>
             }
             <FormCard form={form} />
+            <FormBottomBar />
             <FormComments formId={form.formInfo.id} />
         </div>
     )

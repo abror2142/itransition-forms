@@ -18,7 +18,7 @@ function FormComments ({formId}: {formId: number}) {
             });
             setComments(JSON.parse(resp.data));
         },
-        2000)
+        200000)
         return (() => {clearInterval(interval)});
     }, [])
 
