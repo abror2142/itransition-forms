@@ -3,11 +3,11 @@ import TiptapQuestionTitle from "../tiptap/TiptapQuestionTitle";
 import OutsideAlerter from "../../hooks/useOutsideAlterter";
 import FormSideBar from "../Form/FormSideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faGrip, faTrash } from "@fortawesome/free-solid-svg-icons";
 import useForm from "../../hooks/useForm";
 import Image from "../../classes/Image";
 import { uploadImage, deleteImage } from "../../utils/uploader";
-
+import { useSortable } from "@dnd-kit/sortable";
 
 function ImageField({ formField }: { formField: Image }) {
   const { updateFormFieldImage, updateImageFieldCaption } = useForm();
@@ -18,6 +18,7 @@ function ImageField({ formField }: { formField: Image }) {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showCaption, setShowCaption] = useState(false);
   const [showImageOptions, setShowImageOptions] = useState(false);
+  const {attributes, listeners, setActivatorNodeRef } = useSortable({id: formField.sequence});
 
    async function handleImageUpload(event: React.ChangeEvent<HTMLInputElement>) {
       const file = event.target.files?.[0];
@@ -64,6 +65,14 @@ function ImageField({ formField }: { formField: Image }) {
               active ? "rounded-rt-lg" : "rounded-t-lg"
             }`}
           >
+            <button 
+                ref={setActivatorNodeRef}
+                className="bg-white w-full"
+                // style={draggableStyle}
+                {...attributes}
+                {...listeners}
+            ><FontAwesomeIcon icon={faGrip} /></button>
+            
             <TiptapQuestionTitle
               id={formField.id}
               title={formField.title}

@@ -30,6 +30,7 @@ export type FormContext = {
     submitting: boolean;
     updateSubmitting: (newValue: boolean) => void;
     imageUploadUrl: string|null|undefined;
+    updateDraggable: (avtiveIndex: number, overIndex: number) => void;
 }
 
 export const FormContext = createContext<FormContext | undefined>(undefined);

@@ -15,7 +15,7 @@ class Question {
     sequence: number;
     type: string;
     
-    constructor(id=null, title="Your question...", description=null, image=null, required=false, sequence=0, questionType=ALLOWED_QUESTION_TYPES[0], attributes=[], options=[], type='question') {
+    constructor(id=null, title="Your question...", description=null, image=null, required=false, sequence=1, questionType=ALLOWED_QUESTION_TYPES[0], attributes=[], options=[], type='question') {
         this.id = id == null ? uuid4() : id;
         this.title = title,
         this.description = description,

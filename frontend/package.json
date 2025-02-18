@@ -25,6 +25,7 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "axios": "^1.7.9",
+    "dnd-kit": "^0.0.2",
     "firebase": "^11.3.1",
     "flowbite": "^3.1.1",
     "formik": "^2.4.6",

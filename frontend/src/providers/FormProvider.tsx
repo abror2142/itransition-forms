@@ -15,6 +15,7 @@ import {
 } from "../types/SelectOption";
 import Image from "../classes/Image";
 import Text from "../classes/Text";
+import { arrayMove } from "@dnd-kit/sortable";
 
 type FormProviderProps = PropsWithChildren;
 
@@ -84,7 +85,7 @@ export default function FormProvider({ children }: FormProviderProps) {
   const updateSequence = () => {
     setFormFields((formFields) =>
       formFields.map((formField, index: number) => {
-        return { ...formField, sequence: index };
+        return { ...formField, sequence: index + 1 };
       })
     );
   };
@@ -141,8 +142,6 @@ export default function FormProvider({ children }: FormProviderProps) {
     setFormFields((prevFormFields) => {
       const newFields = [...prevFormFields];
       newFields.splice(sequence, 0, newFormField);
-      console.log("NEW", newFields);
-      console.log("PREV", prevFormFields)
       return newFields;
     });
     updateSequence();
@@ -271,6 +270,13 @@ export default function FormProvider({ children }: FormProviderProps) {
     })
   }
 
+  const updateDraggable = (activeIndex: number, overIndex: number) => {
+    setFormFields(prev => {
+      const updated = arrayMove(prev, activeIndex, overIndex).map((field, i) => ({...field, sequence: i+1}));
+      return updated;
+    })
+  }
+
   return (
     <FormContext.Provider
       value={{
@@ -306,6 +312,7 @@ export default function FormProvider({ children }: FormProviderProps) {
         imagePromises,
         addImagePromise,
         updateImageFieldCaption,
+        updateDraggable,
       }}
     >
       {children}

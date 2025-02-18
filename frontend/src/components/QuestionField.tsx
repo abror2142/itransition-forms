@@ -7,16 +7,18 @@ import QuestionCheckbox from "./QuestionField/QuestionCheckbox";
 import { useState } from "react";
 import OutsideAlerter from "../hooks/useOutsideAlterter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faGrip, faTrash } from "@fortawesome/free-solid-svg-icons";
 import useForm from "../hooks/useForm";
 import FormSideBar from "./Form/FormSideBar";
 import Question from "../classes/Question";
 import QuestionInteger from "./QuestionField/QuestionInteger";
+import { useSortable } from "@dnd-kit/sortable";
 
 function QuestionField({ formField }: { formField: Question}) {
   const [active, setActive] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const { removeFormField } = useForm();
+  const {attributes, listeners, setActivatorNodeRef } = useSortable({id: formField.sequence});
 
   return (
     <OutsideAlerter setActive={setActive}>
@@ -32,6 +34,13 @@ function QuestionField({ formField }: { formField: Question}) {
               active ? "rounded-rt-lg" : "rounded-t-lg"
             }`}
           >
+            <button 
+                ref={setActivatorNodeRef}
+                className="bg-white w-full"
+                // style={draggableStyle}
+                {...attributes}
+                {...listeners}
+            ><FontAwesomeIcon icon={faGrip} /></button>
             <QuestionTitle formField={formField} />
 
             {formField.questionType?.id == ALLOWED_QUESTION_TYPES[0]?.id && (

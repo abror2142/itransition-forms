@@ -29,7 +29,7 @@ function FormTitle({ formInfo }: { formInfo: FormInfo }) {
             </div>
           </div>
         </div>
-        {active && <FormSideBar sequence={-1} />}
+        {active && <FormSideBar sequence={0} />}
       </div>
     </OutsideAlerter>
   );

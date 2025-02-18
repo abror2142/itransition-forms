@@ -3,16 +3,18 @@ import TiptapQuestionTitle from "../tiptap/TiptapQuestionTitle";
 import OutsideAlerter from "../../hooks/useOutsideAlterter";
 import FormSideBar from "../Form/FormSideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faGrip, faTrash } from "@fortawesome/free-solid-svg-icons";
 import useForm from "../../hooks/useForm";
 import TiptapTextarea from "../tiptap/TiptapTextarea";
 import Text from "../../classes/Text";
+import { useSortable } from "@dnd-kit/sortable";
 
 function TextField({ formField }: { formField: Text }) {
   const [active, setActive] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const { removeFormField } = useForm();
-  console.log("TEXT", formField.title);
+  const {attributes, listeners, setActivatorNodeRef } = useSortable({id: formField.sequence});
+
   return (
     <OutsideAlerter setActive={setActive}>
       <div className="flex gap-2 relative">
@@ -27,6 +29,16 @@ function TextField({ formField }: { formField: Text }) {
               active ? "rounded-rt-lg" : "rounded-t-lg"
             }`}
           >
+            <button 
+                ref={setActivatorNodeRef}
+                className="bg-white w-full"
+                // style={draggableStyle}
+                {...attributes}
+                {...listeners}
+            >
+              <FontAwesomeIcon icon={faGrip} />
+            </button>
+
             <TiptapQuestionTitle
               id={formField.id}
               title={formField.title}
