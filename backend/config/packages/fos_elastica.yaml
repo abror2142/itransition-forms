@@ -1,0 +1,40 @@
+# config/packages/fos_elastica.yaml
+fos_elastica:
+    clients:
+        default:
+            host: localhost
+            port: 9200
+            headers: 
+                Authorization: "ApiKey RW9XR0daVUJwTzhYOER5YUVpMnY6YzFnakE0c2NUNFdaUDBQWHBLOWVpUQ=="
+    indexes:
+        form:
+            persistence:
+                driver: orm
+                model: App\Entity\Form
+                provider: ~
+                listener: ~
+            properties:
+                title:
+                    type: text
+                description:
+                    type: text
+                questions:
+                    type: "nested"
+                    properties:
+                        title: ~
+                        description: ~
+                imageFields:
+                    type: "nested"
+                    properties:
+                        title: ~
+                        caption: ~
+                textFields:
+                    type: "nested"
+                    properties:
+                        title: ~
+                        description: ~
+                comments:
+                    type: "nested"
+                    properties:
+                        content: ~
+      

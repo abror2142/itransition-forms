@@ -20,5 +20,13 @@ class FormRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
         return $query->execute();
     }
-    
+    public function createSearchQueryBuilder()
+    {
+        return $this->createQueryBuilder('f')
+            ->select('f, c, q, tf, if')
+            ->leftJoin('f.comments', 'c')
+            ->leftJoin('f.questions', 'q')
+            ->leftJoin('f.textFields', 'tf')
+            ->leftJoin('f.imageFields', 'if');
+    }
 }

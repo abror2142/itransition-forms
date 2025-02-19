@@ -38,7 +38,7 @@ class Form
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['form:read', 'form:card'])]
+    #[Groups(['form:read', 'form:card', 'form:search'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'forms')]
@@ -50,7 +50,7 @@ class Form
     #[Assert\Length(
         max: 255
     )]
-    #[Groups(['form:read', 'form:card'])]
+    #[Groups(['form:read', 'form:card', 'form:search'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true, type: "text")]

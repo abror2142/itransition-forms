@@ -1,30 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTheme } from "../../hooks/useTheme";
-import { faMoon, faSun, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useTranslation } from "react-i18next";
+import LanguageSelect from "./LanguageSelect";
+import SearchBar from "./SearchBar";
 
 function Navbar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <nav className="dark:bg-gray-800 px-6 py-4 grid grid-cols-4 w-full items-center">
       <Link to={"/"} className="">
         <div className="bg-gray-200 w-30 h-10 dark:bg-gray-600 rounded-md flex items-center justify-center">
           {" "}
-          Home
+          {t('welcomeMessage')}
         </div>
       </Link>
 
       <div
         className="col-span-2 flex items-center h-[40px] justify-center grow-1 
-                        max-w-lg mx-auto w-full rounded-full bg-gray-200 dark:bg-gray-600"
+                        max-w-lg mx-auto w-full rounded-full"
       >
-        <div className="flex justify-center items-center px-4 text-lg">
-          <FontAwesomeIcon icon={faSearch} />
-        </div>
-        <input className="grow-2 outline-none" />
+        <SearchBar />
       </div>
 
       <div className="flex gap-3 items-center grow-1 justify-end">
@@ -34,6 +35,7 @@ function Navbar() {
         >
           <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
         </button>
+        <LanguageSelect />
         {user == null ? (
           <div>
             <Link

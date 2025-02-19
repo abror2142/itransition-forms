@@ -5,6 +5,7 @@ import { useState } from "react";
 import TagCloud from "../components/Page/TagCloud";
 import { useLoaderData } from "react-router-dom";
 import axios from "../utils/axios";
+import { useTranslation } from "react-i18next";
 
 
 export const loader = async () => {
@@ -17,6 +18,7 @@ function HomePage() {
     const [showMore, setShowMore] = useState(false);
     const {tags, latestForms} = useLoaderData();
     const forms = JSON.parse(latestForms);
+    const { t } = useTranslation();
     return (
         <div className="flex flex-col gap-4">
            <div className="bg-gray-200 mt-5 flex gap-4 items-center justify-center py-4 px-6">
@@ -25,7 +27,7 @@ function HomePage() {
                 </a>
            </div>
            <div className="max-w-7xl flex flex-col mx-auto gap-2">
-                <p className="text-xl font-medium">Latest Templates</p>
+                <p className="text-xl font-medium">{t('latestTemplates')}</p>
                 <div className="self-center grid grid-cols-5 gap-4">
                     {forms.slice(0, showMore ? 9 : 5).map((form,index) => (<FormMenuCard form={form}  key={"form-card-"+index}/>))}
                     {   

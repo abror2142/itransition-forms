@@ -1,7 +1,7 @@
 import { RouterProvider } from 'react-router-dom';
 import { router } from './Router';
 import { useTheme } from './hooks/useTheme';
-
+import "./utils/i18n/i18n";
 
 function App() {
   const { isDarkMode }= useTheme();
