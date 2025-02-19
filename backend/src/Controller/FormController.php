@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Validator\ValidatorInterface;
-use App\DTO\AnswerDto;
 use App\Entity\Answer;
 use App\Entity\Element;
 use App\Entity\ElementChild;
@@ -13,6 +11,10 @@ use App\Entity\ImageField;
 use App\Entity\Question;
 use App\Entity\TextField;
 use App\Entity\User;
+use App\Entity\Topic;
+use App\Entity\Tag;
+use App\Response as ResponseEntity;
+use ApiPlatform\Validator\ValidatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,9 +24,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Entity\Topic;
-use App\Entity\Tag;
 use App\DTO\FormValidationDto;
+use App\DTO\AnswerDto;
 use App\Transformers\TagTransformer;
 
 final class FormController extends AbstractController
@@ -59,12 +60,20 @@ final class FormController extends AbstractController
 
     #[Route('api/form/answer/{id}', name: 'app_form_answer', methods: ['POST'])]
     public function answer(int $id, Request $request) {
-
         $user = $this->security->getUser();
         if (!$user) {
             return new JsonResponse(['message' => "Credentials are not founnd!"]);
         }
 
+        $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
+        if (!$form) {
+            return new JsonResponse(['error' => "Form not Found!"], Response::HTTP_NOT_FOUND);
+        }
+
+        $responses = $this->entityManager->getRepository(Response::class)->count(['owner' => $user, 'form' => $form]);
+        if($responses > 0)
+            return new JsonResponse(['error' => 'You have already filled this form!'], Response::HTTP_BAD_REQUEST);
+        
         $json = $request->getContent();
         try {
             $answerDto = $this->serializer->deserialize($json, AnswerDto::class, 'json');
@@ -82,11 +91,6 @@ final class FormController extends AbstractController
                 $errorMessages[$error->getPropertyPath()] = $error->getMessage();
             }
             return new JsonResponse(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
-        }
-
-        $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $answerDto->formId]);
-        if (!$form) {
-            return new JsonResponse(['error' => "Form not Found!"], Response::HTTP_NOT_FOUND);
         }
         
         $response = new \App\Entity\Response();

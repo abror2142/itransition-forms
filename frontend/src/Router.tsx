@@ -13,6 +13,7 @@ import {loader as HomePageLoader} from "./containers/HomePage";
 import FormUpdatePage, {loader as FormUpdatePageLoader} from "./containers/FormUpdatePage";
 import FormProvider from "./providers/FormProvider";
 import FormDetailPage, {loader as FormDetailPageLoader} from "./containers/FormDetailPage";
+import Dashboard from "./containers/Dashboard";
 
 const routes = createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -39,6 +40,11 @@ const routes = createRoutesFromElements(
             path="form/:id"
             element={<FormDetailPage />}
             loader={FormDetailPageLoader}
+        />
+
+        <Route
+            path="dashboard"
+            element={<Dashboard />}
         />
         
     </Route>

@@ -6,13 +6,20 @@ use App\Repository\ResponseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ResponseRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['response:read'], 'enable_max_depth' => true],
+    denormalizationContext: ['groups' => ['response:write']]
+)]
 class Response
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['response:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'responses')]
@@ -24,12 +31,14 @@ class Response
     private ?Form $form;
 
     #[ORM\Column]
+    #[Groups(['response:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @var Collection<int, Answer>
      */
     #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'response', orphanRemoval: true)]
+    #[Groups(['response:read'])]
     private Collection $answers;
 
     public function __construct()

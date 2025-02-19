@@ -7,8 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\ElementChild;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-
+#[ApiResource(
+    normalizationContext: ['groups' => ['answer:read']],
+    denormalizationContext: ['groups' => ['answer:write']]
+)]
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
 class Answer
 {
@@ -19,6 +24,7 @@ class Answer
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['answer:read', 'response:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
@@ -30,13 +36,16 @@ class Answer
     private ?Response $response = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
+    #[Groups(['answer:read', 'response:read'])]
     private ?int $answerInteger;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['answer:read', 'response:read'])]
     private ?string $answerText = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $answerParagraph = null;
+    #[Groups(['answer:read', 'response:read'])]
 
     #[ORM\ManyToOne(inversedBy: 'answers')]
     private ?ElementChild $answerMultipleChoice = null;

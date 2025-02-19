@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useLayoutEffect, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import {User} from "../types/User";
 import axios from "../utils/axios";
@@ -8,22 +8,24 @@ type AuthProviderProps = PropsWithChildren;
 function AuthProvider ({ children }: AuthProviderProps) {
     const [authToken, setAuthToken] = useState<string | null>();
     const [user, setUser] = useState<User | null>();
+    const [loading, setLoading] = useState<boolean>(false);
 
     // When Application starts/refreshes, I check if the user can be authorized.
     // Refresh token (if there is) will be used to authenticate the user by the backend.
-    useEffect(() => {
+    useLayoutEffect(() => {
         const refreshToken = async () => {
             try {
+                setLoading(true);
                 const resp = await axios.get("/api/token/refresh", {
                     withCredentials: true,
                 });
-                console.log('refreshed')
                 const token  = resp?.data?.token;
-                console.log(token); 
                 setAuthToken(token);
             } catch {
                 setAuthToken(null);
                 setUser(null);
+            } finally {
+                setLoading(false);
             }
         }
         refreshToken();
@@ -76,6 +78,9 @@ function AuthProvider ({ children }: AuthProviderProps) {
     const handleLogout = async () => {
 
     }
+
+    if(loading)
+        return <div>Loading...</div>
 
     return (
         <AuthContext.Provider value={{ authToken, user, handleLogin, handleLogout }}>

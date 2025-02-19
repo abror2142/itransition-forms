@@ -16,6 +16,21 @@ class ResponseRepository extends ServiceEntityRepository
         parent::__construct($registry, Response::class);
     }
 
+    public function findResponseWithAnswersByUser (int $userId) {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select r.id, r.created_at, f.id as form_id, f.title as form_title  
+            from response r
+            join form f
+            on r.form_id = f.id
+            where r.owner_id = :user;
+        ';
+
+        $result = $conn->executeQuery($sql, ['user' => $userId]);
+        return $result->fetchAllAssociative();
+    }
+
     //    /**
     //     * @return Response[] Returns an array of Response objects
     //     */
