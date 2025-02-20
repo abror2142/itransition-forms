@@ -20,26 +20,25 @@ import { confirmAlert } from "react-confirm-alert";
 function FormCard({ form }) {
   const { authToken, user } = useAuth();
 
-    const submitAnswer = (values) => {
-        console.log(values);
-        // const url = `/api/form/answer/${form.formInfo.id}`;
-        // const data = {
-        //   formId: form.formInfo.id,
-        //   answers: values,
-        // };
-        // const json = JSON.stringify(data);
-        // try {
-        //   const resp = await axios.post(url, json, {
-        //     headers: {
-        //       Authorization: `Bearer ${authToken}`,
-        //       "Content-Type": "application/json",
-        //     },
-        //   });
-        //   console.log(resp.data);
-        // } catch (e) {
-        //   if (e.response) console.log("Backend Error:", e.response.data);
-        //   else console.log(e);
-        // }
+    const submitAnswer = async (values) => {
+        const url = `/api/form/answer/${form.formInfo.id}`;
+        const data = {
+          formId: form.formInfo.id,
+          answers: values,
+        };
+        const json = JSON.stringify(data);
+        try {
+          const resp = await axios.post(url, json, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          console.log(resp.data);
+        } catch (e) {
+          if (e.response) console.log("Backend Error:", e.response.data);
+          else console.log(e);
+        }
     }
 
   const handleClick = async (values) => {

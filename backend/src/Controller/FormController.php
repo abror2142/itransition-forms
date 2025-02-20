@@ -13,7 +13,7 @@ use App\Entity\TextField;
 use App\Entity\User;
 use App\Entity\Topic;
 use App\Entity\Tag;
-use App\Response as ResponseEntity;
+use App\Entity\Response as Respond;
 use ApiPlatform\Validator\ValidatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,9 +70,9 @@ final class FormController extends AbstractController
             return new JsonResponse(['error' => "Form not Found!"], Response::HTTP_NOT_FOUND);
         }
 
-        $responses = $this->entityManager->getRepository(Response::class)->count(['owner' => $user, 'form' => $form]);
-        if($responses > 0)
-            return new JsonResponse(['error' => 'You have already filled this form!'], Response::HTTP_BAD_REQUEST);
+        // $responses = $this->entityManager->getRepository(Respond::class)->count(['owner' => $user, 'form' => $form]);
+        // if($responses > 0)
+        //     return new JsonResponse(['error' => 'You have already filled this form!'], Response::HTTP_BAD_REQUEST);
         
         $json = $request->getContent();
         try {
@@ -93,7 +93,7 @@ final class FormController extends AbstractController
             return new JsonResponse(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
         }
         
-        $response = new \App\Entity\Response();
+        $response = new Respond();
         $response->setForm($form);
         $response->setOwner($user);
         $response->setCreatedAt();

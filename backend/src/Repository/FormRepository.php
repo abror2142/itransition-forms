@@ -5,6 +5,10 @@ namespace App\Repository;
 use App\Entity\Form;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use ApiPlatform\Doctrine\Orm\Paginator;
+use Doctrine\Common\Collections\Criteria;
 
 class FormRepository extends ServiceEntityRepository
 {
@@ -22,13 +26,15 @@ class FormRepository extends ServiceEntityRepository
     }
 
     public function findFormsWithResponseCount(int $userId) {
+    
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-           SELECT 
+            SELECT 
                 f.id, 
                 f.title,
                 f.topic_id,
+                f.description,
                 t."name" as topic_name,
                 f.type_id ,
                 ft."name" as type_name,
@@ -47,8 +53,9 @@ class FormRepository extends ServiceEntityRepository
             GROUP BY f.id, f.title, f.topic_id, t."name", f.type_id, ft."name", f.created_at
             having f.owner_id = :user
             order by f.created_at DESC
+            limit 10;
         ';
-
+        
         $resultSet = $conn->executeQuery($sql, ['user' => $userId]);
         return $resultSet->fetchAllAssociative();
     }

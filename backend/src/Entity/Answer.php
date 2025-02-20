@@ -117,7 +117,7 @@ class Answer
         return $this;
     }
 
-    public function getAnsweMultipleChoicer()
+    public function getAnswerMultipleChoice()
     {
         return $this->answerMultipleChoice;
     }

@@ -24,7 +24,7 @@ class ElementChild
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['form:read', 'elementChild:read'])]
+    #[Groups(['form:read', 'elementChild:read', 'answer:read'])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]

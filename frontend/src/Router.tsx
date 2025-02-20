@@ -14,6 +14,8 @@ import FormUpdatePage, {loader as FormUpdatePageLoader} from "./containers/FormU
 import FormProvider from "./providers/FormProvider";
 import FormDetailPage, {loader as FormDetailPageLoader} from "./containers/FormDetailPage";
 import Dashboard from "./containers/Dashboard";
+import AnalyticsPage from "./containers/AnaliticsPage";
+
 
 const routes = createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -47,6 +49,10 @@ const routes = createRoutesFromElements(
             element={<Dashboard />}
         />
         
+        <Route 
+            path="form/:id/analytics"
+            element={<AnalyticsPage />}
+        />
     </Route>
 )
 
