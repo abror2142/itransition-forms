@@ -27,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->forms = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->formLikes = new ArrayCollection();
-        
+        $this->verificationTokens = new ArrayCollection();   
     }
 
     #[ORM\Id]
@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
     private ?string $email = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fullName = null;
 
     #[ORM\ManyToMany(targetEntity: Form::class, inversedBy: "users")]
     #[ORM\JoinTable(name: "form_users")]
@@ -72,6 +75,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: FormLike::class, mappedBy: 'owner')]
     private Collection $formLikes;
 
+    /**
+     * @var Collection<int, VerificationToken>
+     */
+    #[ORM\OneToMany(targetEntity: VerificationToken::class, mappedBy: 'owner', orphanRemoval: true)]
+    private Collection $verificationTokens;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +95,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->email = $email;
 
+        return $this;
+    }
+
+    public function getFullName() {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName) 
+    {
+        $this->fullName = $fullName;
         return $this;
     }
 
@@ -137,6 +156,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    #[ORM\Column(nullable: true)]
+    private bool $isVerified = false;
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
 
     /**
      * @see UserInterface
@@ -238,6 +273,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($formLike->getOwner() === $this) {
                 $formLike->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VerificationToken>
+     */
+    public function getVerificationTokens(): Collection
+    {
+        return $this->verificationTokens;
+    }
+
+    public function addVerificationToken(VerificationToken $verificationToken): static
+    {
+        if (!$this->verificationTokens->contains($verificationToken)) {
+            $this->verificationTokens->add($verificationToken);
+            $verificationToken->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVerificationToken(VerificationToken $verificationToken): static
+    {
+        if ($this->verificationTokens->removeElement($verificationToken)) {
+            // set the owning side to null (unless already changed)
+            if ($verificationToken->getOwner() === $this) {
+                $verificationToken->setOwner(null);
             }
         }
 

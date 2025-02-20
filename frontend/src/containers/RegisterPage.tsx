@@ -48,25 +48,25 @@ const RegisterPage = () => (
       }}
     >
       {({ isSubmitting }) => (
-        <Form className='flex flex-col gap-4'>
+        <Form className='flex flex-col gap-3'>
           <div>
               <label htmlFor='email'>Email</label>
-              <Field type="email" name="email" placeholder="john@doe.com" className="min-w-[320px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2 "/>
+              <Field type="email" name="email" placeholder="john@doe.com" className="min-w-[300px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2  "/>
               <ErrorMessage name="email" component="div" className='text-red-500 text-sm pl-2' />
           </div>
           <div>
               <label htmlFor='fullName'>Full Name</label>
-              <Field type="fullName" name="fullName" placeholder="John Doe" className="min-w-[320px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2 "/>
+              <Field type="fullName" name="fullName" placeholder="John Doe" className="min-w-[300px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2  "/>
               <ErrorMessage name="fullName" component="div" className='text-red-500 text-sm pl-2'/>
           </div>
           <div>
               <label>Password</label>
-              <Field type="password" name="password" className="min-w-[320px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2 "/>
+              <Field type="password" name="password" className="min-w-[300px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2  "/>
               <ErrorMessage name="password" component="div" className='text-red-500 text-sm pl-2'/>
           </div>            
           <div>
               <label htmlFor='confirmPassword'>Confirm Password</label>
-              <Field type="confirmPassword" name="confirmPassword" className="min-w-[320px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2 "/>
+              <Field type="confirmPassword" name="confirmPassword" className="min-w-[300px] sm:min-w-none outline-none bg-gray-100 dark:bg-gray-600 rounded-md px-4 py-2  "/>
               <ErrorMessage name="confirmPassword" component="div" className='text-red-500 text-sm pl-2' />
           </div>
           <div className='flex items-center justify-center'>

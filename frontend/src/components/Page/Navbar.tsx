@@ -1,16 +1,42 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTheme } from "../../hooks/useTheme";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "./LanguageSelect";
 import SearchBar from "./SearchBar";
+import { confirmAlert } from "react-confirm-alert";
+
 
 function Navbar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
-  const { user } = useAuth();
+  const { user, handleLogout } = useAuth();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const logout = async () => {
+      // send Delete to backend;
+      confirmAlert({
+          title: 'Confirm to Delete.',
+          message: 'Are you sure to delete this Form?',
+          buttons: [
+            {
+              label: 'Yes',
+              onClick: async () =>{
+                  // Send logout to backend
+                  handleLogout();
+                  return navigate('/');
+              },
+              className: "bg-red-500"
+            },
+            {
+              label: 'No',
+              onClick: () => {}
+            }
+          ]
+      })
+  }
 
   return (
     <nav className="dark:bg-gray-800 px-6 py-4 grid grid-cols-4 w-full items-center">
@@ -53,12 +79,12 @@ function Navbar() {
           </div>
         ) : (
           <div>
-            <Link
-              to="/login"
+            <button
+              onClick={logout}
               className="px-3 py-1.5 bg-gray-200 dark:bg-orange-500 border border-gray-200 dark:border-orange-500 rounded-md"
             >
               Logout
-            </Link>
+            </button>
           </div>
         )}
       </div>

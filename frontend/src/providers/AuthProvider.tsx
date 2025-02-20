@@ -76,7 +76,15 @@ function AuthProvider ({ children }: AuthProviderProps) {
     }, [authToken])
 
     const handleLogout = async () => {
-
+        const url = 'api/token/invalidate';
+        try {
+            await axios.get(url);
+        } catch(e) {
+            console.log(e)
+        }finally{
+            setAuthToken(null);
+            setUser(null); 
+        }
     }
 
     if(loading)

@@ -8,7 +8,7 @@ function Layout() {
       <header className="w-full flex justify-between flex-col items-center bg-white dark:bg-gray-700">
         <Header />
       </header>
-      <main className="w-full grow-1 self-start">
+      <main className="w-full grow-1 self-start flex items-center justify-center">
         <Outlet />
       </main>
       <footer>

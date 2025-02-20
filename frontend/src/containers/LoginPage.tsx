@@ -13,7 +13,7 @@ const LoginPage = () => {
   const {user, handleLogin} = useAuth();
 
   return (
-    <div className='flex flex-col gap-4 items-center max-w-min px-8 py-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
+    <div className='flex flex-col gap-4 items-center mx-auto px-8 py-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
       <div className='text-3xl w-[60px] h-[60px] rounded-full  bg-orange-400 dark:bg-orange-500 flex items-center justify-center '>
           <FontAwesomeIcon icon={faUnlock} />
       </div>
@@ -30,15 +30,15 @@ const LoginPage = () => {
         }}
       >
         {({ isSubmitting }) => (
-          <Form className='flex flex-col gap-4'>
-              <div>
+          <Form className='flex flex-col gap-4 '>
+              <div className='flex flex-col'>
                   <label htmlFor='email' className=''>Email</label>
-                  <Field id="email" type="email" name="email" className="outline-none bg-gray-100 dark:bg-gray-500 rounded-md px-4 py-2 "/>
+                  <Field id="email" type="email" name="email" className="outline-none bg-gray-100 dark:bg-gray-500 rounded-md px-4 py-2  min-w-[300px]"/>
                   <ErrorMessage name="email" component="div" className='text-red-500' />
               </div>
-              <div>
+              <div className='flex flex-col'>
                   <label htmlFor='password' className=''>Password</label>
-                  <Field id="password" type="password" name="password" className="outline-none bg-gray-100 dark:bg-gray-500 rounded-md px-4 py-2" />
+                  <Field id="password" type="password" name="password" className="outline-none bg-gray-100 dark:bg-gray-500 rounded-md px-4 py-2 min-w-[300px]" />
                   <ErrorMessage name="password" component="div" className='text-red-500' />
               </div>
             <div className='flex items-center justify-center'>
