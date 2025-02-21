@@ -1,6 +1,6 @@
 import { PropsWithChildren, useLayoutEffect, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import {User} from "../types/User";
+import { User } from "../types/User";
 import axios from "../utils/axios";
 
 type AuthProviderProps = PropsWithChildren;
@@ -42,7 +42,7 @@ function AuthProvider ({ children }: AuthProviderProps) {
             
             setUser({
                 id: resp.data?.id,
-                email: resp.data?.email,
+                fullName: resp.data?.email,
                 roles: resp.data?.roles
             })
 

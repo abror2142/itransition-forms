@@ -28,10 +28,9 @@ import {
 import { useRef, useState } from "react";
 import { FormField } from "../types/FormField";
 import SortableFormField from "./SortableFormField";
-import { toBlob } from "html-to-image";
 import { uploadImage, deleteImage } from "../utils/uploader";
 import { useCallback } from "react";
-import { v4 as uuid4 } from "uuid";
+import { takeScreenshot } from "../utils/screenshot";
 
 function Form({ data, mode }: { data: FormMetaData; mode: string }) {
   const { authToken } = useAuth();
@@ -76,13 +75,13 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
   };
 
   const saveForm = async () => {
-    const imageUrl = await handleScreenshot();
     updateSubmitting(true);
-    const url = "/api/form-create"
+    const imageUrl = await handleScreenshot();
+    const url = "/api/form-create";
     const data = {
         formInfo: {
             ...formInfo,
-            image: imageUrl || formInfo.image, // Fallback to existing if needed
+            image: imageUrl || formInfo.image,
           },
         formFields
     }
@@ -93,12 +92,11 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
                 Authorization: `Bearer ${authToken}`
             }
         });
-        console.log(resp);
     } catch(e) {
         console.log(e);
+    } finally {
+      updateSubmitting(false);
     }
-
-    console.log(json);
   };
 
   const saveAsDraft = async () => {
@@ -140,33 +138,21 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
   };
 
   const handleScreenshot = useCallback(async () => {
-    if (ref.current === null) {
-      return;
-    }
-    try {
-      const blob = await toBlob(ref.current, {
-        cacheBust: true,
-        backgroundColor: "#eef2ff",
-      });
-      if (!blob) throw new Error("Can't take screenshot!");
-
-      const file = new File([blob], `screenshot${uuid4()}.png`, {
-        type: "image/png",
-      });
-      const imageUrl =await handleUpload(file);
+    const imageFile = await takeScreenshot(ref);
+    if(imageFile){
+      const imageUrl = await handleUpload(imageFile);
       return imageUrl;
-    } catch (e) {
-      console.log(e);
-    }
+    };
   }, [ref]);
 
   const handleUpload = async (image: File) => {
-    // if already have an image delete it to replace
-    if (formInfo.image) {
+    if (formInfo.image)
       await deleteImage(formInfo.image);
-    }
+
     const imageUrl = await uploadImage(image);
-    if (imageUrl) updateFormInfoImage(imageUrl);
+    
+    if (imageUrl) 
+      updateFormInfoImage(imageUrl);
     return imageUrl;
   };
 
@@ -195,7 +181,7 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
   };
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="w-full">
       <div className="flex flex-col gap-4 max-w-3xl mx-auto dark:text-gray-800 my-5">
 
         <FormSettings data={data} />

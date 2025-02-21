@@ -15,7 +15,7 @@ function ProtectedRoute ({ allowedRoles, children }: ProtectedRouteProps) {
     if (user === null) {
         return <div>You are not Authenticated!</div>;
     }
-
+    
     if (allowedRoles && !allowedRoles?.some(allowedRole => user.roles.includes(allowedRole))){
         return <div>You don't have Permission to see this page!</div>;
     }

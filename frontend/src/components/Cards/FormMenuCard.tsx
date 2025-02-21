@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 function FormMenuCard ({ form }) {
-    console.log(form)
     dayjs.extend(relativeTime);
     return (
         <Link to={`/form/${form?.id}/`} 
@@ -14,8 +13,14 @@ function FormMenuCard ({ form }) {
                 hover:border-blue-500 rounded-sm border-gray-200 shadow-sm
                 dark:bg-gray-800 dark:border-gray-700"
         >
-            <div className="bg-gray-200  h-[200px] w-full rounded-t-sm flex justify-center p-1">
-                {form?.image && <img src={form?.image} className="h-full"/>}
+            <div className="relative w-full aspect-[4/3] overflow-hidden">
+                {form?.image && (
+                <img 
+                    src={form.image} 
+                    className="w-full h-full object-cover object-top" 
+                    alt="Form visual" 
+                />
+                )}
             </div>
             <div className="bg-white border-t border-gray-200 w-full text-sm px-2 space-y-1 pt-2">
                 <div className="flex items-center gap-2">
@@ -28,7 +33,7 @@ function FormMenuCard ({ form }) {
                 </div>
             </div>
             <div className="text-end flex items-center justify-end gap-2 text-sm w-full px-2 py-1 bg-gray-100 rounded-b-sm">
-                <p>by {form?.owner?.email}</p>
+                <p>by {form?.owner?.fullName}</p>
                 <img className="w-[25px] h-[25px] rounded-full bg-gray-300"/>
             </div>
         </Link>

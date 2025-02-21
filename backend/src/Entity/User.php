@@ -37,10 +37,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
     private ?string $fullName = null;
 
     #[ORM\ManyToMany(targetEntity: Form::class, inversedBy: "users")]

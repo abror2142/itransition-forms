@@ -124,7 +124,7 @@ const TiptapTitle = ({
   parentActive: boolean;
   title: string;
 }) => {
-  const { formInfo, updateFormInfoTitle } = useForm();
+  const { updateFormInfoTitle } = useForm();
   const [active, setActive] = useState(false);
 
   return (
