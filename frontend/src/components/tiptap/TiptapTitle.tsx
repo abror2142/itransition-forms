@@ -124,7 +124,7 @@ const TiptapTitle = ({
   parentActive: boolean;
   title: string;
 }) => {
-  const { formInfo, updateFormFieldTitle } = useForm();
+  const { formInfo, updateFormInfoTitle } = useForm();
   const [active, setActive] = useState(false);
 
   return (
@@ -146,7 +146,7 @@ const TiptapTitle = ({
             },
           }}
           onUpdate={({ editor }) => {
-            updateFormFieldTitle(formInfo.id, editor.getHTML());
+            updateFormInfoTitle(editor.getHTML());
           }}
         ></EditorProvider>
       </OutsideAlerter>
