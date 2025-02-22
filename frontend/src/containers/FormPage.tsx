@@ -1,15 +1,15 @@
 import FormProvider from "../providers/FormProvider";
 import Form from "../components/Form";
-import axios from "../utils/axios";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { FormMetaData, FormMetaDataSchema } from "../schemas/FormMetaDataZod";
 import { useEffect } from "react";
+import { getFormMetaInfo } from "../utils/api";
+import { formatToObject } from "../utils/axios";
 
 export async function loader(): Promise<FormMetaData | null> {
   try {
-    const resp = await axios.get<FormMetaData>("/form-meta");
-    const data =
-      typeof resp.data === "string" ? JSON.parse(resp.data) : resp.data;
+    const resp = await getFormMetaInfo();
+    const data = formatToObject(resp.data);
     return FormMetaDataSchema.parse(data);
   } catch (error) {
     console.log(error);

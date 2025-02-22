@@ -10,7 +10,7 @@ const loginSchema = Yup.object().shape({
 })
 
 const LoginPage = () => {
-  const {user, handleLogin} = useAuth();
+  const { handleLogin} = useAuth();
 
   return (
     <div className='flex flex-col gap-4 items-center mx-auto px-8 py-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
@@ -24,8 +24,10 @@ const LoginPage = () => {
         onSubmit={async (values, { setSubmitting }) => {
           setSubmitting(true)
           try{
-            await handleLogin(JSON.stringify(values));
+            const json = JSON.stringify(values)
+            await handleLogin(json);
           } catch(e) {
+            
           }
         }}
       >

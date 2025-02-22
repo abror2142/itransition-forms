@@ -30,7 +30,7 @@ final class AnalyticsController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/api/form-analytics/{id}/', name: 'app_analytics', methods: ['GET'])]
+    #[Route('/api/form/{id}/analytics', name: 'app_analytics', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function index(int $id): Response
     {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
@@ -73,8 +73,8 @@ final class AnalyticsController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
-    #[Route('/api/form/{id}/fillings/', name: 'app_form_filling_analytics', methods: ['GET'])]
-    public function fillings (int $id) {
+    #[Route('/api/form/{id}/fillings-by-date', name: 'app_form_filling_analytics', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function fillingsByDate (int $id) {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
         if(!$form)
             return new JsonResponse(['error' => 'Form not found!'], Response::HTTP_NOT_FOUND);
@@ -88,8 +88,8 @@ final class AnalyticsController extends AbstractController
         return new  JsonResponse($responseDates, Response::HTTP_OK); 
     }
 
-    #[Route('/api/form/{id}/filled/', name: 'app_form_filled_analytics', methods: ['GET'])]
-    public function userFillings (int $id) {
+    #[Route('/api/form/{id}/fillings-total', name: 'app_form_filled_analytics', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function fillingsTotal (int $id) {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
         if(!$form)
             return new JsonResponse(['error' => 'Form not found!'], Response::HTTP_NOT_FOUND);

@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
         VerificationTokenRepository $verificationTokenRepository,
         ): Response
     {
-        $token = $request->query->get('token');
+        $token = $request->getPayload()->get('token');
 
         if (null === $token) {
             return new JsonResponse(['message' => "Token is not provided!"], Response::HTTP_BAD_REQUEST);

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "../utils/axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp as faLikeBold } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp as faLikeLight } from "@fortawesome/free-regular-svg-icons";
 import { useAuth } from "../hooks/useAuth";
+import { getFormLikeCheck, getFormLikeCount, createFormLike } from "../utils/api";
 
 function FormLike ({formId}: {formId: number}) {
     const [liked, setLiked] = useState<boolean | undefined>(undefined);
@@ -11,30 +11,28 @@ function FormLike ({formId}: {formId: number}) {
     const { authToken } = useAuth();
 
     const fetchLikeCount = async () => {
-        const url = `/form-like/${formId}`;
-        const resp = await axios.get(url);
-        setLikeCount(resp?.data?.formLikes);
+        const resp = await getFormLikeCount(formId);
+        setLikeCount(resp.data?.formLikes);
     }
 
     const fetchLikeCheck = async () => {
-        const url = `api/form-like/${formId}/`;
-        const resp = await axios.get(url, {
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            }
-        });
-        setLiked(resp?.data?.liked)
+        if(authToken){
+            const resp = await getFormLikeCheck(formId, authToken);
+            setLiked(resp?.data?.liked);
+        }
     }
 
     const handleLikeClick = async () => {
-        const url = `api/form-like/${formId}/`;
-        const resp = await axios.post(url, {}, {
-            headers: {
-                Authorization: `Bearer ${authToken}`
+        if(authToken){
+            try{
+                await createFormLike(formId, authToken)
+                setLiked(!liked)
+            } catch(e) {
+                console.log(e);
             }
-        });
-        setLiked(!liked)
+        }
     }
+
     useEffect(() => { 
         fetchLikeCount();
         if(authToken)

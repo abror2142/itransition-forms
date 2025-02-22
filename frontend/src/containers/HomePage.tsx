@@ -4,13 +4,11 @@ import FormMenuCard from "../components/Cards/FormMenuCard";
 import { useState } from "react";
 import TagCloud from "../components/Page/TagCloud";
 import { useLoaderData } from "react-router-dom";
-import axios from "../utils/axios";
 import { useTranslation } from "react-i18next";
-
+import { getHomepageData } from "../utils/api";
 
 export const loader = async () => {
-    const url = "/home";
-    const resp = await axios(url);
+    const resp = await getHomepageData();
     return resp.data;
 }
 
@@ -29,7 +27,7 @@ function HomePage() {
            <div className="max-w-7xl flex flex-col mx-auto gap-2">
                 <p className="text-xl font-medium">{t('latestTemplates')}</p>
                 <div className="self-center grid grid-cols-5 gap-4">
-                    {forms.slice(0, showMore ? 9 : 5).map((form,index) => (<FormMenuCard form={form}  key={"form-card-"+index}/>))}
+                    {forms.slice(0, showMore ? 9 : 5).map((form, index) => (<FormMenuCard form={form}  key={"form-card-"+index}/>))}
                     {   
                         showMore 
                         && <div  className="flex flex-col items-center justify-center gap-4 w-[200px] bg-white border 

@@ -1,12 +1,13 @@
 import { Link, useLoaderData } from "react-router-dom";
-import axios from "../utils/axios";
 import FormCard from "../components/Cards/FormCard";
 import { useAuth } from "../hooks/useAuth";
 import FormComments from "../components/FormComments";
 import FormLike from "./FormLike";
+import { getFormDetail } from "../utils/api";
 
 export const loader = async ({ params }) => {
-    const resp = await axios.get(`/form/${params.id}`);
+    const id = parseInt(params?.id);
+    const resp = await getFormDetail(id);
     return JSON.parse(resp.data);
 }
 

@@ -1,48 +1,44 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { verifyEmail } from "../utils/api";
 
 function VerifyEmailPage() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get("token"); // Extract token from URL query parameters
+    const token = queryParams.get("token");
 
-    console.log("Verification Token:", token);
-
-    const [isSubmitting, setIsSubmitting] = useState(true);
+    const [submitting, setSubmitting] = useState(true);
     const [message, setMessage] = useState("Verifying...");
 
     useEffect(() => {
         const verify = async () => {
             if (!token) {
                 setMessage("Invalid or missing token.");
-                setIsSubmitting(false);
+                setSubmitting(false);
                 return;
             }
-
             try {
-                const url = `http://localhost:8000/verify/email?token=${token}`;
-                const response = await fetch(url);
-
-                if (response.ok) {
-                    setMessage("Email verified successfully!");
-                } else {
-                    const data = await response.json();
-                    setMessage(data.error || "Verification failed.");
-                }
-            } catch (error) {
+                const data = JSON.stringify({"token": token});
+                await verifyEmail(data);
+                setMessage("Email verified successfully!");
+            } catch (e) {
+                console.log(e);
                 setMessage("Network error. Please try again.");
-                console.error("Verification failed:", error);
             } finally {
-                setIsSubmitting(false);
+                setSubmitting(false);
             }
         };
-
         verify();
-    }, [token]); // Add token as a dependency
+    }, [token]);
 
     return (
-        <div>
-            <p>{message}</p>
+        <div className="px-4 py-2 bg-white shadow-2xl rounded-md border border-gray-300">
+            {submitting && <div>Verifying...</div>}
+            {
+                message 
+                && !submitting 
+                && <p>{message}</p>
+            }
         </div>
     );
 }

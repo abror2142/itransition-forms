@@ -5,7 +5,7 @@ import { faImage, faPlus } from "@fortawesome/free-solid-svg-icons";
 import ImageClass from "../../classes/Image";
 import TextClass from "../../classes/Text";
 
-function FormBottomSideBar({ order }: { order: number }) {
+function FormBottomSideBar({ sequence }: { sequence: number }) {
   const { addFormField } = useForm();
 
   return (
@@ -13,7 +13,7 @@ function FormBottomSideBar({ order }: { order: number }) {
       <div className="flex gap-2 items-center relative group">
         <button
           className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400"
-          onClick={() => addFormField(new QuestionClass(), order + 1)}
+          onClick={() => addFormField(new QuestionClass(), sequence + 1)}
         >
           <FontAwesomeIcon icon={faPlus} />
         </button>
@@ -24,7 +24,7 @@ function FormBottomSideBar({ order }: { order: number }) {
       <div className="flex gap-2 items-center relative group">
         <button
           className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400"
-          onClick={() => addFormField(new ImageClass(), order + 1)}
+          onClick={() => addFormField(new ImageClass(), sequence + 1)}
         >
           <FontAwesomeIcon icon={faImage} />
         </button>
@@ -35,7 +35,7 @@ function FormBottomSideBar({ order }: { order: number }) {
       <div className="flex gap-2 items-center relative group">
         <button
           className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400"
-          onClick={() => addFormField(new TextClass(), order + 1)}
+          onClick={() => addFormField(new TextClass(), sequence + 1)}
         >
           T
         </button>

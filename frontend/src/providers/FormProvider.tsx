@@ -1,9 +1,6 @@
-import { useState, useLayoutEffect, PropsWithChildren } from "react";
+import { useState, PropsWithChildren } from "react";
 import { FormContext } from "../contexts/FormContext";
-import axios from "../utils/axios";
 import { v4 as uuid } from "uuid";
-
-// Classes & Types
 import Question from "../classes/Question";
 import FormInfo from "../classes/FormInfo";
 import { FormField } from "../types/FormField";
@@ -24,17 +21,12 @@ export default function FormProvider({ children }: FormProviderProps) {
   const [formFields, setFormFields] = useState<FormField[]>([new Question()]);
   const [formInfo, setFormInfo] = useState<FormInfo>(new FormInfo());
   const [initialized, setInitialized] = useState<boolean>(false);
-  const [imagePromises, setImagePromises] = useState([]);
 
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const [imageUploadUrl, setImageUploadUrl] = useState<string | null | undefined>();
 
   const initialize = (data) => {
     const formFields = data?.formFields;
     const formInfo = data?.formInfo;
-
-    console.log(formFields);
-
 
     const fields: FormField[] = formFields.map((field: FormField) => {
       if(field.type == 'question'){
@@ -51,11 +43,11 @@ export default function FormProvider({ children }: FormProviderProps) {
     setInitialized(true);
   }
 
-  const findField = (index) => {
+  const findField = (index: number | string) => {
     const formField = formFields.find(formField => {
       return formField.id == index;
     })
-    return formField;
+    return formField || null;
   }
   
   const resetForm = () => {
@@ -63,20 +55,6 @@ export default function FormProvider({ children }: FormProviderProps) {
     setFormInfo(new FormInfo());
     setId(uuid());
   };
-
-  useLayoutEffect(() => {
-    const fetchSignedUrl = async () => {
-      const url = "/image/upload-url";
-      try {
-        const resp = await axios(url);
-        setImageUploadUrl(resp.data?.url);
-      } catch (e) {}
-    };
-
-    if (submitting) {
-      fetchSignedUrl();
-    }
-  }, [submitting]);
 
   const updateSubmitting = (newValue: boolean) => {
     setSubmitting(newValue);
@@ -138,7 +116,7 @@ export default function FormProvider({ children }: FormProviderProps) {
     });
   };
 
-  function addFormField(newFormField: FormField, sequence: number) {
+const addFormField = (newFormField: FormField, sequence: number) => {
     setFormFields((prevFormFields) => {
       const newFields = [...prevFormFields];
       newFields.splice(sequence, 0, newFormField);
@@ -264,11 +242,6 @@ export default function FormProvider({ children }: FormProviderProps) {
     );
   };
 
-  const addImagePromise = (newPromise) => {
-    setImagePromises(prev => {
-      return [...prev, newPromise]
-    })
-  }
 
   const updateDraggable = (activeIndex: number, overIndex: number) => {
     setFormFields(prev => {
@@ -304,13 +277,9 @@ export default function FormProvider({ children }: FormProviderProps) {
         changeFormFieldOption,
         submitting,
         updateSubmitting,
-        imageUploadUrl,
         initialize,
         initialized,
-        setInitialized,
         findField,
-        imagePromises,
-        addImagePromise,
         updateImageFieldCaption,
         updateDraggable,
       }}

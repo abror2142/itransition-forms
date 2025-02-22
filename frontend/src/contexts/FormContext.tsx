@@ -29,7 +29,10 @@ export type FormContext = {
     changeFormFieldOption: (id: string, optionId: string, newValue: string) => void;
     submitting: boolean;
     updateSubmitting: (newValue: boolean) => void;
-    imageUploadUrl: string|null|undefined;
+    initialize: (form) => void;
+    initialized: boolean;
+    findField: (index: number | string) => FormField | null;
+    updateImageFieldCaption: (id: string, newContent: string) => void;
     updateDraggable: (avtiveIndex: number, overIndex: number) => void;
 }
 

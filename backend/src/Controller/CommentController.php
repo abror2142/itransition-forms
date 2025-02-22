@@ -36,12 +36,11 @@ final class CommentController extends AbstractController
         $this->serializer = $serializer;
     }
 
-
-    #[Route('/api/form/{id}/comment', name: 'app_comment', methods: ['GET'])]
+    #[Route('/api/form/{id}/comments', name: 'app_comment', methods: ['GET'])]
     public function index(int $id, Request $request): Response
-    {  
+    {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
-        if(!$form){
+        if (!$form) {
             return new JsonResponse(['error' => 'Form not found!'], Response::HTTP_NOT_FOUND);
         }
         $comments = $this->entityManager->getRepository(Comment::class)->findBy(['form' => $form]);
@@ -49,11 +48,12 @@ final class CommentController extends AbstractController
         return new JsonResponse($json, Response::HTTP_OK);
     }
 
-    #[Route('/api/comment', name: 'app_comment_create', methods: ['POST'])]
-    public function create(Request $request) {
-        
+    #[Route('/api/form/{id}/comments', name: 'app_comment_create', methods: ['POST'])]
+    public function create(Request $request)
+    {
+
         $user = $this->security->getUser();
-        if(!$user){
+        if (!$user) {
             return new JsonResponse(['error' => "User not found!", Response::HTTP_BAD_REQUEST]);
         }
 
@@ -77,37 +77,37 @@ final class CommentController extends AbstractController
         }
 
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $commentDto->formId]);
-        if(!$form){
+        if (!$form) {
             return new JsonResponse(['error' => 'Appropriate form not found!'], Response::HTTP_NOT_FOUND);
         }
 
-        
+
         $comment = new Comment();
-        
+
         $comment->setOwner($user);
         $comment->setForm($form);
         $comment->setContent($commentDto->content);
         $comment->setCreatedAt();
         $comment->setUpdatedAt(new \DateTime());
-        
+
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
-            // dd($commentDto->parentId);
+        // dd($commentDto->parentId);
         $parent = null;
-        if($commentDto->parentId){
+        if ($commentDto->parentId) {
             $parent = $this->entityManager->getRepository(Comment::class)->findOneBy(['id' => $commentDto->parentId]);
-            if(!$parent){
+            if (!$parent) {
                 return new JsonResponse(['error' => 'Comment being replied is not found!', Response::HTTP_NOT_FOUND]);
             }
         }
 
-        if($parent){
+        if ($parent) {
             $comment->setParent($parent);
         }
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
-        
+
         return new JsonResponse(['message' => 'created!']);
     }
 }

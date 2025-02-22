@@ -1,32 +1,25 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import axios from "../utils/axios";
-import * as React from 'react';
 import FormDashboardCard from "../components/Cards/FormDashboardCard";
 import FormDashboardAnswerCard from "../components/Cards/FormDashboardAnswerCard";
+import { getDashboardInfo } from "../utils/api";
 
 function Dashboard() {
     const { authToken } = useAuth();
     const [data, setData] = useState();
-    const [page, setPage] = React.useState(1);
 
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-    };
-
-    useEffect(() => {
-        
+    useEffect(() => { 
         const fetchDashboard = async () => {
-            const url = "/api/dashboard";
-            const resp = await axios.get(url, {
-                headers: {
-                    Authorization: `Bearer ${authToken}`
+            if(authToken){
+                try{
+                    const resp = await getDashboardInfo(authToken);
+                    setData(resp.data);
+                }catch(e) {
+                    console.log(e);
                 }
-            });
-            setData(resp.data);
-        }
-        if(authToken)
-            fetchDashboard();
+            }
+        }   
+        fetchDashboard();
     }, [])
 
     const forms = data?.forms || [];

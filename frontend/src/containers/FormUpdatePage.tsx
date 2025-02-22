@@ -1,26 +1,25 @@
 import { useLoaderData } from "react-router-dom";
-import axios from "../utils/axios";
 import useForm from "../hooks/useForm";
 import Form from "../components/Form";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { formatToObject } from "../utils/axios";
+import { getFormMetaInfo, getFormDetail } from "../utils/api";
 
 export const loader = async ({ params }) => {
-    const url = `/form/${params.id}`;
-    const resp = await axios.get(url);
-    const metaResp = await axios.get('/form-meta');
-    console.log(metaResp.data)
-    return { env: JSON.parse(resp.data), metaData: JSON.parse(metaResp.data)};
+    const id = parseInt(params?.id);
+    const resp = await getFormDetail(id);
+    const metaResp = await getFormMetaInfo();
+    return { form: formatToObject(resp.data), metaData: formatToObject(metaResp.data)};
 }
 
 function FormUpdatePage() {
-    const {env, metaData} = useLoaderData();
-    const { initialize, initialized, formFields} = useForm();
+    const {form, metaData} = useLoaderData();
+    const { initialize, initialized } = useForm();
 
     useEffect(() => {
-        initialize(env);
+        initialize(form);
     }, [])
     
-    console.log(metaData);
     return (
         <div>
             <h1>Form Update</h1>

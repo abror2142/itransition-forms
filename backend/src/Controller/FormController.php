@@ -46,7 +46,7 @@ final class FormController extends AbstractController
         $this->validator = $validator;
     }
 
-    #[Route('/form-meta', name: 'app_form_meta_data', methods: ['GET'])]
+    #[Route('/form/meta', name: 'app_form_meta_data', methods: ['GET'])]
     public function getMetaData(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $topics = $entityManager->getRepository(Topic::class)->findAll();
@@ -58,7 +58,7 @@ final class FormController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
-    #[Route('api/form/answer/{id}', name: 'app_form_answer', methods: ['POST'])]
+    #[Route('/api/form/{id}/answer', name: 'app_form_answer', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function answer(int $id, Request $request) {
         $user = $this->security->getUser();
         if (!$user) {
@@ -135,14 +135,14 @@ final class FormController extends AbstractController
     }
 
 
-    #[Route('/form/update/{id}', name: 'app_form_update', methods: ['PUT'])]
+    #[Route('/api/form/{id}/update', name: 'app_form_update', methods: ['PUT'], requirements: ['id' => '\d+'])]
     public function update(int $id, Request $request, TagTransformer $tagTransformer)
     {   
 
-        // $user = $this->security->getUser();
-        // if (!$user) {
-        //     return new JsonResponse(['message' => "Credentials are not founnd!"]);
-        // }
+        $user = $this->security->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => "Credentials are not founnd!"]);
+        }
 
         // Check for permission!!!
         $json = $request->getContent();
@@ -292,7 +292,7 @@ final class FormController extends AbstractController
         return new JsonResponse([]);
     }
 
-    #[Route('/form/{id}/', name: 'app_form_view', methods: ['GET'])]
+    #[Route('/form/{id}/', name: 'app_form_view', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id)
     {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
@@ -320,7 +320,7 @@ final class FormController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
-    #[Route('/api/form-create', name: 'app_form_logic', methods: ['POST'])]
+    #[Route('/api/form/create/', name: 'app_form_logic', methods: ['POST'])]
     public function create(
         Request $request,
         SerializerInterface $serializer,
@@ -441,7 +441,7 @@ final class FormController extends AbstractController
         return new JsonResponse(['message' => 'Recieved!', "form" => $form]);
     }
 
-    #[Route('/api/form/all', name: 'app_form_all', methods: ['GET'])]
+    #[Route('/api/form/all/', name: 'app_form_all', methods: ['GET'])]
     public function getAll(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $forms = $entityManager->getRepository(Form::class)->findAll();

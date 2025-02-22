@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { redirect } from 'react-router-dom';
 import * as Yup from 'yup';
+import { register } from '../utils/api';
 
 const registerSchema = Yup.object().shape({
     email: Yup.string()
@@ -35,16 +36,15 @@ const RegisterPage = () => (
       validationSchema={registerSchema}
       onSubmit={ async (values, { setSubmitting }) => {
         setSubmitting(true)
-        const BASE_URL = 'http://localhost:8000/register';
-        const resp = await fetch(BASE_URL, {
-          method: 'POST',
-          body: JSON.stringify(values)
-        })
-        console.log(resp)
-        if(resp.ok){
+        try{
+          const json = JSON.stringify(values);
+          await register(json)
           return redirect('/')
+        } catch(e) {
+          console.log(e);
+        } finally {
+          setSubmitting(false);
         }
-        setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (
