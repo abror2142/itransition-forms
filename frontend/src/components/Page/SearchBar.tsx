@@ -1,4 +1,4 @@
-import axios from "../../utils/axios";
+
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -21,8 +21,8 @@ function SearchBar() {
       try {
         const response = await search(term);
         console.log(response.data);
-        // const data = JSON.parse(response.data);
-        // setResults(response.data);
+        const data = JSON.parse(response.data);
+        setResults(data);
       } catch (error) {
         console.error("Fetch error:", error);
       } finally {

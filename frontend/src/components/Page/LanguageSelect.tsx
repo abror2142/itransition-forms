@@ -1,10 +1,7 @@
-import Select, { SingleValue } from 'react-select';
 import i18n from '../../utils/i18n/i18n';
 import uzFlag from '../../assets/uzFlag.png';
 import enFlag from '../../assets/enFlag.png';
 import { useEffect, useState } from 'react';
-
-type SelectOption = SingleValue<{value: string; label: string;}>
 
 
 function LanguageSelect() {

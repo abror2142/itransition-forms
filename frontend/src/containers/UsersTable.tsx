@@ -5,9 +5,21 @@ import { v4 as uuid4 } from "uuid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCircleDown, faCircleUp, faLock, faTrash, faUnlock, faX } from "@fortawesome/free-solid-svg-icons";
 import { actOnUsers } from "../utils/api";
+import { UserFull } from "../types/User";
+
+interface UserTableData {
+    member: UserFull[];
+    view: {
+        first: string;
+        last: string;
+        next?: string;
+        previous?: string;
+    }
+}
+
 
 function UsersTable () {
-    const [data, setData] = useState({});
+    const [data, setData] = useState<UserTableData| null>(null);
     const { authToken } = useAuth()
     const [page, setPage] = useState("/api/users?page=1");
     const [selected, setSelected] = useState<number[]>([]);
@@ -24,7 +36,7 @@ function UsersTable () {
         if(data?.member.length == selected.length)
             setSelected([])
         else
-            setSelected(data?.member?.map(user => user?.id));
+            setSelected(data?.member ? data?.member?.map(user => user?.id): []);
     }
 
     const fetchUsers = async () => {
@@ -128,7 +140,7 @@ function UsersTable () {
                         <th scope="col" className="p-4">
                             <div className="flex items-center">
                                 <input 
-                                    onClick={(e) => selectAll()}
+                                    onClick={() => selectAll()}
                                     defaultChecked={data?.member?.length == selected.length}
                                     id="checkbox-all" 
                                     type="checkbox" 
@@ -163,7 +175,7 @@ function UsersTable () {
                                 <div className="flex items-center">
                                     <input 
                                         id="checkbox-table-1" 
-                                        onChange={(e) => toggleSelection(user?.id)}
+                                        onChange={() => toggleSelection(user?.id)}
                                         type="checkbox"
                                         defaultChecked={selected.includes(user?.id)} 
                                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
@@ -197,7 +209,7 @@ function UsersTable () {
                 {   
                     page != data?.view?.first 
                     && <button 
-                            onClick={() => setPage(data?.view?.previous)} 
+                            onClick={() => setPage(data?.view?.previous ? data?.view?.previous : page)} 
                             className="mr-auto px-4 py-1.5 bg-gray-200 rounded-md"
                         >
                             Previous

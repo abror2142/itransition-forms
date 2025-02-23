@@ -3,7 +3,7 @@ import { FormContext } from "../contexts/FormContext";
 import { v4 as uuid } from "uuid";
 import Question from "../classes/Question";
 import FormInfo from "../classes/FormInfo";
-import { FormField } from "../types/FormField";
+import { FormField, FormType } from "../types/FormField";
 import Option from "../classes/Option";
 import {
   SelectOption,
@@ -24,17 +24,16 @@ export default function FormProvider({ children }: FormProviderProps) {
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
-  const initialize = (data) => {
+  const initialize = (data: FormType) => {
     const formFields = data?.formFields;
     const formInfo = data?.formInfo;
 
     const fields: FormField[] = formFields.map((field: FormField) => {
-      if(field.type == 'question'){
+      if(field.type == 'question')
         return new Question(...Object.values(field));
-      }
       else if (field.type == 'image')
         return new Image(...Object.values(field));
-      else if(field.type == 'text')
+      else(field.type == 'text')
         return new Text(...Object.values(field));
     })
 

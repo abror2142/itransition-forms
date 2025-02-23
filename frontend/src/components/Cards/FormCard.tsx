@@ -18,8 +18,16 @@ import { confirmAlert } from "react-confirm-alert";
 import { useRef, useState } from "react";
 import { takeScreenshot } from "../../utils/screenshot";
 import { sendFormAnswer } from "../../utils/api";
+import { FormType } from "../../types/FormField";
+import Question from "../../classes/Question";
+import Image from "../../classes/Image";
+import Text from "../../classes/Text";
 
-function FormCard({ form }) {
+interface FormValueInterface {
+  [key: string]: any;
+}
+
+function FormCard({ form }: {form: FormType}) {
   const { authToken, user } = useAuth();
   const [emailAnswer, setEmailAnswer] = useState(true);
   const [downloadAnswer, setDownloadAnswer] = useState(true);
@@ -36,11 +44,11 @@ function FormCard({ form }) {
     URL.revokeObjectURL(url);
   }
 
-    const submitAnswer = async (values) => {
+    const submitAnswer = async (values: FormValueInterface) => {
       let formData = {
         formId: form.formInfo.id, 
         answers: values,
-        image: null
+        image: new File([], '')
       }
 
       if(downloadAnswer || emailAnswer){
@@ -53,21 +61,21 @@ function FormCard({ form }) {
         }
       }
       const data = JSON.stringify(formData)
-      
+
       if(authToken && formData){
         try {
-          const resp = await sendFormAnswer(authToken, form?.formInfo?.id, data);
+          const id = parseInt(form?.formInfo?.id)
+          const resp = await sendFormAnswer(authToken, id, data);
           console.log(resp.data);
-        } catch (e) {
-          if (e.response) console.log("Backend Error:", e.response.data);
-          else console.log(e);
+        } catch (error) {
+          console.log(error);
         }
         setDownloadAnswer(false);
         setEmailAnswer(false);
       }
     }
 
-  const handleClick = async (values) => {
+  const handleClick = async (values: FormValueInterface) => {
     // send Delete to backend;
     confirmAlert({
       customUI: ({ onClose }) => {
@@ -126,12 +134,12 @@ function FormCard({ form }) {
           ></p>
           <p
             className=""
-            dangerouslySetInnerHTML={{ __html: form?.formInfo?.description }}
+            dangerouslySetInnerHTML={{ __html: form?.formInfo?.description || "" }}
           ></p>
         </div>
         <div className="flex gap-2 px-6">
           <p className="font-semibold text-[15px] border-r px-2 border-gray-400">
-            {user?.email}
+            {user?.fullName}
           </p>
 
           <Link
@@ -156,50 +164,51 @@ function FormCard({ form }) {
               if (formField?.type == "text")
                 return (
                   <FormTextFieldCard
-                    field={formField}
+                    field={formField as Text}
                     key={"form-key-" + index}
                   />
                 );
               if (formField?.type == "image")
                 return (
                   <FormImageFieldCard
-                    field={formField}
+                    field={formField as Image}
                     key={"form-key-" + index}
                   />
                 );
               if (formField?.type == "question") {
-                if (formField?.questionType?.name == "Multiple Choice")
+                let field = formField as Question
+                if (field?.questionType?.name == "Multiple Choice")
                   return (
                     <FormMultipleChoiceFieldCard
-                      field={formField}
+                      field={field}
                       key={"form-key-" + index}
                     />
                   );
-                if (formField?.questionType?.name == "Checkbox")
+                if (field?.questionType?.name == "Checkbox")
                   return (
                     <FormCheckBoxFieldCard
-                      field={formField}
+                      field={field}
                       key={"form-key-" + index}
                     />
                   );
-                if (formField?.questionType.name == "Paragraph")
+                if (field?.questionType?.name == "Paragraph")
                   return (
                     <FormParagraphFieldCard
-                      field={formField}
+                      field={field}
                       key={"form-key-" + index}
                     />
                   );
-                if (formField?.questionType?.name == "Text")
+                if (field?.questionType?.name == "Text")
                   return (
                     <FormShortTextFieldCard
-                      field={formField}
+                      field={field}
                       key={"form-key-" + index}
                     />
                   );
-                if (formField?.questionType?.name == "Integer")
+                if (field?.questionType?.name == "Integer")
                   return (
                     <FormIntegerFieldCard
-                      field={formField}
+                      field={field}
                       key={"form-key-" + index}
                     />
                   );

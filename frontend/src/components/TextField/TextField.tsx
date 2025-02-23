@@ -45,7 +45,7 @@ function TextField({ formField }: { formField: Text }) {
             />
             <TiptapTextarea
               id={formField.id}
-              placeholder={formField.description}
+              placeholder={formField.description || ""}
             />
           </div>
 

@@ -4,13 +4,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import QuestionField from "./QuestionField";
 import TextField from "./TextField/TextField";
 import ImageField from "./ImageField/ImageField";
+import Question from "../classes/Question";
+import Image from "../classes/Image";
+import Text from "../classes/Text";
 
 type Props = {
     formField: FormField;
     forceDragging?: boolean;
 }
 
-function SortableFormField ({formField, forceDragging}: Props) {
+function SortableFormField ({formField}: Props) {
     const {isDragging, setNodeRef, transform, transition} = useSortable({id: formField.sequence});
     
     const parentStyles = {
@@ -19,19 +22,15 @@ function SortableFormField ({formField, forceDragging}: Props) {
         opacity: isDragging ? "0.4" : "1",
     }
 
-    const draggableStyle = {
-        cursor: isDragging || forceDragging ? "grabbing" : "grab"
-    }
-
     return (
         <div ref={setNodeRef} style={parentStyles}>
             <div>
                 {   formField.type === 'question' 
-                    ? <QuestionField formField={formField} key={"question-field-" + formField.id} />
+                    ? <QuestionField formField={formField as Question} key={"question-field-" + formField.id} />
                     : formField.type === 'image'
-                    ? <ImageField formField={formField} key={"image-field-" + formField.id} />
+                    ? <ImageField formField={formField as Image} key={"image-field-" + formField.id} />
                     : formField.type === 'text'
-                    ? <TextField formField={formField} key={"text-field-" + formField.id} />
+                    ? <TextField formField={formField as Text} key={"text-field-" + formField.id} />
                     : null
                 }
             </div>

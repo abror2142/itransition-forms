@@ -3,6 +3,7 @@ import FormInfoClass from "../classes/FormInfo";
 import { FormField } from "../types/FormField";
 import Option from "../classes/Option";
 import { SelectOption, SelectOptionCreatable, SelectOptionUser } from "../types/SelectOption";
+import { FormType } from "../types/FormField";
 
 export type FormContext = {
     id: string;
@@ -29,7 +30,7 @@ export type FormContext = {
     changeFormFieldOption: (id: string, optionId: string, newValue: string) => void;
     submitting: boolean;
     updateSubmitting: (newValue: boolean) => void;
-    initialize: (form) => void;
+    initialize: (form: FormType) => void;
     initialized: boolean;
     findField: (index: number | string) => FormField | null;
     updateImageFieldCaption: (id: string, newContent: string) => void;

@@ -6,6 +6,15 @@ import TagCloud from "../components/Page/TagCloud";
 import { useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getHomepageData } from "../utils/api";
+import { UserFull } from "../types/User";
+
+export interface HomePageForm {
+    id: number;
+    owner: UserFull;
+    title: string;
+    createdAt: string;
+    image: string;
+}
 
 export const loader = async () => {
     const resp = await getHomepageData();
@@ -14,8 +23,8 @@ export const loader = async () => {
 
 function HomePage() {
     const [showMore, setShowMore] = useState(false);
-    const {tags, latestForms} = useLoaderData();
-    const forms = JSON.parse(latestForms);
+    const {tags, latestForms} = useLoaderData<{tags: string, latestForms: string}>();
+    const forms: HomePageForm[] = JSON.parse(latestForms);
     const { t } = useTranslation();
  
     return (
@@ -33,11 +42,11 @@ function HomePage() {
            <div className="max-w-7xl flex flex-col mx-auto gap-2">
                 <p className="text-xl font-medium">{t('latestTemplates')}</p>
                 <div className="self-center grid grid-cols-5 gap-4">
-                    {forms.slice(0, showMore ? 9 : 5).map((form, index) => (<FormMenuCard form={form}  key={"form-card-"+index}/>))}
+                    {forms.slice(0, showMore ? 9 : 5).map((form, index: number) => (<FormMenuCard form={form}  key={"form-card-"+index}/>))}
                     {   
                         showMore 
                         && <div 
-                            className="flex flex-col items-center justify-center gap-4 w-[200px] bg-white border 
+                            className="flex flex-col items-center justify-center gap-4 bg-white border 
                                 hover:border-blue-500 rounded-sm border-gray-200 shadow-sm
                                 dark:bg-gray-800 dark:border-gray-700 h-full px-4 w-full"
                             >

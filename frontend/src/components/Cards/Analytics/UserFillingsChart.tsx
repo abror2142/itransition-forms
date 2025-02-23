@@ -3,7 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import axios from "../../../utils/axios";
 import { useAuth } from "../../../hooks/useAuth";
 
-export const UserFillingsChart = ({ formId }) => {
+export const UserFillingsChart = ({ formId }: {formId: string}) => {
     const [data, setData] = useState();
     const { authToken } = useAuth();
     

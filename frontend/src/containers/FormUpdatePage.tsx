@@ -4,8 +4,9 @@ import Form from "../components/Form";
 import { useEffect } from "react";
 import { formatToObject } from "../utils/axios";
 import { getFormMetaInfo, getFormDetail } from "../utils/api";
+import { Params } from "../types/Params";
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: {params: Params}) => {
     const id = parseInt(params?.id);
     const resp = await getFormDetail(id);
     const metaResp = await getFormMetaInfo();

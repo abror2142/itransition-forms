@@ -4,9 +4,36 @@ import FormDashboardCard from "../components/Cards/FormDashboardCard";
 import FormDashboardAnswerCard from "../components/Cards/FormDashboardAnswerCard";
 import { getDashboardInfo } from "../utils/api";
 
+interface DashboardFormData {
+    id: number;
+    title: string;
+    topic_id: number;
+    description: string;
+    topic_name: string;
+    type_id: number;
+    type_name: string;
+    response_count: number;
+    user_count: number;
+    created_at: string;
+}
+
+interface DashboardAnswerData {
+   id: number;
+    created_at: string;
+    form_id: number;
+    form_title: string;
+    email: string;
+}
+
+interface DashboardData {
+    forms: DashboardFormData[],
+    answers: DashboardAnswerData[]
+}
+
+
 function Dashboard() {
     const { authToken } = useAuth();
-    const [data, setData] = useState();
+    const [data, setData] = useState<DashboardData>();
 
     useEffect(() => { 
         const fetchDashboard = async () => {

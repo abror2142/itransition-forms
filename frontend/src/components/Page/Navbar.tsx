@@ -3,7 +3,6 @@ import { useTheme } from "../../hooks/useTheme";
 import { faFileLines, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useTranslation } from "react-i18next";
 import LanguageSelect from "./LanguageSelect";
 import SearchBar from "./SearchBar";
 import { confirmAlert } from "react-confirm-alert";
@@ -12,7 +11,6 @@ import { confirmAlert } from "react-confirm-alert";
 function Navbar() {
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { user, handleLogout } = useAuth();
-  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const logout = async () => {

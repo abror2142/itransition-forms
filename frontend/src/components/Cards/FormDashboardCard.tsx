@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartPie, faFileLines, faMask, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-export default function FormDashboardCard({ form }) {
+export default function FormDashboardCard({ form }: {}) {
   return (
     <div className='bg-white px-4 py-2 rounded-md flex gap-2 flex-col justify-between'>
         <div className='flex justify-between items-center'>

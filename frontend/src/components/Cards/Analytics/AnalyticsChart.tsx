@@ -3,7 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import axios from "../../../utils/axios";
 import { useAuth } from "../../../hooks/useAuth";
 
-export const AnalyticsChart = ({ formId }) => {
+export const AnalyticsChart = ({ formId }: {formId: number}) => {
     const [data, setData] = useState();
     const [dates, setDates] = useState();
     const [info, setInfo] = useState();

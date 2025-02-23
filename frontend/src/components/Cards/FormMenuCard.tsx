@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { HomePageForm } from "../../containers/HomePage";
 
-function FormMenuCard ({ form }) {
+function FormMenuCard ({ form }: {form: HomePageForm}) {
     dayjs.extend(relativeTime);
     return (
         <Link to={`/form/${form?.id}/`} 

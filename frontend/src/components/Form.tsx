@@ -9,10 +9,8 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import { FormMetaData } from "../schemas/FormMetaDataZod";
 import { useAuth } from "../hooks/useAuth";
 import { createForm } from "../utils/api";
-
 import { useRef } from "react";
 import { uploadImage, deleteImage } from "../utils/uploader";
-import { useCallback } from "react";
 import { takeScreenshot } from "../utils/screenshot";
 import DndFields from "./DndFields";
 import FormActionBar from "./FormActionBar";
@@ -21,8 +19,7 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
   const { authToken } = useAuth();
   const { updateSubmitting, resetForm, updateFormInfoImage, formInfo, formFields } = useForm();
   const navigate = useNavigate();
-  const {  } = useForm();
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   
   const saveForm = async () => {
     updateSubmitting(true);
@@ -86,13 +83,15 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
     });
   };
 
-  const handleScreenshot = useCallback(async () => {
-    const imageFile = await takeScreenshot(ref);
-    if(imageFile){
-      const imageUrl = await handleUpload(imageFile);
-      return imageUrl;
-    };
-  }, [ref]);
+  const handleScreenshot = async () => {
+    if(ref && ref.current){
+      const imageFile = await takeScreenshot(ref);
+      if(imageFile){
+        const imageUrl = await handleUpload(imageFile);
+        return imageUrl;
+      }; 
+    }
+  }
 
   const handleUpload = async (image: File) => {
     if (formInfo.image)
@@ -113,7 +112,7 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
     const json = JSON.stringify(data);
     const url = `form/update/${formInfo.id}`;
     try {
-      const resp = await axios.put(url, json, {
+        await axios.put(url, json, {
         headers: {
           "Content-Type": "application/json",
           Accept: "*/*",

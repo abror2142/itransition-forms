@@ -12,12 +12,13 @@ function AnalyticsPage () {
 
     useEffect(() => {
         const fetchAnalytics = async () => {
-            const resp = await getFormAnalytics(id, authToken)
-            setForm(JSON.parse(resp?.data) || []);
+            if(id && authToken){
+                const idNum = parseInt(id);
+                const resp = await getFormAnalytics(idNum, authToken)
+                setForm(JSON.parse(resp?.data) || []);
+            }
         }
-        if(authToken && id){
-            fetchAnalytics();
-        }
+        fetchAnalytics();
     }, [])  
 
     console.log(form)

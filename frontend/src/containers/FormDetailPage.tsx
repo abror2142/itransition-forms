@@ -4,8 +4,9 @@ import { useAuth } from "../hooks/useAuth";
 import FormComments from "../components/FormComments";
 import FormLike from "./FormLike";
 import { getFormDetail } from "../utils/api";
+import { Params } from "../types/Params";
 
-export const loader = async ({ params }) => {
+export const loader = async ({ params }: Params) => {
     const id = parseInt(params?.id);
     const resp = await getFormDetail(id);
     return JSON.parse(resp.data);

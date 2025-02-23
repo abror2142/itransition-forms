@@ -4,8 +4,17 @@ import { v4 as uuid4 } from "uuid";
 import { getFormCommentsList } from "../utils/api";
 import dayjs from "dayjs";
 
+interface CommentInterface {
+    owner: {
+        id: number,
+        fullName: string,
+    }
+    content: string,
+    createdAt: string
+}
+
 function FormComments ({formId}: {formId: number}) {
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState<CommentInterface[]>([]);
 
     useEffect(() => {
         let interval = setInterval( async () => {;

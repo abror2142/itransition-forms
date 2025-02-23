@@ -15,7 +15,7 @@ function ImageField({ formField }: { formField: Image }) {
   const [showOptions, setShowOptions] = useState(false);
   const { removeFormField } = useForm();
   const [image, setImage] = useState<File | null>();
-  const [uploadingImage, setUploadingImage] = useState(false);
+  const [_, setUploadingImage] = useState(false);
   const [showCaption, setShowCaption] = useState(false);
   const [showImageOptions, setShowImageOptions] = useState(false);
   const {attributes, listeners, setActivatorNodeRef } = useSortable({id: formField.sequence});
