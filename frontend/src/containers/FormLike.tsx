@@ -7,7 +7,7 @@ import { getFormLikeCheck, getFormLikeCount, createFormLike } from "../utils/api
 
 function FormLike ({formId}: {formId: number}) {
     const [liked, setLiked] = useState<boolean | undefined>(undefined);
-    const [likeCount, setLikeCount] = useState<number | undefined>(undefined);
+    const [likeCount, setLikeCount] = useState<number>(0);
     const { authToken } = useAuth();
 
     const fetchLikeCount = async () => {
@@ -23,10 +23,11 @@ function FormLike ({formId}: {formId: number}) {
     }
 
     const handleLikeClick = async () => {
+        setLiked(!liked)
+        setLikeCount(prev => prev + (liked ? -1 : 1))
         if(authToken){
             try{
                 await createFormLike(formId, authToken)
-                setLiked(!liked)
             } catch(e) {
                 console.log(e);
             }
@@ -37,13 +38,13 @@ function FormLike ({formId}: {formId: number}) {
         fetchLikeCount();
         if(authToken)
             fetchLikeCheck();
-    }, [liked])
+    }, [])
 
     return (    
-        <div className="flex gap-2 items-center bg-white px-6 py-1 rounded-md">
+        <div className="flex gap-2 items-center bg-white px-6 py-1 rounded-md  dark:bg-dark-card-light dark:border dark:border-dark-border">
             <div 
                 onClick={handleLikeClick}
-                className="group relative w-10 h-10 rounded-full hover:bg-gray-300 flex items-center justify-center"
+                className="group relative w-10 h-10 rounded-full hover:bg-gray-300 flex items-center justify-center dark:hover:bg-dark-blue"
             >
                 <FontAwesomeIcon 
                     icon={liked ? faLikeBold : faLikeLight} 

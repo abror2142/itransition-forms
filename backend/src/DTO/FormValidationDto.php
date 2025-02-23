@@ -7,6 +7,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[Assert\Callback('validateFormFields')]
 class FormValidationDto {
+    public function __construct(FormInfoValidationDto $formInfo, array $formFields = []) {
+        $this->formInfo = $formInfo;
+        $this->formFields = $formFields;
+    }
+
     #[Assert\NotNull(message: "Form info must be provided!")]
     #[Assert\Valid]
     public FormInfoValidationDto $formInfo;
@@ -79,16 +84,9 @@ class FormValidationDto {
     #[Assert\Valid]
     public array $formFields = [];
 
-    public function __construct(FormInfoValidationDto $formInfo, array $formFields = []) {
-        $this->formInfo = $formInfo;
-        $this->formFields = $formFields;
-    }
-
-    // This method can be named arbitrarily because it's called via a class-level callback.
     public function validateFormFields(ExecutionContextInterface $context): void
     {
         foreach ($this->formFields as $index => $field) {
-            // Check if the field is a "question" or "text" type.
             if (isset($field['type']) && in_array($field['type'], ['image'])) {
                 if (empty($field['image'])) {
                     $context->buildViolation('Image must not be blank for image field.')

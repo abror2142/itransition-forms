@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
         return new JsonResponse($successMessage, 200);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email', methods: ['GET'])]
+    #[Route('/verify/email', name: 'app_verify_email', methods: ['POST'])]
     public function verifyUserEmail(
         Request $request, 
         EntityManagerInterface $entityManager,

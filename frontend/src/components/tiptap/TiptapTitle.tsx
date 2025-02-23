@@ -26,7 +26,7 @@ const MenuBar = () => {
   }
 
   return (
-    <div className="flex gap-1 bg-white px-2 py-1">
+    <div className="flex gap-2 text-xl bg-white px-2 py-1 dark:bg-dark-card-light dark:text-dark-text">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -140,7 +140,7 @@ const TiptapTitle = ({
           content={title}
           editorProps={{
             attributes: {
-              class: `px-6 py-3 outline-none bg-white m-0 text-3xl font-medium ${
+              class: `px-6 py-3 outline-none bg-white m-0 text-3xl font-medium  dark:bg-dark-card-light dark:text-dark-text-highlighted ${
                 parentActive && "border-b border-gray-400"
               }`,
             },

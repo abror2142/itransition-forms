@@ -17,10 +17,16 @@ function HomePage() {
     const {tags, latestForms} = useLoaderData();
     const forms = JSON.parse(latestForms);
     const { t } = useTranslation();
+ 
     return (
-        <div className="flex flex-col gap-4">
-           <div className="bg-gray-200 mt-5 flex gap-4 items-center justify-center py-4 px-6">
-                <a href="/form/create" className="text-4xl text-gray-400 w-[180px] h-[130px] flex items-center justify-center p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex flex-col gap-5">
+           <div className="mt-5 flex gap-4 items-center py-4 px-6 rounded-md
+                dark:bg-dark-card-light border dark:border-dark-border">
+                <a 
+                    href="/form" 
+                    className="text-4xl w-[180px] h-[130px] flex items-center 
+                    justify-center p-6 bg-white border border-gray-200 rounded-lg shadow-sm 
+                    dark:bg-dark-blue-light dark:border-dark-border">
                     <FontAwesomeIcon icon={faPlus} />
                 </a>
            </div>
@@ -30,21 +36,28 @@ function HomePage() {
                     {forms.slice(0, showMore ? 9 : 5).map((form, index) => (<FormMenuCard form={form}  key={"form-card-"+index}/>))}
                     {   
                         showMore 
-                        && <div  className="flex flex-col items-center justify-center gap-4 w-[200px] bg-white border 
-                        hover:border-blue-500 rounded-sm border-gray-200 shadow-sm
-                        dark:bg-gray-800 dark:border-gray-700 h-full px-4">
-                            <button className="border border-gray-300 w-full rounded-full py-1.5 hover:bg-gray-100 "
-                                onClick={() => setShowMore(!showMore)}   
-                            >Show less...</button>
-                            <button className=" bg-blue-800 text-white w-full rounded-full py-1.5 border border-blue-900 hover:bg-blue-900 ">Explore all latest</button>                            
-                        </div>
+                        && <div 
+                            className="flex flex-col items-center justify-center gap-4 w-[200px] bg-white border 
+                                hover:border-blue-500 rounded-sm border-gray-200 shadow-sm
+                                dark:bg-gray-800 dark:border-gray-700 h-full px-4 w-full"
+                            >
+                                <button className="border border-gray-300 w-full rounded-full py-1.5 hover:bg-gray-100 
+                                        dark:hover:bg-dark-blue-light dark:border-dark-blue-light"
+                                    onClick={() => setShowMore(!showMore)}   
+                                >Show less</button>
+                                <button className=" bg-blue-800 text-white w-full rounded-full py-1.5 border border-blue-900 hover:bg-blue-900 ">Explore all latest</button>                            
+                            </div>
                     }
                 </div> 
            </div>
-           {!showMore && <div className="self-center bg-white rounded-full max-w-min text-nowrap px-6 py-1.5 flex items-center gap-4 "
-                onClick={() => setShowMore(!showMore)}
-            >
-                 Show more...<FontAwesomeIcon icon={faChevronDown} />
+           {
+                !showMore 
+                && <div 
+                    className="self-center bg-white rounded-full max-w-min text-nowrap px-6 py-1.5 flex items-center gap-4 
+                                dark:bg-dark-blue-light"
+                    onClick={() => setShowMore(!showMore)}
+                 >
+                 Show more<FontAwesomeIcon icon={faChevronDown} />
            </div>}
 
            <div className="max-w-7xl flex flex-col mx-auto gap-2">

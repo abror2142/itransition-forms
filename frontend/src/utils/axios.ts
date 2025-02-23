@@ -1,8 +1,7 @@
 import axios from "axios";
-import { settings } from "./api";
 
 export default axios.create({
-    withCredentials: settings.withCredentials,
+    withCredentials: true,
 })
 
 export const formatToObject = (data: JSON | string) => {

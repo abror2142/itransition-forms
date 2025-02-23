@@ -18,20 +18,20 @@ export const URLs = (id?: number) => ({
     USER_ME: BASE_URL + '/api/user',
 
     // FORM
-    FORM_META_INFO: BASE_URL + '/form/meta',
+    FORM_META_INFO: BASE_URL + '/form-meta',
     FORM_DETAIL: BASE_URL + `/form/${id}`,
     FORM_GIVE_ANSWER: BASE_URL + `/api/form/${id}/answer`,
     FORM_UPDATE: BASE_URL + `/api/form/${id}/update`,
-    FORM_CREATE: BASE_URL + '/api/form/create',
+    FORM_CREATE: BASE_URL + '/api/form-create',
     FORM_LIST_ALL: BASE_URL + '/api/form/all',
 
     // FORM ANALYTICS
-    FORM_ANALYTICS: BASE_URL + `/api/form/${id}analytics`,
+    FORM_ANALYTICS: BASE_URL + `/api/form/${id}/analytics`,
     FORM_FILLINGS_BY_DATE: BASE_URL + `/api/form/${id}/fillings-by-date`,
     FORM_FILLINGS_TOTAL: BASE_URL + `/api/form/${id}/fillings-total`,
 
     // FORM COMMENTS
-    FORM_COMMENTS_LIST_ALL: BASE_URL + `/api/form/${id}/comments`,  // GET
+    FORM_COMMENTS_LIST_ALL: BASE_URL + `/form/${id}/comments`,  // GET
     FORM_COMMENT_CREATE: BASE_URL + `/api/form/${id}/comments`,  // POST
 
     // DASHBOARD
@@ -40,13 +40,17 @@ export const URLs = (id?: number) => ({
     // FORM LIKES
     FORM_LIKE_CREATE: BASE_URL + `/api/form/${id}/like/create`,
     FORM_LIKE_COUNT: BASE_URL + `/form/${id}/like/count`,
-    FORM_LIKE_CHECK: BASE_URL + `/form/${id}/like/check`,
+    FORM_LIKE_CHECK: BASE_URL + `/api/form/${id}/like/check`,
 
     // HOMEPAGE
     HOMEPAGE_DATA: BASE_URL + '/home',
 
     // SEARCH
     SEARCH: BASE_URL + '/search',
+
+    // ADMIN page
+    USERS_LIST: BASE_URL + '/api/users',    
+    ACTION_ON_USERS: BASE_URL + '/api/admin/users',    
 });
 
 const CONTENT_TYPE_CONFIG = {
@@ -128,8 +132,8 @@ export const getFormFillingsTotal = async (id: number, authToken: string) => {
     return axios.get(URLs(id).FORM_FILLINGS_TOTAL, AUTH_CONFIG(authToken));
 }
 
-export const getFormCommentsList = async (id: number, authToken: string) => {
-    return axios.get(URLs(id).FORM_COMMENTS_LIST_ALL, AUTH_CONFIG(authToken));
+export const getFormCommentsList = async (id: number) => {
+    return axios.get(URLs(id).FORM_COMMENTS_LIST_ALL);
 }
 
 export const createFormComment = async (id: number, authToken: string, data: string) => {
@@ -144,6 +148,10 @@ export const createFormLike = async (id: number, authToken: string) => {
     return axios.post(URLs(id).FORM_LIKE_CREATE, {}, AUTH_CONFIG(authToken));
 }
 
+export const createForm = async (data: string, authToken: string) => {
+    return axios.post(URLs().FORM_CREATE, data, AUTH_CONTENT_TYPE_CONFIG(authToken));
+}
+
 export const getFormLikeCount = async (id: number) => {
     return axios.get(URLs(id).FORM_LIKE_COUNT);
 }
@@ -156,6 +164,14 @@ export const getHomepageData = async () => {
     return axios.get(URLs().HOMEPAGE_DATA);
 }
 
-export const search = (data: string) => {
-    return axios.post(URLs().SEARCH, data);
+export const search = (term: string) => {
+    return axios.get(URLs().SEARCH +`?q=${term}`);
+}
+
+export const getUsers = (url:string, authToken: string) => {
+    return axios.get(BASE_URL + url, AUTH_CONFIG(authToken));
+}
+
+export const actOnUsers = (data: string, authToken: string) => {
+    return axios.post(URLs().ACTION_ON_USERS, data, AUTH_CONTENT_TYPE_CONFIG(authToken));
 }

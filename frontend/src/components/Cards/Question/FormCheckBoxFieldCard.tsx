@@ -2,7 +2,7 @@ import { Field } from "formik";
 
 function FormCheckBoxFieldCard ({ field }) {   
     return (
-        <div className="flex flex-col gap-4 px-8 py-4 bg-white rounded-md">
+        <div className="flex flex-col gap-4 px-8 py-4 bg-white rounded-md  dark:bg-dark-card-light dark:border dark:border-dark-border">
             <p dangerouslySetInnerHTML={{__html: field?.title}}></p>
             {field.image && <img src={field.image} />}
             <div role="group" className="flex flex-col gap-2">

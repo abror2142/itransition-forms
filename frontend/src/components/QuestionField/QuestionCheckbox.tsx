@@ -10,11 +10,11 @@ function QuestionCheckbox({ formField }: { formField: Question }) {
     useForm();
 
   return (
-    <div className="flex flex-col gap-1 ">
+    <div className="flex flex-col gap-1 dark:text-dark-text">
       {formField.options.map((option, index) => (
         <div
           key={index}
-          className="flex gap-4 items-center justify-center w-full px-2 py-1 hover:bg-gray-100 rounded-md"
+          className="flex gap-4 items-center justify-center w-full px-2 hover:bg-gray-100 dark:hover:bg-dark-bg border border-transparent dark:hover:border dark:hover:border-dark-border rounded-md"
         >
           <input type="checkbox" name="radio" disabled />
           <input
@@ -28,14 +28,14 @@ function QuestionCheckbox({ formField }: { formField: Question }) {
           <FontAwesomeIcon
             icon={faTrash}
             onClick={() => removeFormFieldOption(formField.id, option.id)}
-            className="text-red mr-2 text-red-500 hover:bg-gray-300 p-2 rounded-full"
+            className="text-red mr-2 text-red-500 hover:bg-gray-300 dark:hover:bg-dark-blue p-2 rounded-full"
           />
         </div>
       ))}
       <div className="px-6">
         <button
           onClick={() => addFormFieldOption(formField.id, new Option())}
-          className="w-full py-1 text-start text-sm border-b border-b-gray-300 dark:bg-gray-700 flex items-center gap-4 text-gray-400"
+          className="w-full py-1 text-start text-sm border-b border-b-gray-300 flex items-center gap-4 text-gray-400"
         >
           <FontAwesomeIcon icon={faCheckSquare} />
           Add a checkbox

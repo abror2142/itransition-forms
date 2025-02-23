@@ -36,7 +36,7 @@ final class CommentController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/api/form/{id}/comments', name: 'app_comment', methods: ['GET'])]
+    #[Route('/form/{id}/comments', name: 'app_comment', methods: ['GET'])]
     public function index(int $id, Request $request): Response
     {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);

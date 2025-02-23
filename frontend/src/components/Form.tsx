@@ -8,7 +8,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { FormMetaData } from "../schemas/FormMetaDataZod";
 import { useAuth } from "../hooks/useAuth";
-
+import { createForm } from "../utils/api";
 
 import { useRef } from "react";
 import { uploadImage, deleteImage } from "../utils/uploader";
@@ -27,7 +27,6 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
   const saveForm = async () => {
     updateSubmitting(true);
     const imageUrl = await handleScreenshot();
-    const url = "/api/form-create";
     const data = {
         formInfo: {
             ...formInfo,
@@ -36,13 +35,12 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
         formFields
     }
     const json = JSON.stringify(data);
-    
+    console.log(json);
     try {
-        const resp = await axios.post(url, json, {
-            headers: {
-                Authorization: `Bearer ${authToken}`
-            }
-        });
+      if(authToken){
+        const resp = await createForm(json, authToken);
+        console.log(resp)
+      }
     } catch(e) {
         console.log(e);
     } finally {

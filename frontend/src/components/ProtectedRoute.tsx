@@ -1,23 +1,24 @@
 import { PropsWithChildren } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 type ProtectedRouteProps = PropsWithChildren & {
-    allowedRoles?: [];
+    allowedRoles: string[];
 }
 
 function ProtectedRoute ({ allowedRoles, children }: ProtectedRouteProps) {
     const { user } = useAuth();
 
     if (user === undefined) {
-        return <div>Loading...</div>;
+        return <p>Checking permissions...</p>;
     }
 
     if (user === null) {
-        return <div>You are not Authenticated!</div>;
+        return <Navigate to={"/login"} />;
     }
     
     if (allowedRoles && !allowedRoles?.some(allowedRole => user.roles.includes(allowedRole))){
-        return <div>You don't have Permission to see this page!</div>;
+        return <Navigate to={"/"} />;
     }
 
     return children;

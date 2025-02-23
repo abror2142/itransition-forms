@@ -47,11 +47,13 @@ function FormSettings({ data }: { data: FormMetaData }) {
     <OutsideAlerter setActive={setOpen}>
       <div
         className={`flex flex-col  gap-2 rounded-md ${
-          open && "bg-white px-4 py-3"
+          open && "bg-white px-4 py-3 dark:bg-dark-card-light dark:border dark:border-dark-border"
         }`}
       >
         <div
-          className="text-2xl text-gray-600 flex items-center gap-2 bg-white hover:bg-gray-200 px-3 py-1 max-w-min rounded-full"
+          className="text-2xl text-gray-600 flex items-center gap-2 bg-white hover:bg-gray-200 px-3 py-1 max-w-min 
+                    dark:bg-dark-card-light dark:border dark:border-dark-border rounded-full dark:text-dark-text 
+                    dark:hover:bg-dark-blue"
           onClick={() => setOpen((prev) => !prev)}
         >
           <FontAwesomeIcon icon={faGear} />

@@ -1,2 +1,17 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+    --color-dark-bg: #101214;
+    --color-dark-bg-contrast: #0f1214;
+    --color-dark-blue: #0e223b;
+    --color-dark-blue-light: #65b3ff;
+    --color-dark-border: #1d2226;
+    --color-dark-card: #111316;
+    --color-dark-card-light: #11171d;
+    --color-dark-card-accent: #181d20;
+    --color-dark-accent: #65b3ff;
+    --color-dark-text: #98a3b3;
+    --color-dark-text-highlighted: #f6f7f8;
+}

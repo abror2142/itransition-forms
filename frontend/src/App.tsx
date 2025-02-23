@@ -7,7 +7,7 @@ function App() {
   const { isDarkMode }= useTheme();
  
   return (
-    <div className={`${isDarkMode ? "dark" : ''} min-h-screen bg-indigo-50 text-gray-700 dark:bg-gray-950 dark:text-white flex flex-col justify-between items-center`}>
+    <div className={`${isDarkMode ? "dark" : ''} min-h-screen bg-indigo-50 text-gray-700 dark:bg-dark-bg dark:text-dark-text-highlighted flex flex-col justify-between items-center`}>
         <RouterProvider router={router} />
     </div>
   )

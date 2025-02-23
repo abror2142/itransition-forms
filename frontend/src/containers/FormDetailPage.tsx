@@ -14,9 +14,9 @@ export const loader = async ({ params }) => {
 function FormDetailPage () {
     const form = useLoaderData();
     const { user } = useAuth();
-
+    console.log(form)
     return (
-        <div className="flex flex-col gap-4 mt-5 items-center max-w-2xl mx-auto">
+        <div className="w-full flex flex-col gap-4 mt-5 items-center max-w-2xl mx-auto">
             { user?.id === form?.formInfo?.owner?.id 
                 && <div>
                     <Link to={`/form/edit/${form.formInfo.id}`} className="px-4 py-1.5 bg-white rounded-md">Edit</Link>

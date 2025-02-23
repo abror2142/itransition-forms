@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Enum\UserRole;
+use App\Enum\UserStatus;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -37,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['user:read', 'meta:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -50,12 +53,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Response::class, mappedBy: 'user')]
     private Collection $responses;    
 
+    #[ORM\Column(nullable: true, enumType:UserStatus::class)]
+    #[Groups(['user:read', 'meta:read'])]
+    private UserStatus $status = UserStatus::Active;
+
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    #[Groups(['user:read'])]
-    private array $roles = [];
+    #[Groups(['user:read', 'meta:read'])]
+    private array $roles = [UserRole::User];
 
     /**
      * @var string The hashed password
@@ -80,6 +87,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: VerificationToken::class, mappedBy: 'owner', orphanRemoval: true)]
     private Collection $verificationTokens;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['user:read', 'meta:read'])]
+    private bool $isVerified = false;
 
     public function getId(): ?int
     {
@@ -142,6 +153,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getStatus () {
+        return $this->status;
+    }
+
+    public function setStatus (UserStatus $status) {
+        $this->status = $status;
+        return $this;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -157,10 +177,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    #[ORM\Column(nullable: true)]
-    private bool $isVerified = false;
-
-    public function isVerified(): bool
+    public function getIsVerified(): bool
     {
         return $this->isVerified;
     }

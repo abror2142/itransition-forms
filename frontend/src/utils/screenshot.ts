@@ -1,6 +1,6 @@
 import { toBlob } from "html-to-image";
 import { v4 as uuid4 } from "uuid";
-
+import blur from "../assets/blur.jpg";
 export async function takeScreenshot (ref) {
     if (ref.current === null)
         return;
@@ -8,7 +8,7 @@ export async function takeScreenshot (ref) {
     try {
     const blob = await toBlob(ref.current, {
         cacheBust: true,
-        backgroundColor: "#eef2ff"
+        imagePlaceholder: blur
     });
     if (!blob) throw new Error("Can't take screenshot!");
 

@@ -1,28 +1,44 @@
 import Select, { SingleValue } from 'react-select';
 import i18n from '../../utils/i18n/i18n';
-import uzFlag from '../../assets/uz.png';
-import enFlag from '../../assets/en.png';
+import uzFlag from '../../assets/uzFlag.png';
+import enFlag from '../../assets/enFlag.png';
+import { useEffect, useState } from 'react';
 
 type SelectOption = SingleValue<{value: string; label: string;}>
 
-const options = [
-  { value: 'en', label: <div className='flex items-center gap-1'><img src={enFlag} width="30px"/>EN</div> },
-  { value: 'uz', label: <div className='flex items-center gap-1'><img src={uzFlag} width="30px"/>UZ</div> },
-]
 
 function LanguageSelect() {
+    const [lang, setLang] = useState('en');
 
-    const handleLanguageChange = (e: SelectOption) => {
-        i18n.changeLanguage(e ? e.value : 'en')
-    }
+    useEffect(() => {
+        i18n.changeLanguage(lang);
+    }, [lang])
     
     return (
-        <div>
-            <Select
-                defaultValue={options[0]}
-                options={options}
-                onChange={(e) => handleLanguageChange(e) }
-            /> 
+        <div className='relative group flex flex-col'>
+            <div className='rounded-full dark:hover:bg-dark-card-accent'>
+                <img src={lang === 'uz' ? uzFlag : enFlag} className='w-6' />
+            </div>
+            <div className='hidden group-hover:flex flex-col gap-2 absolute right-0 top-6 bg-dark-bg px-4 py-2 w-max border dark:border-dark-border'>
+                <div 
+                    className='flex items-center gap-2 border dark:border-dark-border dark:hover:bg-dark-blue px-2 rounded-sm'
+                    onClick={() => setLang('en')}
+                >
+                    <img 
+                        src={enFlag} className='w-6'
+                    />
+                    English
+                </div>
+                <div
+                    onClick={() => setLang('uz')} 
+                    className='flex items-center gap-2 border dark:border-dark-border dark:hover:bg-dark-blue px-2 rounded-sm'
+                >
+                    <img 
+                        src={uzFlag} className='w-6'
+                    />
+                    Uzbek
+                </div>
+            </div>
         </div>
     )
 }

@@ -6,7 +6,6 @@ import FormShortTextFieldCard from "./Question/FormShortTextFieldCard";
 import FormParagraphFieldCard from "./Question/FormParagraphFieldCard";
 import FormIntegerFieldCard from "./Question/FormIntegerFieldCard";
 import { Formik, Form } from "formik";
-import axios from "../../utils/axios";
 import { useAuth } from "../../hooks/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,29 +15,56 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import { useRef, useState } from "react";
+import { takeScreenshot } from "../../utils/screenshot";
+import { sendFormAnswer } from "../../utils/api";
 
 function FormCard({ form }) {
   const { authToken, user } = useAuth();
+  const [emailAnswer, setEmailAnswer] = useState(true);
+  const [downloadAnswer, setDownloadAnswer] = useState(true);
+  const ref = useRef(null);
+
+  const downloadImage = (file: File) => {
+    const url = URL.createObjectURL(file);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = "myAnswer.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 
     const submitAnswer = async (values) => {
-        const url = `/api/form/answer/${form.formInfo.id}`;
-        const data = {
-          formId: form.formInfo.id,
-          answers: values,
-        };
-        const json = JSON.stringify(data);
+      let formData = {
+        formId: form.formInfo.id, 
+        answers: values,
+        image: null
+      }
+
+      if(downloadAnswer || emailAnswer){
+        const file = await takeScreenshot(ref);
+        if(emailAnswer && file) {
+          formData = {...formData, image: file};
+        }
+        if(downloadAnswer && file){
+          downloadImage(file);
+        }
+      }
+      const data = JSON.stringify(formData)
+      
+      if(authToken && formData){
         try {
-          const resp = await axios.post(url, json, {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-              "Content-Type": "application/json",
-            },
-          });
+          const resp = await sendFormAnswer(authToken, form?.formInfo?.id, data);
           console.log(resp.data);
         } catch (e) {
           if (e.response) console.log("Backend Error:", e.response.data);
           else console.log(e);
         }
+        setDownloadAnswer(false);
+        setEmailAnswer(false);
+      }
     }
 
   const handleClick = async (values) => {
@@ -50,12 +76,18 @@ function FormCard({ form }) {
             <p className="text-xl font-semibold text-center">Ready to Submit?</p>
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <input type="checkbox" className="mr-4 w-4 h-4"/>
+                <input 
+                  type="checkbox" 
+                  className="mr-4 w-4 h-4" 
+                />
                 <FontAwesomeIcon icon={faFilePdf} />
                 Download as PDF
               </div>
               <div className="flex items-center gap-2">
-                <input type="checkbox" className="mr-4 w-4 h-4"/>
+                <input 
+                  type="checkbox" 
+                  className="mr-4 w-4 h-4"
+                />
                 <FontAwesomeIcon icon={faEnvelope} />
                 <p>Email my Answer</p>
               </div>
@@ -84,8 +116,9 @@ function FormCard({ form }) {
   };
 
   return (
+    <div ref={ref} className="w-full">
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col gap-2 pb-4 rounded-md bg-white border-t-10 border-t-blue-600 rounded-t-lg">
+      <div className="flex flex-col gap-2 pb-4 rounded-md bg-white border-t-10 border-t-blue-600 rounded-t-lg  dark:bg-dark-card-light dark:border dark:border-dark-border">
         <div className="border-b border-gray-400 py-2 space-y-2 px-6">
           <p
             className="text-3xl"
@@ -189,6 +222,7 @@ function FormCard({ form }) {
           </Form>
         )}
       </Formik>
+    </div>
     </div>
   );
 }

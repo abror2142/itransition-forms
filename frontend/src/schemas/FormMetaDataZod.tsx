@@ -15,7 +15,8 @@ export const FormMetaDataSchema = z.object({
     })),
     users: z.array(z.object({
         id: z.number(),
-        fullName: z.string()
+        fullName: z.string(),
+        email: z.string()
     }))
 })
 

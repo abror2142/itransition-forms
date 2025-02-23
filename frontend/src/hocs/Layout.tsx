@@ -5,7 +5,7 @@ import Header from "../components/Page/Header";
 function Layout() {
   return (
     <>
-      <header className="w-full flex justify-between flex-col items-center bg-white dark:bg-gray-700">
+      <header className="w-full flex justify-between flex-col items-center bg-white dark:bg-dark-bg-contrast border-b border-b-dark-border">
         <Header />
       </header>
       <main className="w-full grow-1 self-start flex items-center justify-center">

@@ -19,11 +19,11 @@ function FormTitle({ formInfo }: { formInfo: FormInfo }) {
           onFocus={() => setActive(true)}
         >
           <div
-            className={`border-t-10 border-t-blue-600 ${
+            className={`border-t-10 border-t-blue-600  ${
               active ? "rounded-r-lg" : "rounded-t-lg"
             }`}
           >
-            <div className="bg-white flex flex-col w-full items-center px-3 py-3">
+            <div className="bg-white flex flex-col w-full items-center px-3 py-3 dark:bg-dark-card-light dark:border dark:border-dark-border">
               <TiptapTitle parentActive={active} title={formInfo.title} />
               <TiptapDescription parentActive={active} />
             </div>

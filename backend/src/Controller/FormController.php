@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+set_time_limit(600);
+
 use App\Entity\Answer;
 use App\Entity\Element;
 use App\Entity\ElementChild;
@@ -46,7 +48,7 @@ final class FormController extends AbstractController
         $this->validator = $validator;
     }
 
-    #[Route('/form/meta', name: 'app_form_meta_data', methods: ['GET'])]
+    #[Route('/form-meta/', name: 'app_form_meta_data', methods: ['GET'])]
     public function getMetaData(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $topics = $entityManager->getRepository(Topic::class)->findAll();
@@ -320,7 +322,7 @@ final class FormController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
-    #[Route('/api/form/create/', name: 'app_form_logic', methods: ['POST'])]
+    #[Route('/api/form-create', name: 'app_form_create', methods: ['POST'])]
     public function create(
         Request $request,
         SerializerInterface $serializer,
@@ -362,83 +364,40 @@ final class FormController extends AbstractController
         if (!$type) {
             return new JsonResponse(['message' => 'Type must be valid!']);
         }
-
-        $form = new Form();
-        $form->setTopic($topic);
-        $form->setType($type);
-        $form->setTitle($formDataDto->formInfo->title);
-        $form->setDescription($formDataDto->formInfo->description);
-        $form->setCreatedAt();
-        $form->setImage($formDataDto->formInfo->image);
-        $form->setOwner($user);
+        
+        $form = new Form()
+            ->setTopic($topic)
+            ->setType($type)
+            ->setTitle($formDataDto->formInfo->title)
+            ->setDescription($formDataDto->formInfo->description)
+            ->setCreatedAt()
+            ->setImage($formDataDto->formInfo->image)
+            ->setOwner($user);
 
         // Update tags to newly given tags
         $form->updateTags($tagTransformer->transform($formDataDto->formInfo->tags));
 
         $users = new ArrayCollection();
-        foreach ($formDataDto->formInfo->users as $user) {
-            $u = $this->entityManager->getRepository(User::class)->findOneBy(["id" => $user['id']]);
+        foreach ($formDataDto->formInfo->users as $userData) {
+            $u = $this->entityManager->getRepository(User::class)->find(["id" => $userData['id']]);
             if ($u) {
                 $users[] = $u;
             }
         }
+
         $form->updateUsers($users);
         $this->entityManager->persist($form);
-        $this->entityManager->flush();
-        // Form Info Part is set
 
         // Now time for Questions!
         foreach ($formDataDto->formFields as $formField) {
-            if ($formField['type'] == 'question') {
-                $questionEntity = new Question();  // Create new! 
-                $questionEntity->setForm($form);
-                $questionEntity->setTitle($formField['title']);
-                $questionEntity->setSequence($formField['sequence']);
-                $questionEntity->setDescription($formField['description']);
-                $questionEntity->setImage($formField['image']);
-                $questionEntity->setRequired($formField['required']);
+            $this->processFormField($formField, $form);
 
-                $element = $this->entityManager->getRepository(Element::class)->findOneBy(['id' => $formField['questionType']['id']]);
-                $questionEntity->setQuestionType($element);
-
-                $this->entityManager->persist($questionEntity);
-                $this->entityManager->flush();
-
-                foreach ($formField['options'] as $option) {
-                    $newOption = new ElementChild(); // Create one!
-                    $newOption->setQuestion($questionEntity);
-                    $newOption->setContent($option['content']);
-                    $this->entityManager->persist($newOption);
-                    $this->entityManager->flush();
-                }
-                $this->entityManager->persist($questionEntity);
-                $this->entityManager->flush();
-            } else if ($formField['type'] == 'image') {
-                $image = new ImageField();
-                $image->setForm($form);
-                $image->setImage($formField['image']);
-                $image->setTitle($formField['title']);
-                $image->setCaption($formField['caption']);
-                $image->setSequence($formField['sequence']);
-
-                $this->entityManager->persist($image);
-                $this->entityManager->flush();
-            } else if ($formField['type'] == 'text') {
-                $text = new TextField();
-                $text->setForm($form);
-                $text->setTitle($formField['title']);
-                $text->setDescription($formField['description']);
-                $text->setSequence($formField['sequence']);
-
-                $this->entityManager->persist($text);
-                $this->entityManager->flush();
-            } else {
-                return new JsonResponse(['message' => 'Unsupported form field type given!']);
-            }
         }
+      
         $this->entityManager->persist($form);
         $this->entityManager->flush();
-        return new JsonResponse(['message' => 'Recieved!', "form" => $form]);
+
+        return new JsonResponse(['message' => 'Recieved!']);
     }
 
     #[Route('/api/form/all/', name: 'app_form_all', methods: ['GET'])]
@@ -449,5 +408,68 @@ final class FormController extends AbstractController
             'groups' => ['form:read']
         ]);
         return new JsonResponse($data, Response::HTTP_ACCEPTED);
+    }
+
+    public function processFormField (array $formField, Form $form) {
+        switch ($formField['type']) {
+            case 'question':
+                $this->saveQuestion($formField, $form);
+                break;
+            case 'image':
+                $this->saveImageField($formField, $form);
+                break;
+            case 'text':
+                $this->saveTextField($formField, $form);
+                break;
+            default:
+                throw new \InvalidArgumentException('Unsupported field type: ' . $formField['type']);
+        }
+    }
+
+    public function saveQuestion (array $formField, $form) {
+        $element = $this->entityManager->getRepository(Element::class)->findOneBy(['id' => $formField['questionType']['id']]);
+           
+        $questionEntity = new Question();  // Create new! 
+        $questionEntity->setForm($form)
+            ->setTitle($formField['title'])
+            ->setSequence($formField['sequence'])
+            ->setDescription($formField['description'])
+            ->setImage($formField['image'])
+            ->setRequired($formField['required'])
+            ->setQuestionType($element);
+        
+        $this->entityManager->persist($questionEntity);
+        
+        foreach ($formField['options'] as $option) {
+            $this->saveOption($questionEntity, $option);
+        }
+
+        $this->entityManager->persist($questionEntity);
+    }
+
+    public function saveOption (Question $question, array $optionData) {
+        $newOption = new ElementChild();
+        $newOption->setQuestion($question);
+        $newOption->setContent($optionData['content']);
+        $this->entityManager->persist($newOption);
+    }
+
+    public function saveImageField (array $formField, Form $form) {
+        $image = new ImageField();
+        $image->setForm($form)
+            ->setImage($formField['image'])
+            ->setTitle($formField['title'])
+            ->setCaption($formField['caption'])
+            ->setSequence($formField['sequence']);
+        $this->entityManager->persist($image);
+    }
+
+    public function saveTextField (array $formField, $form) {
+        $text = new TextField()
+            ->setForm($form)
+            ->setTitle($formField['title'])
+            ->setDescription($formField['description'])
+            ->setSequence($formField['sequence']);
+        $this->entityManager->persist($text);
     }
 }

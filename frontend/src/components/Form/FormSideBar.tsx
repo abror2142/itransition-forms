@@ -9,7 +9,11 @@ function FormSideBar({ sequence }: {sequence: number}) {
     const { addFormField } = useForm();
 
     return (
-        <div className="absolute -right-12 flex flex-col gap-2 items-center justify-center bg-white rounded-md px-3 py-2 text-lg max-h-min">
+        <div 
+            className="absolute -right-12 flex flex-col gap-2 items-center justify-center bg-white 
+            rounded-md px-3 py-2 text-lg max-h-min dark:bg-dark-card-light dark:text-dark-text-highlighted 
+            dark:border dark:border-dark-border"
+        >
             <div className="flex gap-2 items-center relative group">
                 <button 
                     onClick={() => addFormField(new Question(null, "Question"), sequence+1)}

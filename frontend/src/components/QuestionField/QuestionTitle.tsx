@@ -58,7 +58,7 @@ function QuestionTitle({ formField }: {formField: Question}) {
   return (
     <div>
       <div
-        className={`flex flex-col gap-2 items-center w-full sm:flex-row sm:gap-4`}
+        className={`flex flex-col gap-2 items-center w-full sm:flex-row sm:gap-4 `}
       >
         <TiptapQuestionTitle
           title={formField.title}
@@ -68,7 +68,7 @@ function QuestionTitle({ formField }: {formField: Question}) {
           <div>
             <label
               htmlFor={formField.id}
-              className="text-xl hover:bg-gray-100 px-3 py-3 rounded-full flex justify-center items-center text-gray-500"
+              className="text-xl hover:bg-gray-100 px-3 py-3 rounded-full flex justify-center items-center text-dark-blue-light dark:hover:bg-dark-blue"
             >
               <FontAwesomeIcon icon={faImage} />
             </label>
@@ -79,9 +79,10 @@ function QuestionTitle({ formField }: {formField: Question}) {
               onChange={handleImageUpload}
             />
           </div>
-
-          <div>
+        
             <Select<SelectOption>
+              className="my-react-select-container"
+              classNamePrefix="my-react-select"
               value={formField.questionType}
               options={options}
               onChange={(selectedOption) =>
@@ -90,10 +91,14 @@ function QuestionTitle({ formField }: {formField: Question}) {
               getOptionLabel={(option) => option.name}
               getOptionValue={(option) => option.name}
               classNames={{
-                control: () => "w-[180px]",
+                control: () => "w-[180px] dark:bg-dark-bg rounded-md",
+                indicatorsContainer: () => "dark:bg-dark-bg",
+                input: () => "dark:bg-dark-bg ",
+                valueContainer: () => "dark:bg-dark-bg text-gray-100",
+                container: () => "outline-none",
               }}
             />
-          </div>
+          
         </div>
       </div>
       <div>

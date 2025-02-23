@@ -9,10 +9,11 @@ function FormBottomSideBar({ sequence }: { sequence: number }) {
   const { addFormField } = useForm();
 
   return (
-    <div className="flex gap-4 items-center justify-center rounded-md px-3 text-xl max-h-min">
+    <div className="flex gap-4 items-center justify-center rounded-md px-3 text-xl max-h-min dark:text-dark-text-highlighted">
       <div className="flex gap-2 items-center relative group">
         <button
-          className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400"
+          className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400
+                dark:bg-dark-card-light dark:border dark:border-dark-border"
           onClick={() => addFormField(new QuestionClass(), sequence + 1)}
         >
           <FontAwesomeIcon icon={faPlus} />
@@ -23,7 +24,8 @@ function FormBottomSideBar({ sequence }: { sequence: number }) {
       </div>
       <div className="flex gap-2 items-center relative group">
         <button
-          className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400"
+          className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400
+                  dark:bg-dark-card-light dark:border dark:border-dark-border"
           onClick={() => addFormField(new ImageClass(), sequence + 1)}
         >
           <FontAwesomeIcon icon={faImage} />
@@ -34,7 +36,8 @@ function FormBottomSideBar({ sequence }: { sequence: number }) {
       </div>
       <div className="flex gap-2 items-center relative group">
         <button
-          className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400"
+          className="bg-white w-[50px] h-[40px] flex items-center justify-center rounded-md hover:border hover:border-gray-400
+                  dark:bg-dark-card-light dark:border dark:border-dark-border"
           onClick={() => addFormField(new TextClass(), sequence + 1)}
         >
           T

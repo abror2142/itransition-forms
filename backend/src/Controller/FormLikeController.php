@@ -28,7 +28,7 @@ final class FormLikeController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('api/form/{id}like/create', name: 'app_form_like_create', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route('api/form/{id}/like/create', name: 'app_form_like_create', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function create(int $id): Response
     {
         $user = $this->security->getUser();

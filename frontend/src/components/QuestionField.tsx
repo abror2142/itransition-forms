@@ -22,21 +22,22 @@ function QuestionField({ formField }: { formField: Question}) {
 
   return (
     <OutsideAlerter setActive={setActive}>
-      <div className="flex gap-2 relative">
+      <div className="flex gap-2 relative  ">
         <div
           className={` border-l-6 border-blue-500 ${
             active ? "rounded-s-md" : "border-transparent"
           } grow-1`}
           onClick={() => setActive(true)}
         >
+          <div className="dark:border dark:border-dark-border">
           <div
-            className={`bg-white px-3 py-3 flex flex-col gap-4 ${
+            className={` bg-white dark:bg-dark-card-light px-3 py-3 flex flex-col gap-4${
               active ? "rounded-rt-lg" : "rounded-t-lg"
             }`}
           >
             <button 
                 ref={setActivatorNodeRef}
-                className="bg-white w-full"
+                className="bg-white w-full dark:bg-dark-card-light dark:text-dark-text"
                 // style={draggableStyle}
                 {...attributes}
                 {...listeners}
@@ -64,10 +65,12 @@ function QuestionField({ formField }: { formField: Question}) {
             )}
           </div>
 
-          <div className="bg-white flex justify-between items-center px-4 py-2 border-t border-gray-300">
+          <div className="bg-white flex justify-between items-center px-4 py-2 border-t border-t-gray-300
+                 dark:border-t-dark-border dark:bg-dark-card-light dark:text-dark-text"
+          >
             <button
               onClick={() => removeFormField(formField.id)}
-              className="text-gray-500"
+              className="w-[35px] h-[35px] flex items-center justify-center text-lg dark:hover:bg-dark-blue rounded-full "
             >
               <FontAwesomeIcon icon={faTrash} />
             </button>
@@ -85,17 +88,17 @@ function QuestionField({ formField }: { formField: Question}) {
               <div className="relative">
                 <OutsideAlerter setActive={setShowOptions}>
                   <div
-                    className="w-[30px] h-[30px] flex items-center justify-center hover:bg-gray-200 rounded-full"
+                    className="w-[35px] h-[35px] flex items-center justify-center hover:bg-gray-200 dark:hover:bg-dark-blue rounded-full"
                     onClick={() => setShowOptions(!showOptions)}
                   >
-                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                    <FontAwesomeIcon icon={faEllipsisVertical} className="text-lg"/>
                   </div>
                   {showOptions && (
-                    <div className="absolute bg-white rounded-md  text-nowrap py-4 flex px-1 flex-col gap-1 right-0 ">
-                      <button className="hover:bg-gray-100 w-full px-6 py-1 text-start">
+                    <div className="absolute bg-white rounded-md dark:bg-dark-bg text-nowrap py-2 flex px-2 flex-col gap-1 right-0 ">
+                      <button className="hover:bg-gray-100 w-full px-6 py-1 text-start dark:hover:bg-dark-blue">
                         Add Description
                       </button>
-                      <button className="hover:bg-gray-100 w-full px-6 py-1 text-start">
+                      <button className="hover:bg-gray-100 w-full px-6 py-1 text-start dark:hover:bg-dark-blue">
                         Do another
                       </button>
                     </div>
@@ -103,6 +106,7 @@ function QuestionField({ formField }: { formField: Question}) {
                 </OutsideAlerter>
               </div>
             </div>
+          </div>
           </div>
         </div>
         {active && <FormSideBar sequence={formField.sequence} />}

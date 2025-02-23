@@ -28,7 +28,7 @@ const MenuBar = () => {
   }
 
   return (
-    <div className="flex gap-1 bg-white px-2 py-1">
+    <div className="flex gap-2 text-xl bg-white px-2 py-1 dark:bg-dark-card-light dark:text-dark-text">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
@@ -152,7 +152,7 @@ const TiptapDescription = ({ parentActive }: { parentActive: boolean }) => {
           content={formInfo.description}
           editorProps={{
             attributes: {
-              class: `px-4 py-2 outline-none bg-white prose m-0 text-lg ${
+              class: `px-4 py-2 outline-none bg-white prose m-0 text-lg dark:bg-dark-card-light dark:text-dark-text-highlighted ${
                 parentActive && "border-b border-gray-400"
               }`,
             },

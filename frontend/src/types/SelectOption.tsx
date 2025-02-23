@@ -5,6 +5,7 @@ export type SelectOption = {
 
 export type SelectOptionUser = {
     id: number;
+    fullName: string;
     email: string;
 }
 

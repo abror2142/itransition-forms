@@ -1,4 +1,4 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, Routes } from "react-router-dom";
 import Layout from "./hocs/Layout";
 import FormPage from "./containers/FormPage";
 import HomePage from "./containers/HomePage";
@@ -15,44 +15,58 @@ import FormProvider from "./providers/FormProvider";
 import FormDetailPage, {loader as FormDetailPageLoader} from "./containers/FormDetailPage";
 import Dashboard from "./containers/Dashboard";
 import AnalyticsPage from "./containers/AnaliticsPage";
+import UsersTable from "./containers/UsersTable";
+import FormsTable from "./containers/FormsTable";
+import AdminLayout from "./hocs/AdminLayout";
 
 
 const routes = createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} loader={HomePageLoader} />
-        <Route path="form" element={<FormPage />} loader={FormLoader} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="verify-email" element={<VerifyEmailPage />} />
-        <Route path="admin" element={<AdminPage />} />
-       
-        <Route path="templates" element={
-            <ProtectedRoute allowedRoles={['ROLE_USER']}>
-                <TemplatesPage />
+    <Route> 
+        <Route path="/admin/" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN']} >
+                <AdminLayout />
             </ProtectedRoute>
-        } />
-
-        <Route 
-            path="form/edit/:id" 
-            element={<FormProvider><FormUpdatePage /></FormProvider>}
-            loader={FormUpdatePageLoader}
-        />
-
-        <Route
-            path="form/:id"
-            element={<FormDetailPage />}
-            loader={FormDetailPageLoader}
-        />
-
-        <Route
-            path="dashboard"
-            element={<Dashboard />}
-        />
+        }>
+            <Route index element={<AdminPage />} />
+            <Route path="users"  element={<UsersTable />} />
+            <Route path="forms" element={<FormsTable />} />
+        </Route>
         
-        <Route 
-            path="form/:id/analytics"
-            element={<AnalyticsPage />}
-        />
+        <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} loader={HomePageLoader} />
+            <Route path="form" element={<FormPage />} loader={FormLoader} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="verify-email" element={<VerifyEmailPage />} />
+        
+            <Route path="templates" element={
+                <ProtectedRoute allowedRoles={['ROLE_USER']}>
+                    <TemplatesPage />
+                </ProtectedRoute>
+            } />
+
+            <Route 
+                path="form/edit/:id" 
+                element={<FormProvider><FormUpdatePage /></FormProvider>}
+                loader={FormUpdatePageLoader}
+            />
+
+            <Route
+                path="form/:id"
+                element={<FormDetailPage />}
+                loader={FormDetailPageLoader}
+            />
+
+            <Route
+                path="dashboard"
+                element={<Dashboard />}
+            />
+            
+            <Route 
+                path="form/:id/analytics"
+                element={<AnalyticsPage />}
+            />
+        </Route>
     </Route>
 )
 
