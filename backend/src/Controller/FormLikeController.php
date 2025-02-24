@@ -28,7 +28,7 @@ final class FormLikeController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('api/form/{id}/like/create', name: 'app_form_like_create', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route('/api/form/{id}/like/create', name: 'app_form_like_create', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function create(int $id): Response
     {
         $user = $this->security->getUser();
@@ -56,7 +56,7 @@ final class FormLikeController extends AbstractController
         }
     }
 
-    #[Route('/form/{id}/like/count', name: 'app_form_like_count', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/form/{id}/like/count', name: 'app_form_like_count', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function index(int $id): Response
     {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);

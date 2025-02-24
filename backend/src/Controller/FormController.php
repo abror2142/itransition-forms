@@ -48,7 +48,7 @@ final class FormController extends AbstractController
         $this->validator = $validator;
     }
 
-    #[Route('/form-meta/', name: 'app_form_meta_data', methods: ['GET'])]
+    #[Route('/api/form-meta', name: 'app_form_meta', methods: ['GET'])]
     public function getMetaData(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $topics = $entityManager->getRepository(Topic::class)->findAll();
@@ -294,7 +294,7 @@ final class FormController extends AbstractController
         return new JsonResponse([]);
     }
 
-    #[Route('/form/{id}/', name: 'app_form_view', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/form/{id}/', name: 'app_form_view', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id)
     {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
@@ -365,8 +365,8 @@ final class FormController extends AbstractController
             return new JsonResponse(['message' => 'Type must be valid!']);
         }
         
-        $form = new Form()
-            ->setTopic($topic)
+        $form = new Form();
+        $form->setTopic($topic)
             ->setType($type)
             ->setTitle($formDataDto->formInfo->title)
             ->setDescription($formDataDto->formInfo->description)
@@ -400,7 +400,7 @@ final class FormController extends AbstractController
         return new JsonResponse(['message' => 'Recieved!']);
     }
 
-    #[Route('/api/form/all/', name: 'app_form_all', methods: ['GET'])]
+    #[Route('/api/form/all', name: 'app_form_all', methods: ['GET'])]
     public function getAll(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         $forms = $entityManager->getRepository(Form::class)->findAll();

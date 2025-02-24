@@ -24,7 +24,7 @@ final class SearchController extends AbstractController
         // $this->serializer = $serializer;
     }
 
-    #[Route('/search', name: 'app_search', methods: 'GET')]
+    #[Route('/api/search', name: 'app_search', methods: 'GET')]
     public function index(Request $request): Response
     {       
         // $term = $request->query->get('q');

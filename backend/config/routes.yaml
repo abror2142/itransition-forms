@@ -5,7 +5,7 @@ api_token_invalidate:
     path: /api/token/invalidate
 
 api_login_check:
-    path: /auth
+    path: /api/auth
 
 
 controllers:

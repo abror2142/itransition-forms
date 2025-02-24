@@ -23,7 +23,7 @@ class RegistrationController extends AbstractController
     {
     }
 
-    #[Route('/register', name: 'app_register', methods: ['POST'])]
+    #[Route('/api/register', name: 'app_register', methods: ['POST'])]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
         return new JsonResponse($successMessage, 200);
     }
 
-    #[Route('/verify/email', name: 'app_verify_email', methods: ['POST'])]
+    #[Route('/api/verify/email', name: 'app_verify_email', methods: ['POST'])]
     public function verifyUserEmail(
         Request $request, 
         EntityManagerInterface $entityManager,

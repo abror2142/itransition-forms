@@ -8,18 +8,18 @@ export const settings = {
 
 export const URLs = (id?: number) => ({
     // AUTHENTICATION endpoints.
-    LOGIN: BASE_URL + '/auth',
+    LOGIN: BASE_URL + '/api/auth',
     LOGOUT: BASE_URL + '/api/token/invalidate',
-    REGISTER: BASE_URL + '/register',
-    VERIFY_EMAIL: BASE_URL + '/verify/email',
+    REGISTER: BASE_URL + '/api/register',
+    VERIFY_EMAIL: BASE_URL + '/api/verify/email',
     TOKEN_REFRESH: BASE_URL + '/api/token/refresh',
 
     // USER
     USER_ME: BASE_URL + '/api/user',
 
     // FORM
-    FORM_META_INFO: BASE_URL + '/form-meta',
-    FORM_DETAIL: BASE_URL + `/form/${id}`,
+    FORM_META_INFO: BASE_URL + '/api/form-meta',
+    FORM_DETAIL: BASE_URL + `/api/form/${id}`,
     FORM_GIVE_ANSWER: BASE_URL + `/api/form/${id}/answer`,
     FORM_UPDATE: BASE_URL + `/api/form/${id}/update`,
     FORM_CREATE: BASE_URL + '/api/form-create',
@@ -31,7 +31,7 @@ export const URLs = (id?: number) => ({
     FORM_FILLINGS_TOTAL: BASE_URL + `/api/form/${id}/fillings-total`,
 
     // FORM COMMENTS
-    FORM_COMMENTS_LIST_ALL: BASE_URL + `/form/${id}/comments`,  // GET
+    FORM_COMMENTS_LIST_ALL: BASE_URL + `/api/form/${id}/comments`,  // GET
     FORM_COMMENT_CREATE: BASE_URL + `/api/form/${id}/comments`,  // POST
 
     // DASHBOARD
@@ -39,14 +39,14 @@ export const URLs = (id?: number) => ({
 
     // FORM LIKES
     FORM_LIKE_CREATE: BASE_URL + `/api/form/${id}/like/create`,
-    FORM_LIKE_COUNT: BASE_URL + `/form/${id}/like/count`,
+    FORM_LIKE_COUNT: BASE_URL + `/api/form/${id}/like/count`,
     FORM_LIKE_CHECK: BASE_URL + `/api/form/${id}/like/check`,
 
     // HOMEPAGE
-    HOMEPAGE_DATA: BASE_URL + '/home',
+    HOMEPAGE_DATA: BASE_URL + '/api/home',
 
     // SEARCH
-    SEARCH: BASE_URL + '/search',
+    SEARCH: BASE_URL + '/api/search',
 
     // ADMIN page
     USERS_LIST: BASE_URL + '/api/users',    

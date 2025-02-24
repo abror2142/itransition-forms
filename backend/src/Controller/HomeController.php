@@ -20,7 +20,7 @@ final class HomeController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    #[Route('/home', name: 'app_home', methods: ['GET'])]
+    #[Route('/api/home', name: 'app_home', methods: ['GET'])]
     public function index(): Response
     {   
         $tags = $this->entityManager->getRepository(Tag::class)->findAll();
