@@ -2,7 +2,7 @@ import { v4 as uuid4 } from "uuid";
 
 function MultipleChoiceAnalyticsCard({ formField, analytics }) {
   return (
-    <div className="flex flex-col gap-4 px-8 py-4 bg-white rounded-md">
+    <div className="flex flex-col gap-4 px-8 py-4 bg-white rounded-md dark:bg-dark-blue dark:text-dark-text-highlighted">
       <p dangerouslySetInnerHTML={{ __html: formField?.title }}></p>
       {formField.image && <img src={formField.image} />}
       <div
@@ -27,7 +27,7 @@ function MultipleChoiceAnalyticsCard({ formField, analytics }) {
                 style={{
                   width: `${parseInt(analytics[formField.id][option.id])}%`,
                 }}
-                className={`absolute -z-1 bg-blue-100 py-0.5 h-full rounded-md`}
+                className={`absolute -z-1 bg-blue-100 py-0.5 h-full rounded-md dark:bg-dark-blue-light`}
               ></div>
               <p className="pr-2">{analytics[formField.id][option.id] || 0}%</p>
             </label>

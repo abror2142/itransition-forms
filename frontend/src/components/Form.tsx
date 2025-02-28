@@ -8,7 +8,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { FormMetaData } from "../schemas/FormMetaDataZod";
 import { useAuth } from "../hooks/useAuth";
-import { createForm } from "../utils/api";
+import { createForm, deleteForm } from "../utils/api";
 import { useRef } from "react";
 import { uploadImage, deleteImage } from "../utils/uploader";
 import { takeScreenshot } from "../utils/screenshot";
@@ -60,7 +60,7 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
     }
   };
 
-  const deleteForm = async () => {
+  const deleteFormHandler = async () => {
     // send Delete to backend;
     confirmAlert({
       title: "Confirm to Delete.",
@@ -68,7 +68,10 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
       buttons: [
         {
           label: "Yes",
-          onClick: () => {
+          onClick: async () => {
+            if(mode === 'edit' && authToken){
+              await deleteForm(authToken, parseInt(formInfo.id))
+            }
             // Send delete to backend
             resetForm();
             return navigate("/");
@@ -133,7 +136,7 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
         <FormBottomSideBar sequence={formFields.length} />
         <FormActionBar 
           mode={mode} 
-          deleteForm={deleteForm} 
+          deleteForm={deleteFormHandler} 
           updateForm={updateForm} 
           saveAsDraft={saveAsDraft} 
           saveForm={saveForm}

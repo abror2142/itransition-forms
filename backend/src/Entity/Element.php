@@ -27,7 +27,7 @@ class Element
     #[Groups(['element:read'])]
     private ?string $type = null;
 
-    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: "type")]
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: "type", cascade: ['persist', 'remove'])]
     private Collection $questions;
 
     public function __construct() {

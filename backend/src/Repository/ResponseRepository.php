@@ -17,7 +17,7 @@ class ResponseRepository extends ServiceEntityRepository
         parent::__construct($registry, Response::class);
     }
 
-    public function findResponseWithAnswersByUser (int $userId, int $offset=0, int $limit=10) {
+    public function findResponseWithAnswersByUser (int $userId, int $limit=5) {
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
@@ -26,18 +26,18 @@ class ResponseRepository extends ServiceEntityRepository
                 r.created_at, 
                 f.id as form_id, 
                 f.title as form_title, 
-                u.email 
+                u.email,
+                u.full_name
             from response r
             join form f
             on r.form_id = f.id
             join "user" u
             on r.owner_id = u.id
             where r.owner_id = :user
-            limit :limit
-            offset :offset;
+            limit :limit;
         ';
 
-        $result = $conn->executeQuery($sql, ['user' => $userId, 'limit' => $limit, 'offset' => $offset]);
+        $result = $conn->executeQuery($sql, ['user' => $userId, 'limit' => $limit]);
         return $result->fetchAllAssociative();
     }
 

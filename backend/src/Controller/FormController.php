@@ -410,6 +410,23 @@ final class FormController extends AbstractController
         return new JsonResponse($data, Response::HTTP_ACCEPTED);
     }
 
+    #[Route('/api/form/{id}/delete', name: 'app_form_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    public function deletePost(int $id, Request $request) {
+        $user = $this->security->getUser();
+        if(!$user)
+            return new JsonResponse(['error' => "User not Found!"]);
+
+        $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
+        if(!$form)
+            return new JsonResponse(['error' => "Form not Found!", Response::HTTP_NOT_FOUND]);
+    
+        if($form->getOwner() != $user || !in_array('ROLE_ADMIN', $user->getRoles()))
+            return new JsonResponse(['error' => "You don't have permission to delete this form."]);
+        
+        $this->entityManager->remove($form);
+        return new JsonResponse(['success' => 'Successfully deleted.']);
+    }
+
     public function processFormField (array $formField, Form $form) {
         switch ($formField['type']) {
             case 'question':

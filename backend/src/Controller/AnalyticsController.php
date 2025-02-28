@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Form;
+use App\Entity\User;
 use App\Service\Analytics;
 use App\Entity\Response as Respond;
 use Doctrine\ORM\EntityManagerInterface;
-use Proxies\__CG__\App\Entity\Question;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -107,5 +107,18 @@ final class AnalyticsController extends AbstractController
 
         
         return new  JsonResponse($data, Response::HTTP_OK); 
+    }
+
+    #[Route('/api/form-count/analytics', name: 'app_user_form_analytics', methods: ['GET'])]
+    public function getUserFormAnalytics ()
+    {
+        $user = $this->security->getUser();
+        if(!$user)
+            return new JsonResponse(['error' => 'User not found!'], Response::HTTP_NOT_FOUND);
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+        $analytics = $this->entityManager->getRepository(Form::class)->formCreationCountByData($user->getId());
+
+        return new JsonResponse($analytics, Response::HTTP_OK);
     }
 }

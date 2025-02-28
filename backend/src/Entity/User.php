@@ -35,33 +35,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
+    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read', 'user:profile'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['user:read', 'meta:read'])]
+    #[Groups(['user:read', 'meta:read', 'user:profile'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read'])]
+    #[Groups(['user:read', 'meta:read', 'form:read', 'comment:read', 'user:profile'])]
     private ?string $fullName = null;
 
     #[ORM\ManyToMany(targetEntity: Form::class, inversedBy: "users")]
     #[ORM\JoinTable(name: "form_users")]
     private Collection $forms;
 
-    #[ORM\OneToMany(targetEntity: Response::class, mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Response::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private Collection $responses;    
 
     #[ORM\Column(nullable: true, enumType:UserStatus::class)]
-    #[Groups(['user:read', 'meta:read'])]
+    #[Groups(['user:read', 'meta:read', 'user:profile'])]
     private UserStatus $status = UserStatus::Active;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['user:profile', 'user:read', 'meta:read'])]
+    public ?string $image = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    #[Groups(['user:read', 'meta:read'])]
+    #[Groups(['user:read', 'meta:read', 'user:profile'])]
     private array $roles = [UserRole::User];
 
     /**
@@ -89,8 +93,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $verificationTokens;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['user:read', 'meta:read'])]
+    #[Groups(['user:read', 'meta:read', 'user:profile'])]
     private bool $isVerified = false;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['user:profile'])]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function getId(): ?int
     {
@@ -174,6 +182,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image)
+    {
+        $this->image = $image;
         return $this;
     }
 
@@ -323,6 +342,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+    public function getCreatedAt() 
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt()
+    {
+        $this->createdAt = new \DateTimeImmutable();
         return $this;
     }
 }

@@ -1,6 +1,6 @@
 function AdminPage () {
     return (
-        <div>
+        <div className="">
             <p>Dashboard</p>
         </div>
     )

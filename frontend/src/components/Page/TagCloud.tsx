@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import cloud from "../../assets/cloud.png";
 import { FormMetaData } from "../../schemas/FormMetaDataZod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHashtag } from "@fortawesome/free-solid-svg-icons";
 
 const generateRandomPosition = () => ({
   x: Math.random() * 20 - 10,
@@ -36,13 +37,11 @@ const TagCloud = ({ tags }: { tags: FormMetaData["tags"] }) => {
 
   return (
     <div
-      className="flex flex-col gap-4 justify-end bg-contain bg-center bg-no-repeat pt-10 h-[250px]"
-      style={{ backgroundImage: `url(${cloud})` }}
+      className="max-w-3xl dark:bg-dark-card-light px-6 py-4 rounded-md dark:border dark:border-dark-border mx-auto flex flex-col gap-4 bg-white"
     >
-      <div className="flex flex-col gap-4 mx-auto mb-8">
-        {makeTagButon(tags.slice(0, 3))}
-        {makeTagButon(tags.slice(3, 7))}
-        {makeTagButon(tags.slice(7, 12))}
+      <p className="text-2xl flex gap-2 items-center">Tags<FontAwesomeIcon icon={faHashtag} /></p>
+      <div className="flex flex-col gap-4 mx-auto">
+        {makeTagButon(tags)}
       </div>
     </div>
   );

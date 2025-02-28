@@ -16,6 +16,7 @@ security:
         login:
             pattern: ^/api/auth
             stateless: true
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/auth
                 username_path: email
@@ -25,6 +26,7 @@ security:
         api:
             pattern:   ^/api
             stateless: true
+            user_checker: App\Security\UserChecker
             entry_point: jwt
             jwt: ~
             refresh_jwt:
@@ -35,6 +37,7 @@ security:
         admin:
             pattern: ^/admin
             provider: app_user_provider
+            user_checker: App\Security\UserChecker
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -58,6 +61,7 @@ security:
         # Other public urls
         - { path: ^/api/home$, roles: PUBLIC_ACCESS }
         - { path: ^/api/search$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/search/meta$, roles: PUBLIC_ACCESS }
         - { path: ^/docs, roles: PUBLIC_ACCESS }
 
         # All other routes are protected

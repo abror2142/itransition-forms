@@ -59,12 +59,12 @@ class Question
     private ?Element $questionType = null;
 
 
-    #[ORM\OneToMany(targetEntity: ElementAttribute::class, mappedBy: "question")]
+    #[ORM\OneToMany(targetEntity: ElementAttribute::class, mappedBy: "question", cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['form:read', 'question:read'])]
     private Collection $attributes;
 
-    #[ORM\OneToMany(targetEntity: ElementChild::class, mappedBy: 'question')]
+    #[ORM\OneToMany(targetEntity: ElementChild::class, mappedBy: 'question', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['form:read', 'question:read'])]
     private Collection $options;
@@ -72,7 +72,7 @@ class Question
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'question', orphanRemoval: true, cascade: ['persist', 'remove'])]
     private Collection $answers;
 
 

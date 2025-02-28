@@ -32,7 +32,7 @@ class Tag
     private ?string $name = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    #[Groups(['tag:write', 'tag:read'])]
+    #[Groups(['tag:write'])]
     private ?string $description = null;
 
     #[ORM\Column]

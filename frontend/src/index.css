@@ -15,3 +15,21 @@
     --color-dark-text: #98a3b3;
     --color-dark-text-highlighted: #f6f7f8;
 }
+
+
+.apexcharts-menu {
+    @apply bg-white text-gray-800 dark:text-dark-text dark:bg-dark-blue border dark:border-dark-border px-4;
+  }
+  
+  .apexcharts-menu-item {
+    @apply hover:bg-dark-bg dark:bg-dark-blue;
+  }
+  
+  /* Dark mode overrides when a "dark" class is applied on the root (or html) */
+  html.dark .apexcharts-menu {
+    @apply bg-gray-800 text-white border border-gray-700;
+  }
+  
+  html.dark .apexcharts-menu-item {
+    @apply hover:bg-gray-700;
+  }

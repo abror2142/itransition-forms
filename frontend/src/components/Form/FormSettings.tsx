@@ -12,6 +12,8 @@ import {
   SelectOptionUser,
   SelectOptionCreatable,
 } from "../../types/SelectOption";
+import { useTranslation } from "react-i18next";
+import { v4 } from "uuid";
 
 function FormSettings({ data }: { data: FormMetaData }) {
   const {
@@ -24,7 +26,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
   } = useForm();
   const [open, setOpen] = useState(false);
   const animatedComponents = makeAnimated();
-
+  const { t } = useTranslation();
   const types: SelectOption[] = data?.types || [];
   const topics: SelectOption[] = data?.topics || [];
   const tags: SelectOptionCreatable[] = data?.tags || [];
@@ -42,7 +44,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
   const handleTopicChange = (selectedOption: SingleValue<SelectOption>) => {
     updateFormInfoTopic(selectedOption ? selectedOption : null);
   };
-
+  console.log(formInfo.tags);
   return (
     <OutsideAlerter setActive={setOpen}>
       <div
@@ -57,13 +59,13 @@ function FormSettings({ data }: { data: FormMetaData }) {
           onClick={() => setOpen((prev) => !prev)}
         >
           <FontAwesomeIcon icon={faGear} />
-          <span className="text-xl">Settings</span>
+          <span className="text-xl">{t('settings')}</span>
         </div>
         {open && (
           <div className="flex gap-2 flex-col">
             <div className="w-full flex gap-4">
               <Select<SelectOption>
-                placeholder="Select a topic..."
+                placeholder={t('selectTopic')}
                 options={topics}
                 value={formInfo.topic}
                 onChange={handleTopicChange}
@@ -93,7 +95,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
                 isMulti
                 value={formInfo.tags}
                 options={tags}
-                placeholder="Select tags..."
+                placeholder={t('selectTag')}
                 onChange={(e) => {
                   updateFormInfoTags(Array.isArray(e) ? e : []);
                 }}
@@ -101,13 +103,13 @@ function FormSettings({ data }: { data: FormMetaData }) {
                 getOptionValue={(option) => `${option.id}`}
                 onCreateOption={(inputValue) => {
                   const element: SelectOptionCreatable = {
-                    id: null,
+                    id: v4(),
                     name: inputValue,
                     __isNew__: true
                   };
                   addFormInfoTag(element);
                 }}
-                formatCreateLabel={(inputValue) => `Create: ${inputValue}`}
+                formatCreateLabel={(inputValue) => `${t('createTag')}: ${inputValue}`}
                 isValidNewOption={(inputValue) =>
                   inputValue.trim().length > 0 &&
                   !tags.some((option) => option.name === inputValue)
@@ -118,6 +120,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
                 <Select<SelectOptionUser, true>
                   closeMenuOnSelect={false}
                   components={animatedComponents}
+                  placeholder={t('selectMode')}
                   isMulti
                   options={users}
                   value={formInfo.users}

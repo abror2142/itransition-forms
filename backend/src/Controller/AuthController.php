@@ -31,6 +31,7 @@ final class AuthController extends AbstractController
             'id' => $user->getId(),
             'fullName' => $user->getFullName(),
             'roles' => $user->getRoles(),
+            'image' => $user->getImage()
         ]);
     }
 }

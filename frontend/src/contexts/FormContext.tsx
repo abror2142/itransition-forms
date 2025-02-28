@@ -35,6 +35,7 @@ export type FormContext = {
     findField: (index: number | string) => FormField | null;
     updateImageFieldCaption: (id: string, newContent: string) => void;
     updateDraggable: (avtiveIndex: number, overIndex: number) => void;
+    updateFormFieldRequired: (id: string) => void;
 }
 
 export const FormContext = createContext<FormContext | undefined>(undefined);

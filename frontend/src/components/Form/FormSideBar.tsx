@@ -4,10 +4,11 @@ import Question from "../../classes/Question";
 import { faImage, faPlus} from "@fortawesome/free-solid-svg-icons";
 import Image from "../../classes/Image";
 import Text from "../../classes/Text";
+import { useTranslation } from "react-i18next";
 
 function FormSideBar({ sequence }: {sequence: number}) {
     const { addFormField } = useForm();
-
+    const { t } = useTranslation();
     return (
         <div 
             className="absolute -right-12 flex flex-col gap-2 items-center justify-center bg-white 
@@ -19,7 +20,7 @@ function FormSideBar({ sequence }: {sequence: number}) {
                     onClick={() => addFormField(new Question(null, "Question"), sequence+1)}
                 ><FontAwesomeIcon icon={faPlus}/></button>
                 <div className="hidden group-hover:block absolute rounded-sm text-[12px] text-nowrap left-8 bg-gray-600 text-gray-100 px-2">
-                    New Question
+                    {t('newQuestion')}
                 </div>
             </div>
             <div className="flex gap-2 items-center relative group">
@@ -31,7 +32,7 @@ function FormSideBar({ sequence }: {sequence: number}) {
                     <FontAwesomeIcon icon={faImage}/>
                 </button>
                 <div className="hidden group-hover:block absolute rounded-sm text-[12px] text-nowrap left-8 bg-gray-600 text-gray-100 px-2">
-                    Add image
+                    {t('addImage')}
                 </div>
             </div>
             <div className="flex gap-2 items-center relative group">
@@ -41,7 +42,7 @@ function FormSideBar({ sequence }: {sequence: number}) {
                     T
                 </button>
                 <div className="hidden group-hover:block absolute rounded-sm text-[12px] text-nowrap left-8 bg-gray-600 text-gray-100 px-2">
-                    Title & Description
+                    {t('addText')}
                 </div>
             </div>
         </div>

@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useForm from "../../hooks/useForm";
 import Option from "../../classes/Option";
 import Question from "../../classes/Question";
+import { useTranslation } from "react-i18next";
 
 
 function QuestionMultipleChoice({ formField }: {formField: Question}) {;
     const { addFormFieldOption, removeFormFieldOption, changeFormFieldOption } = useForm();
-
+    const { t } = useTranslation()
     return (
         <div className="flex flex-col gap-1 dark:text-dark-text ">
             {formField.options.map((option, index) => (
@@ -36,7 +37,7 @@ function QuestionMultipleChoice({ formField }: {formField: Question}) {;
                     className="w-full py-1 text-start text-sm border-b border-b-gray-300 flex items-center gap-4 text-gray-400"
                 >
                     <FontAwesomeIcon icon={faPlus} />
-                    Add an option
+                    {t('addOption')}
                 </button>
             </div>
         </div>

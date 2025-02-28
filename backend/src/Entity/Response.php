@@ -37,7 +37,7 @@ class Response
     /**
      * @var Collection<int, Answer>
      */
-    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'response', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Answer::class, mappedBy: 'response', orphanRemoval: true, cascade: ['persist', 'remove'])]
     #[Groups(['response:read'])]
     private Collection $answers;
 

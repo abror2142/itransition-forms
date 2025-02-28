@@ -13,23 +13,36 @@ import {loader as HomePageLoader} from "./containers/HomePage";
 import FormUpdatePage, {loader as FormUpdatePageLoader} from "./containers/FormUpdatePage";
 import FormProvider from "./providers/FormProvider";
 import FormDetailPage, {loader as FormDetailPageLoader} from "./containers/FormDetailPage";
-import Dashboard from "./containers/Dashboard";
 import AnalyticsPage from "./containers/AnaliticsPage";
 import UsersTable from "./containers/UsersTable";
 import FormsTable from "./containers/FormsTable";
 import AdminLayout from "./hocs/AdminLayout";
-
+import DashboardForms from "./containers/DashboardForms";
+import DashboardAnswers from "./containers/DashboardAnswers";
+import DashboardUserStats from "./containers/DashboardUserStats";
+import UserProfileSettings from "./containers/UserProfileSettings";
+import SearchPage from "./containers/SearchPage";
 
 const routes = createRoutesFromElements(
     <Route> 
-        <Route path="/admin/" element={
-            <ProtectedRoute allowedRoles={['ROLE_ADMIN']} >
+        <Route path="/dashboard/" element={
+            <ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_USER']} >
                 <AdminLayout />
             </ProtectedRoute>
         }>
             <Route index element={<AdminPage />} />
             <Route path="users"  element={<UsersTable />} />
             <Route path="forms" element={<FormsTable />} />
+            <Route path="profile" element={<UserProfileSettings />} />
+            <Route path="user">
+                <Route path="forms" element={<DashboardForms />} />
+                <Route path="answers" element={<DashboardAnswers />} />
+                <Route path="statistics" element={<DashboardUserStats />}/>
+            </Route>
+            <Route 
+                path="form/:id/analytics"
+                element={<AnalyticsPage />}
+            />
         </Route>
         
         <Route path="/" element={<Layout />}>
@@ -37,6 +50,7 @@ const routes = createRoutesFromElements(
             <Route path="form" element={<FormPage />} loader={FormLoader} />
             <Route path="register" element={<RegisterPage />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="search" element={<SearchPage />} />
             <Route path="verify-email" element={<VerifyEmailPage />} />
         
             <Route path="templates" element={
@@ -56,17 +70,8 @@ const routes = createRoutesFromElements(
                 element={<FormDetailPage />}
                 loader={FormDetailPageLoader}
             />
-
-            <Route
-                path="dashboard"
-                element={<Dashboard />}
-            />
             
-            <Route 
-                path="form/:id/analytics"
-                element={<AnalyticsPage />}
-            />
-        </Route>
+            </Route>
     </Route>
 )
 

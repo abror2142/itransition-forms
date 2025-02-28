@@ -38,7 +38,7 @@ class Form
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['form:read', 'form:card', 'form:search'])]
+    #[Groups(['form:read', 'form:card', 'form:search', 'form:meta'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'forms')]
@@ -50,7 +50,7 @@ class Form
     #[Assert\Length(
         max: 255
     )]
-    #[Groups(['form:read', 'form:card', 'form:search'])]
+    #[Groups(['form:read', 'form:card', 'form:search', 'form:meta'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true, type: "text")]
@@ -58,7 +58,7 @@ class Form
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['form:read', 'form:card'])]
+    #[Groups(['form:read', 'form:card', 'form:meta'])]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -66,7 +66,7 @@ class Form
     private ?\DateTime $updatedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['form:read', 'form:card'])]
+    #[Groups(['form:read', 'form:card', 'form:meta'])]
     private ?string $image = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, mappedBy: "forms")]
@@ -82,17 +82,17 @@ class Form
     #[Groups(['form:read'])]
     private ?Topic $topic = null;
 
-    #[ORM\OneToMany(targetEntity: ImageField::class, mappedBy: "form")]
+    #[ORM\OneToMany(targetEntity: ImageField::class, mappedBy: "form", cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['form:read'])]
     private Collection $imageFields;
 
-    #[ORM\OneToMany(targetEntity: TextField::class, mappedBy: 'form')]
+    #[ORM\OneToMany(targetEntity: TextField::class, mappedBy: 'form', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['form:read'])]
     private Collection $textFields;
 
-    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: "form")]
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: "form", cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['form:read'])]
     private Collection $questions;
@@ -102,18 +102,18 @@ class Form
     #[Groups(['form:read'])]
     private ?FormType $type = null;
 
-    #[ORM\OneToMany(targetEntity:Response::class, mappedBy: 'form')]
+    #[ORM\OneToMany(targetEntity:Response::class, mappedBy: 'form', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $responses;
 
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "form")]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: "form", cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     private Collection $comments;
 
     /**
      * @var Collection<int, FormLike>
      */
-    #[ORM\OneToMany(targetEntity: FormLike::class, mappedBy: 'form')]
+    #[ORM\OneToMany(targetEntity: FormLike::class, mappedBy: 'form', cascade: ['persist', 'remove'])]
     private Collection $formLikes; 
 
     public function getId(): ?int

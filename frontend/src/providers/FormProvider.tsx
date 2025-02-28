@@ -13,6 +13,7 @@ import {
 import Image from "../classes/Image";
 import Text from "../classes/Text";
 import { arrayMove } from "@dnd-kit/sortable";
+import { useTranslation } from "react-i18next";
 
 type FormProviderProps = PropsWithChildren;
 
@@ -21,6 +22,7 @@ export default function FormProvider({ children }: FormProviderProps) {
   const [formFields, setFormFields] = useState<FormField[]>([new Question()]);
   const [formInfo, setFormInfo] = useState<FormInfo>(new FormInfo());
   const [initialized, setInitialized] = useState<boolean>(false);
+  const { t, i18n } = useTranslation();
 
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -181,6 +183,17 @@ const addFormField = (newFormField: FormField, sequence: number) => {
     );
   };
 
+  const updateFormFieldRequired= (id: string) => {
+    setFormFields((prevFormFields) =>
+      prevFormFields.map((formField) => {
+        const field = formField as Question;
+        if (formField.id === id)
+          return { ...formField, required: !field.required };
+        return formField;
+      })
+    );
+  };
+
   const updateImageFieldCaption = (id: string, newContent: string) => {
     setFormFields(prevFields => prevFields.map(formField => {
       if(formField.id === id)
@@ -269,6 +282,7 @@ const addFormField = (newFormField: FormField, sequence: number) => {
         changeSequence,
         updateFormFieldTitle,
         updateFormFieldDescription,
+        updateFormFieldRequired,
         updateQuestionType,
         updateFormFieldImage,
         addFormFieldOption,

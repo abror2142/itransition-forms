@@ -29,7 +29,8 @@ function AuthProvider ({ children }: AuthProviderProps) {
                 setUser({
                     id: resp.data?.id,
                     fullName: resp.data?.fullName,
-                    roles: resp.data?.roles
+                    roles: resp.data?.roles,
+                    image: resp.data?.image,
                 })
             } catch {
                 setAuthToken(null);

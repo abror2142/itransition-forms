@@ -1,37 +1,34 @@
 import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import axios from "../../../utils/axios";
+import { getFormFillingsTotal } from "../../../utils/api";
 import { useAuth } from "../../../hooks/useAuth";
+import { useTheme } from "../../../hooks/useTheme";
 
-export const UserFillingsChart = ({ formId }: {formId: string}) => {
+export const UserFillingsChart = ({ formId }: {formId: number}) => {
     const [data, setData] = useState();
     const { authToken } = useAuth();
-    
+    const { isDarkMode } = useTheme();
     useEffect(() => {
         const fetchDates = async () => {
-            const url = `api/form/${formId}/filled`;
-            try{
-                const resp = await axios.get(url, {
-                    headers: {
-                        Authorization: `Bearer ${authToken}`
-                    }
-                });
+          if(authToken && formId !== null){
+            try {
+                const resp = await getFormFillingsTotal(formId, authToken);
                 setData(resp.data);
             } catch(e) {
                 console.log(e);
             }
+          }
         }
-        if(formId){
-            fetchDates();
-        }
+        fetchDates();
     }, [formId])
 
     let state = {
         series: [data?.filled, data?.total-data?.filled],
         options: {
           chart: {
-            width: 380,
+            width: 400,
             type: 'pie',
+            foreColor: isDarkMode ? '#ffffff' : '#000000',
           },
           labels: ['Filled', 'Not Filled'],
           responsive: [{
@@ -49,11 +46,11 @@ export const UserFillingsChart = ({ formId }: {formId: string}) => {
     }
 
     return (
-      <div>
+      <div className="dark:bg-dark-blue bg-white mx-auto">
             { 
                 data
                 && <div>
-                    <div id="chart" className="max-w-lg bg-white px-4 py-2">
+                    <div id="chart" className="max-w-lg px-4 py-2">
                             <ReactApexChart 
                                 options={state.options} 
                                 series={state.series} 

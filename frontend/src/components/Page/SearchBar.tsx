@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { search } from "../../utils/api";
+import { useTranslation } from "react-i18next";
 
 type Result = {
   id: number;
@@ -35,6 +36,8 @@ function SearchBar() {
     fetchOptions();
   }, [term])
 
+  const { t } = useTranslation();
+
   return (
     <div className="grow-1 flex realtive flex-col">
       <div className="flex items-center w-full dark:bg-dark-card-accent px-2 py-1.5 rounded-full border border-gray-300 dark:border-dark-border">
@@ -42,6 +45,7 @@ function SearchBar() {
           <input 
             className="w-full outline-none px-2"
             onChange={(e) => setTerm(e.target.value)}
+            placeholder={t('searchBarType')+"..."}
           /> 
         </div>
         <div className="dark:text-dark-accent px-2">

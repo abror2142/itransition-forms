@@ -21,7 +21,6 @@ function AnalyticsPage () {
         fetchAnalytics();
     }, [])  
 
-    console.log(form)
     return (
         <div>
             <FormAnalyticsCard form={form}/>

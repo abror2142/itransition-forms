@@ -10,7 +10,7 @@ export type SelectOptionUser = {
 }
 
 export type SelectOptionCreatable = {
-    id: number | null;
+    id: number | string;
     name: string;
     __isNew__?: boolean;
 }

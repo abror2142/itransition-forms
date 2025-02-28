@@ -3,12 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Form;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-use ApiPlatform\Doctrine\Orm\Paginator;
-use Doctrine\Common\Collections\Criteria;
 
 class FormRepository extends ServiceEntityRepository
 {
@@ -25,7 +22,17 @@ class FormRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
-    public function findFormsWithResponseCount(int $userId) {
+    public function findLatestByUser(User $user, int $limit=14) {
+        $qb = $this->createQueryBuilder('f')
+            ->where('f.owner = :user')
+            ->orderBy('f.createdAt', 'DESC')
+            ->setMaxResults($limit)
+            ->setParameter('user', $user);
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+    public function findFormsWithResponseCount(int $userId, int $limit=10) {
     
         $conn = $this->getEntityManager()->getConnection();
 
@@ -53,9 +60,26 @@ class FormRepository extends ServiceEntityRepository
             GROUP BY f.id, f.title, f.topic_id, t."name", f.type_id, ft."name", f.created_at
             having f.owner_id = :user
             order by f.created_at DESC
-            limit 10;
+            limit :limit;
         ';
         
+        $resultSet = $conn->executeQuery($sql, ['user' => $userId, 'limit' => $limit]);
+        return $resultSet->fetchAllAssociative();
+    }
+
+    public function formCreationCountByData(int $userId){
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select 
+                COUNT(f.id) as count,
+                date(f.created_at) as date
+            from form f
+            where owner_id = :user
+            group by date(f.created_at)
+            order by date;
+        ';
+
         $resultSet = $conn->executeQuery($sql, ['user' => $userId]);
         return $resultSet->fetchAllAssociative();
     }
