@@ -22,7 +22,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
     updateFormInfoUsers,
     updateFormInfoTags,
     updateFormInfoTopic,
-    addFormInfoTag,
+    addFormInfoTag
   } = useForm();
   const [open, setOpen] = useState(false);
   const animatedComponents = makeAnimated();
@@ -35,7 +35,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
   const defaultTopic = topics.find((topic) => topic.name === 'Other') || topics[0];
   const defaultType = types.find((type) => type.name === "Public") || types[0];
   const PROTECTED = types.find((type) => type.name === "Protected");
-  
+
   useEffect(() => {
     updateFormInfoType(defaultType);
     updateFormInfoTopic(defaultTopic)
@@ -44,7 +44,7 @@ function FormSettings({ data }: { data: FormMetaData }) {
   const handleTopicChange = (selectedOption: SingleValue<SelectOption>) => {
     updateFormInfoTopic(selectedOption ? selectedOption : null);
   };
-  console.log(formInfo.tags);
+
   return (
     <OutsideAlerter setActive={setOpen}>
       <div

@@ -142,7 +142,7 @@ export const getFormListAll = async () => {
 }
 
 export const getFormDetail = async (id: number) => {
-    return axios.get(URLs(id).FORM_DETAIL);
+    return axios.get(URLs(id).FORM_DETAIL,);
 }
 
 export const getFormAnalytics = async (id: number, authToken: string) => {
@@ -207,8 +207,18 @@ export const getMyForms = async (authToken: string) => {
     return axios.get(URLs().MY_FORMS, AUTH_CONFIG(authToken));
 }
 
-export const search = (term: string) => {
-    return axios.get(URLs().SEARCH +`?q=${term}`);
+export const search = (path: string) => {
+    return axios.get(URLs().SEARCH + path);
+}
+
+export const searchByTag = (term: string) => {
+    const url = addQuery(URLs().SEARCH, 'tag', term)
+    return axios.get(url);
+}
+
+export const searchByTopic = (term: string) => {
+    const url = addQuery(URLs().SEARCH, 'topic', term)
+    return axios.get(url);
 }
 
 export const getSearchMeta = () => {

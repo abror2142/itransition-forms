@@ -22,6 +22,25 @@ class FormRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
+    public function findMostPopular() {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            select 
+                r.form_id,
+                count(r.form_id) as response
+            from response r
+            join form f 
+            on f.id = r.form_id
+            group by r.form_id, f.title
+            order by response desc
+            limit 5;
+        ';
+
+        $resultSet = $conn->executeQuery($sql);
+        return $resultSet->fetchAllAssociative();
+    }
+
     public function findLatestByUser(User $user, int $limit=14) {
         $qb = $this->createQueryBuilder('f')
             ->where('f.owner = :user')
@@ -31,6 +50,7 @@ class FormRepository extends ServiceEntityRepository
         $query = $qb->getQuery();
         return $query->execute();
     }
+    
 
     public function findFormsWithResponseCount(int $userId, int $limit=10) {
     

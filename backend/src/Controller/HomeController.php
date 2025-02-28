@@ -32,7 +32,15 @@ final class HomeController extends AbstractController
         $latestForms = $this->entityManager->getRepository(Form::class)->findLatest(9);
         $latestFormsData = $this->serializer->serialize($latestForms, 'json', ['groups' => ['form:card', 'user:read']]);
         
-        $data = ["tags" => $tagsData, 'latestForms' => $latestFormsData];
+        $popularFormIds = $this->entityManager->getRepository(Form::class)->findMostPopular();
+        
+        $popularForms = [];
+        foreach ($popularFormIds as $popularFormId) {
+            $popularForms[] = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $popularFormId['form_id']]);
+        }
+        $popularFormsData = $this->serializer->serialize($popularForms, 'json', ['groups' => ['form:card', 'user:read']]);
+
+        $data = ["tags" => $tagsData, 'latestForms' => $latestFormsData, 'popularForms' => $popularFormsData];
         return new JsonResponse($data);
     }
 

@@ -8,7 +8,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { FormMetaData } from "../schemas/FormMetaDataZod";
 import { useAuth } from "../hooks/useAuth";
-import { createForm, deleteForm } from "../utils/api";
+import { createForm, deleteForm, updateForm } from "../utils/api";
 import { useRef } from "react";
 import { uploadImage, deleteImage } from "../utils/uploader";
 import { takeScreenshot } from "../utils/screenshot";
@@ -32,11 +32,11 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
         formFields
     }
     const json = JSON.stringify(data);
-    console.log(json);
+
     try {
       if(authToken){
         const resp = await createForm(json, authToken);
-        console.log(resp)
+        return navigate(`/`)
       }
     } catch(e) {
         console.log(e);
@@ -107,23 +107,19 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
     return imageUrl;
   };
 
-  const updateForm = async () => {
+  const updateFormObj = async () => {
     const data = {
       formInfo: formInfo,
       formFields: formFields,
     };
     const json = JSON.stringify(data);
-    const url = `form/update/${formInfo.id}`;
-    try {
-        await axios.put(url, json, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-        },
-      });
-      return navigate(`/form/${formInfo.id}`);
-    } catch (e) {
-      console.log(e);
+    if(authToken){
+      try {
+        await updateForm(authToken, parseInt(formInfo.id), json);
+        return navigate(`/form/${formInfo.id}`);
+      } catch (e) {
+        console.log(e); 
+      }
     }
   };
 
@@ -137,9 +133,10 @@ function Form({ data, mode }: { data: FormMetaData; mode: string }) {
         <FormActionBar 
           mode={mode} 
           deleteForm={deleteFormHandler} 
-          updateForm={updateForm} 
+          updateForm={updateFormObj} 
           saveAsDraft={saveAsDraft} 
           saveForm={saveForm}
+          owner={formInfo.owner}
         />
       </div>
     </div>

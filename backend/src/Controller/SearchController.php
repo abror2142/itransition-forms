@@ -2,18 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Form;
 use App\Entity\Tag;
+use App\Entity\Topic;
 use Doctrine\ORM\EntityManagerInterface;
-use Elastica\Query;
-use FOS\ElasticaBundle\Finder\FinderInterface;
-use Proxies\__CG__\App\Entity\Topic;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Elastica\Query\MultiMatch;
 use Symfony\Component\HttpFoundation\Request;
-// use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class SearchController extends AbstractController
@@ -22,7 +19,8 @@ final class SearchController extends AbstractController
     private SerializerInterface $serializer;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(SerializerInterface $serializer, EntityManagerInterface $entityManager)
+
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
         // $this->finder = $finder;
         $this->serializer = $serializer;
@@ -46,8 +44,30 @@ final class SearchController extends AbstractController
     }
 
     #[Route('/api/search', name: 'app_search', methods: 'GET')]
-    public function index(Request $request): Response
+    public function searchForms(Request $request): Response
     {       
+        if($request->query->has('tag')){
+            $tagName = $request->query->get('tag');
+            $tag = $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => $tagName]);
+            if(!$tag)
+                return new JsonResponse(['error' => 'Tag not foud'], Response::HTTP_BAD_REQUEST);
+
+            $formsData = $tag->getForms();
+            $forms = $this->serializer->serialize($formsData, 'json', ['groups' => ['form:card', 'user:read']]);
+            return new JsonResponse($forms, Response::HTTP_OK);
+        }
+
+        if($request->query->has('topic')){
+            $topicName = $request->query->get('topic');
+            $topic = $this->entityManager->getRepository(Topic::class)->findOneBy(['name' => $topicName]);
+            if(!$topic)
+                return new JsonResponse(['error' => 'Topic not foud'], Response::HTTP_BAD_REQUEST);
+
+            $formsData = $this->entityManager->getRepository(Form::class)->findBy(['topic' => $topic]);
+            $forms = $this->serializer->serialize($formsData, 'json', ['groups' => ['form:card', 'user:read']]);
+            return new JsonResponse($forms, Response::HTTP_OK);
+        }
+        return new JsonResponse([], Response::HTTP_OK);
         // $term = $request->query->get('q');
         // if($term) {
         //     $results = $this->finder->find($term);

@@ -18,6 +18,7 @@ function FormActionBar ({mode, deleteForm, saveAsDraft, saveForm, updateForm, ow
     return (
         <div className="flex justify-between items-center">
           { user
+            && mode === 'edit'
             && isOwnerOrAdmin(owner, user)
             && <div>
               

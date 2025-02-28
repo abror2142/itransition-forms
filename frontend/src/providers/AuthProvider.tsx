@@ -17,8 +17,9 @@ function AuthProvider ({ children }: AuthProviderProps) {
             if(token != null) {
                 setAuthToken(token)
             }
+            return resp;
         } catch(e) {
-            console.log(e);
+           return e;
         }
     }
 

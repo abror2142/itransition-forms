@@ -55,8 +55,9 @@ security:
         # Form public urls
         - { path: ^/api/form-meta$, roles: PUBLIC_ACCESS }
         - { path: ^/api/form/all$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/form/comments$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/form/\d+/comments$, roles: PUBLIC_ACCESS }
         - { path: ^/api/form/\d+/like/count$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/form/\d+$, roles: PUBLIC_ACCESS }
 
         # Other public urls
         - { path: ^/api/home$, roles: PUBLIC_ACCESS }

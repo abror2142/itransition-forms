@@ -202,6 +202,7 @@ final class FormController extends AbstractController
         $form->updateUsers($users);
         $this->entityManager->persist($form);
         $this->entityManager->flush();
+        dd($form->getUsers());
 
         // Now time for Questions!
         $questionFields = new ArrayCollection();
@@ -291,10 +292,11 @@ final class FormController extends AbstractController
 
         $this->entityManager->persist($form);
         $this->entityManager->flush();
+
         return new JsonResponse([]);
     }
 
-    #[Route('/api/form/{id}/', name: 'app_form_view', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/form/{id}', name: 'app_form_view', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(int $id)
     {
         $form = $this->entityManager->getRepository(Form::class)->findOneBy(['id' => $id]);
@@ -394,10 +396,11 @@ final class FormController extends AbstractController
 
         }
       
+        
         $this->entityManager->persist($form);
         $this->entityManager->flush();
-
-        return new JsonResponse(['message' => 'Recieved!']);
+        
+        return new JsonResponse(['message' => 'Recieved!', 'formId' => $form->getId()]);
     }
 
     #[Route('/api/form/all', name: 'app_form_all', methods: ['GET'])]

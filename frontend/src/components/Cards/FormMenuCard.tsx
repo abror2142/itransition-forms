@@ -8,7 +8,7 @@ import { HomePageForm } from "../../containers/HomePage";
 
 function FormMenuCard ({ form }: {form: HomePageForm}) {
     dayjs.extend(relativeTime);
-    console.log(form.owner);
+
     return (
         <Link to={`/form/${form?.id}/`} 
             className="flex flex-col items-center justify-center gap-2 w-[220px] bg-white border 

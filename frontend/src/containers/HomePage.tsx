@@ -26,14 +26,17 @@ interface MyForm {
 
 export const loader = async () => {
     const resp = await getHomepageData();
+    console.log(resp.data);
     return resp.data;
 }
 
 function HomePage() {
     const [showMore, setShowMore] = useState(false);
     const { authToken } = useAuth();
-    const {tags, latestForms} = useLoaderData<{tags: string, latestForms: string}>();
+    const {tags, latestForms, popularForms} = useLoaderData<{tags: string, latestForms: string, popularForms: string}>();
     const forms: HomePageForm[] = JSON.parse(latestForms);
+    console.log(popularForms);
+    const popularForm: HomePageForm[] = JSON.parse(popularForms);
     const { t } = useTranslation();
     const [myForms, setMyForms] = useState<MyForm[]>();
     const [showAll, setShowAll] = useState(false);
@@ -141,7 +144,7 @@ function HomePage() {
            <div className="max-w-7xl flex flex-col mx-auto gap-2">
                 <p className="text-xl font-medium"> {t('topTemplates')}</p>
                 <div className="self-center grid grid-cols-5 gap-4">
-                    {forms.slice(0, 5).map((form, index) => (<FormMenuCard form={form} key={"form-card-"+index}/>))}
+                    {popularForm.map((form, index) => (<FormMenuCard form={form} key={"form-card-"+index}/>))}
                 </div> 
            </div>
         </div>

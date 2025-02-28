@@ -27,12 +27,12 @@ interface FormValueInterface {
   [key: string]: any;
 }
 
-function FormCard({ form }: {form: FormType}) {
+function FormCard({ form, mode }: {form: FormType, mode: string}) {
   const { authToken, user } = useAuth();
   const [emailAnswer, setEmailAnswer] = useState(true);
   const [downloadAnswer, setDownloadAnswer] = useState(true);
   const ref = useRef(null);
-
+  
   const downloadImage = (file: File) => {
     const url = URL.createObjectURL(file);
     const link = document.createElement('a');
@@ -125,7 +125,7 @@ function FormCard({ form }: {form: FormType}) {
 
   return (
     <div ref={ref} className="w-full">
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full min-w-2xl">
       <div className="flex flex-col gap-2 pb-4 rounded-md bg-white border-t-10 border-t-blue-600 rounded-t-lg  dark:bg-dark-card-light dark:border dark:border-dark-border">
         <div className="border-b border-gray-400 py-2 space-y-2 px-6">
           <p
@@ -214,20 +214,23 @@ function FormCard({ form }: {form: FormType}) {
                   );
               }
             })}
-            <div className="flex justify-between items-center">
-              <button
-                type="button"
-                className="border border-gray-400 rounded-md px-3 py-1.5"
-              >
-                Clear
-              </button>
-              <button 
-                className="bg-green-500 text-white rounded-md px-3 py-1.5"
-                type="submit"
+            { mode == "answer"
+              ? <div className="flex justify-between items-center">
+                <button
+                  type="button"
+                  className="border border-gray-400 rounded-md px-3 py-1.5"
                 >
-                Submit
-              </button>
-            </div>
+                  Clear
+                </button>
+                <button 
+                  className="bg-green-500 text-white rounded-md px-3 py-1.5"
+                  type="submit"
+                  >
+                  Submit
+                </button>
+              </div>
+                : <p>You don't have permission to answer.</p>
+              }
           </Form>
         )}
       </Formik>

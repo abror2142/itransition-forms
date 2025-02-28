@@ -9,12 +9,13 @@ const generateRandomPosition = () => ({
 });
 
 const TagCloud = ({ tags }: { tags: FormMetaData["tags"] }) => {
+
   const makeTagButon = (tagsSlice: FormMetaData["tags"]) => {
     return (
       <div className="flex flex-wrap gap-4 mx-auto">
         {tagsSlice.map((tag, index) => (
           <motion.a
-            href={`/tag/${tag.id}`}
+            href={`/search?tag=${tag.name}`}
             key={"tag-cloud-item-" + index}
             className="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-full hover:bg-blue-600 transition"
             animate={{

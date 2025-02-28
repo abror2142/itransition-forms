@@ -54,8 +54,8 @@ class FormInfoValidationDto {
                         new Assert\Email()
                     ]
                 ],
-                allowExtraFields: false,
-                allowMissingFields: false
+                allowExtraFields: true,
+                allowMissingFields: true
             )
         )]
         public array $users;
