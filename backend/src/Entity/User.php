@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Response;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -99,6 +101,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     #[Groups(['user:profile'])]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Gedmo\Timestampable(on: 'update')]
+    #[Groups(['user:profile'])]
+    public ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -341,7 +348,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $verificationToken->setOwner(null);
             }
         }
-
         return $this;
     }
 

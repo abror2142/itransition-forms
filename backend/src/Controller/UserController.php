@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Form;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Gedmo\Timestampable\TimestampableListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -44,7 +45,12 @@ final class UserController extends AbstractController
         if(!$user)
             return new JsonResponse(['error' => 'User nor found!']);
         
-        $currentUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+        # Add Timestampable listener
+        $listener = new TimestampableListener();
+        $em = $this->entityManager;
+        $em->getEventManager()->addEventSubscriber($listener);
+        
+        $currentUser = $em->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
         if(!$currentUser)
             return  new JsonResponse(['error' => 'User nor found!']);
 
@@ -52,9 +58,9 @@ final class UserController extends AbstractController
         if(!$image)
             return new JsonResponse(['error' => 'Image url not found in request!'], Response::HTTP_BAD_REQUEST);
 
-        $currentUser->setImage($image);
-        $this->entityManager->persist($currentUser);
-        $this->entityManager->flush();
+        $currentUser->setImage(image: $image);
+        $em->persist($currentUser);
+        $em->flush();
 
         return new JsonResponse(['success' => "Image updated!"], 200);
     }

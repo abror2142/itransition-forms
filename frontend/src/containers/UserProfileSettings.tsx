@@ -15,6 +15,7 @@ interface UserData {
     roles: string[];
     isVerified: boolean;
     createdAt: string;
+    updatedAt: string;
 }
 
 function UserProfileSettings () {
@@ -113,6 +114,9 @@ function UserProfileSettings () {
                 <div className="flex flex-col gap-1">
                     <p className="text-xl">{userData?.fullName}</p>
                     <p className="text-blue-500">{userData?.email} <span className="text-white dark:text-dark-text">| Joined at: {dayjs(userData?.createdAt).format('YYYY.MM.DD')}</span></p>
+                    <div>
+                        <p className="text-amber-300 font-medium">Last Update: {dayjs(userData?.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</p>
+                    </div>
                 </div>
             </div>
             <div className="grid grid-cols-6 gap-5 max-w-2xl">
