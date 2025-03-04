@@ -107,6 +107,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:profile'])]
     public ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(nullable: true, length:50)]
+    public ?string $salesAccountId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -359,6 +362,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt()
     {
         $this->createdAt = new \DateTimeImmutable();
+        return $this;
+    }
+
+    public function getSalesAccountId() 
+    {
+        return $this->salesAccountId;
+    }
+
+    public function setSalesAccountId(string $salesAccountId)
+    {
+        $this->salesAccountId = $salesAccountId;
         return $this;
     }
 }
