@@ -58,6 +58,8 @@ security:
         - { path: ^/api/form/\d+/comments$, roles: PUBLIC_ACCESS }
         - { path: ^/api/form/\d+/like/count$, roles: PUBLIC_ACCESS }
         - { path: ^/api/form/\d+$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/form/\d+/title$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/odoo/template$, roles: PUBLIC_ACCESS }
 
         # Other public urls
         - { path: ^/api/home$, roles: PUBLIC_ACCESS }

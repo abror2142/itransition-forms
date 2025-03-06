@@ -324,6 +324,13 @@ final class FormController extends AbstractController
         return new JsonResponse($json, 200);
     }
 
+    #[Route('/api/form/{id}/title', name: 'app_form_title_view', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function getTitle(int $id)
+    {
+        $formTitle = $this->entityManager->getRepository(Form::class)->selectTitle($id);
+        return new JsonResponse($formTitle, 200);
+    }
+
     #[Route('/api/form-create', name: 'app_form_create', methods: ['POST'])]
     public function create(
         Request $request,

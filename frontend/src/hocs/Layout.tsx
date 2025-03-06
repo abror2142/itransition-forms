@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Footer from "../components/Page/Footer";
 import Header from "../components/Page/Header";
+import Ticket from "../components/Ticket";
 
 function Layout() {
   return (
@@ -11,7 +12,8 @@ function Layout() {
       <main className="w-full grow-1 self-start flex flex-col items-center justify-center">
         <Outlet />
       </main>
-      <footer>
+        <Ticket />
+      <footer>  
         <Footer />
       </footer>
     </>

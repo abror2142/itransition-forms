@@ -22,6 +22,15 @@ class FormRepository extends ServiceEntityRepository
         return $query->execute();
     }
 
+    public function selectTitle(int $id) {
+        $qb = $this->createQueryBuilder('f')
+            ->select('f.title')
+            ->where('f.id = :id')
+            ->setParameter('id', $id);
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
     public function findMostPopular() {
         $conn = $this->getEntityManager()->getConnection();
 

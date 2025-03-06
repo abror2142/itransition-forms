@@ -7,6 +7,10 @@ parameters:
     salesforce_client_id: '%env(SALESFORCE_CLIENT_ID)%'
     salesforce_client_secret: '%env(SALESFORCE_CLIENT_SECRET)%'
     salesforce_domain: '%env(SALESFORCE_DOMAIN)%'
+    jira_username: '%env(JIRA_USERNAME)%'
+    jira_token: '%env(JIRA_TOKEN)%'
+    jira_domain: '%env(JIRA_DOMAIN)%'
+
 
 services:
     # default configuration for services in *this* file
@@ -35,7 +39,15 @@ services:
         arguments:
             $params: '@parameter_bag'
 
+    Jira\ApiFunctions:
+        arguments:
+            $params: '@parameter_bag'
+
     Salesforce\HttpFunctions:
+        autowire: true
+        autoconfigure: true
+
+    Jira\HttpFunctions:
         autowire: true
         autoconfigure: true
 

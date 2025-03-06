@@ -27,6 +27,7 @@ export const URLs = (id?: number) => ({
     FORM_CREATE: BASE_URL + '/api/form-create',
     FORM_DELETE: BASE_URL + `/api/form/${id}/delete`,
     FORM_LIST_ALL: BASE_URL + '/api/form/all',
+    FORM_GET_TITLE: BASE_URL + `/api/form/${id}/title`,
 
     // FORM ANALYTICS
     FORM_ANALYTICS: BASE_URL + `/api/form/${id}/analytics`,
@@ -43,6 +44,10 @@ export const URLs = (id?: number) => ({
     DASHBOARD_FORMS: BASE_URL + '/api/dashboard/forms',
     DASHBOARD_USER_PROFILE: BASE_URL + '/api/dashboard/user/profile',
 
+    // SALESFORCE
+    SALESFORCE_ACCOUNT: BASE_URL + '/api/salesforce/account',
+    SALESFORCE_CONTACT: BASE_URL + '/api/salesforce/contact',
+    
     // FORM LIKES
     FORM_LIKE_CREATE: BASE_URL + `/api/form/${id}/like/create`,
     FORM_LIKE_COUNT: BASE_URL + `/api/form/${id}/like/count`,
@@ -59,6 +64,10 @@ export const URLs = (id?: number) => ({
     // ADMIN page
     USERS_LIST: BASE_URL + '/api/users',    
     ACTION_ON_USERS: BASE_URL + '/api/admin/users',    
+
+    // TICKET
+    JIRA_TICKET: BASE_URL + '/api/jira/ticket',
+    JIRA_ALL_TICKETS: BASE_URL + '/api/jira/tickets',
 });
 
 const CONTENT_TYPE_CONFIG = {
@@ -231,4 +240,45 @@ export const getUsers = (url:string, authToken: string) => {
 
 export const actOnUsers = (data: string, authToken: string) => {
     return axios.post(URLs().ACTION_ON_USERS, data, AUTH_CONTENT_TYPE_CONFIG(authToken));
+}
+
+export const getSalesforceAccountMeta = (authToken: string) => {
+    return axios.get(URLs().SALESFORCE_ACCOUNT, AUTH_CONFIG(authToken));
+}
+
+export const getSalesforceContactMeta = (authToken: string) => {
+    return axios.get(URLs().SALESFORCE_CONTACT, AUTH_CONFIG(authToken));
+}
+
+export const createSalesforceAccount = (data: string, authToken: string) => {
+    return axios.post(URLs().SALESFORCE_ACCOUNT, data, AUTH_CONTENT_TYPE_CONFIG(authToken))
+} 
+
+export const updateSalesforceAccount = (data: string, authToken: string) => {
+    return axios.patch(URLs().SALESFORCE_ACCOUNT, data, AUTH_CONTENT_TYPE_CONFIG(authToken))
+}  
+
+export const createSalesforceContact = (data: string, authToken: string) => {
+    return axios.post(URLs().SALESFORCE_CONTACT, data, AUTH_CONTENT_TYPE_CONFIG(authToken))
+} 
+
+export const updateSalesforceContact = (data: string, authToken: string) => {
+    return axios.patch(URLs().SALESFORCE_CONTACT, data, AUTH_CONTENT_TYPE_CONFIG(authToken))
+}  
+
+export const getFormTitle = (id: number) => {
+    return axios.get(URLs(id).FORM_GET_TITLE);
+}
+
+export const createTicket = (authToken: string, data: string) => {
+    return axios.post(URLs().JIRA_TICKET, data, AUTH_CONTENT_TYPE_CONFIG(authToken));
+}
+
+export const getTicket = (authToken:string, id: string) => {
+    const url = URLs().JIRA_TICKET + `/${id}`;
+    return axios.get(url, AUTH_CONFIG(authToken));
+}
+
+export const getAllTickets = (authToken: string) => {
+    return axios.get(URLs().JIRA_ALL_TICKETS, AUTH_CONFIG(authToken));
 }

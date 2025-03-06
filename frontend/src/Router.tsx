@@ -22,6 +22,7 @@ import DashboardAnswers from "./containers/DashboardAnswers";
 import DashboardUserStats from "./containers/DashboardUserStats";
 import UserProfileSettings from "./containers/UserProfileSettings";
 import SearchPage from "./containers/SearchPage";
+import DashboardSalesforce from "./containers/DashboardSalesforce";
 
 const routes = createRoutesFromElements(
     <Route> 
@@ -39,6 +40,7 @@ const routes = createRoutesFromElements(
                 <Route path="answers" element={<DashboardAnswers />} />
                 <Route path="statistics" element={<DashboardUserStats />}/>
             </Route>
+            <Route path="salesforce" element={<DashboardSalesforce />} />
             <Route 
                 path="form/:id/analytics"
                 element={<AnalyticsPage />}

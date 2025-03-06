@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../hooks/useTheme";
 import LanguageSelect from "../components/Page/LanguageSelect";
+import { Link } from "react-router-dom";
 
 function DashboardTopMenu () {
     const { user } = useAuth();
@@ -29,6 +30,9 @@ function DashboardTopMenu () {
                         </div>
                         <p>{user?.fullName}</p>
                     </div>
+                    <Link to={"/dashboard/salesforce"}>
+                        Salesforce Account
+                    </Link>
                 </div>
         </div>
     )
