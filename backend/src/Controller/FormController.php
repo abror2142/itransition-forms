@@ -492,8 +492,8 @@ final class FormController extends AbstractController
     }
 
     public function saveTextField (array $formField, $form) {
-        $text = new TextField()
-            ->setForm($form)
+        $text = new TextField();
+        $text->setForm($form)
             ->setTitle($formField['title'])
             ->setDescription($formField['description'])
             ->setSequence($formField['sequence']);
