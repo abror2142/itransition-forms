@@ -110,7 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true, length:50)]
     public ?string $salesAccountId = null;
 
-    #[ORM\Column(nullable: true, length:50)]
+    #[ORM\Column(nullable: true, length:100)]
     public ?string $odooToken = null;
 
     public function getId(): ?int
@@ -386,7 +386,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setOdooToken(string $odooToken)
     {
-        $this->$odooToken = $odooToken;
+        $this->odooToken = $odooToken;
         return $this;
     }
 }

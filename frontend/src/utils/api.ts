@@ -67,7 +67,11 @@ export const URLs = (id?: number) => ({
 
     // TICKET
     JIRA_TICKET: BASE_URL + '/api/jira/ticket',
-    JIRA_ALL_TICKETS: BASE_URL + '/api/jira/tickets',
+    JIRA_ALL_TICKETS: BASE_URL + '/api/jira/user/tickets',
+
+    // ODOO Token
+    ODOO_TOKEN: BASE_URL + '/api/odoo/token',
+    ODOO_TOKEN_REFRESH: BASE_URL + '/api/odoo/token/refresh',
 });
 
 const CONTENT_TYPE_CONFIG = {
@@ -281,4 +285,12 @@ export const getTicket = (authToken:string, id: string) => {
 
 export const getAllTickets = (authToken: string) => {
     return axios.get(URLs().JIRA_ALL_TICKETS, AUTH_CONFIG(authToken));
+}
+
+export const getOdooToken = (authToken: string) => {
+    return axios.get(URLs().ODOO_TOKEN, AUTH_CONFIG(authToken));
+}
+
+export const getOdooTokenRefresh = (authToken: string) => {
+    return axios.post(URLs().ODOO_TOKEN_REFRESH, {}, AUTH_CONTENT_TYPE_CONFIG(authToken));
 }

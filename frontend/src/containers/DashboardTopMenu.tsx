@@ -30,7 +30,7 @@ function DashboardTopMenu () {
                         </div>
                         <p>{user?.fullName}</p>
                     </div>
-                    <Link to={"/dashboard/salesforce"}>
+                    <Link to={"/dashboard/salesforce"} className="dark:bg-dark-blue-light dark:text-white px-4 py-1.5 rounded-md">
                         Salesforce Account
                     </Link>
                 </div>

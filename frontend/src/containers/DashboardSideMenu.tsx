@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faUsers, faFileLines, faFileCircleCheck, faSquarePollVertical, faArrowLeft, faUserGear } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faUsers, faFileLines, faFileCircleCheck, faSquarePollVertical, faArrowLeft, faUserGear, faTicket, faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { isAdmin, isUser } from "../utils/auth";
 
 function DashboardSideMenu () {
@@ -80,6 +80,22 @@ function DashboardSideMenu () {
                         </Link>
                     </li>
                 }
+                <li>
+                    <Link to={"/dashboard/tickets"} className="flex items-center gap-2 dark:hover:bg-dark-bg px-2 py-1 rounded-md">
+                        <div className="w-[30px] h-[30px] flex items-center justify-center text-amber-400">
+                            <FontAwesomeIcon icon={faTicket} className="text-xl"/>
+                        </div>
+                        <p>My Tickets</p>
+                    </Link>
+                </li>
+                <li>
+                    <Link to={"/dashboard/odoo"} className="flex items-center gap-2 dark:hover:bg-dark-bg px-2 py-1 rounded-md">
+                        <div className="w-[30px] h-[30px] flex items-center justify-center text-amber-400">
+                            <FontAwesomeIcon icon={faFileImport} className="text-xl"/>
+                        </div>
+                        <p>Export to Odoo</p>
+                    </Link>
+                </li>
             </ul>
             <Link to={"/"} className="px-4 py-1 bg-white dark:bg-dark-blue-light dark:text-dark-text-highlighted rounded-md mx-auto mb-4">
                 <FontAwesomeIcon icon={faArrowLeft} /> Home

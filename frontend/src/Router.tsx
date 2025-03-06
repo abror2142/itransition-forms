@@ -23,6 +23,8 @@ import DashboardUserStats from "./containers/DashboardUserStats";
 import UserProfileSettings from "./containers/UserProfileSettings";
 import SearchPage from "./containers/SearchPage";
 import DashboardSalesforce from "./containers/DashboardSalesforce";
+import DashboardTickets from "./containers/DshboardTickets";
+import DashboardOdoo from "./containers/DashboardOdoo";
 
 const routes = createRoutesFromElements(
     <Route> 
@@ -35,6 +37,9 @@ const routes = createRoutesFromElements(
             <Route path="users"  element={<UsersTable />} />
             <Route path="forms" element={<FormsTable />} />
             <Route path="profile" element={<UserProfileSettings />} />
+            <Route path="tickets" element={<DashboardTickets />} />
+            <Route path="odoo" element={<DashboardOdoo />} />
+
             <Route path="user">
                 <Route path="forms" element={<DashboardForms />} />
                 <Route path="answers" element={<DashboardAnswers />} />

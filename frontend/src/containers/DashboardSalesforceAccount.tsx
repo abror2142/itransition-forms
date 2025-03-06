@@ -154,8 +154,7 @@ function DashboardSalesforceAccount () {
                                     >Update</button>
                                 }
                                 {
-                                    !accountInfo
-                                    && <button 
+                                    <button 
                                         type="button" 
                                         className="px-4 py-1.5 rounded-md bg-gray-200 dark:bg-dark-blue-light dark:hover:bg-dark-text"
                                         onClick={handleSave}

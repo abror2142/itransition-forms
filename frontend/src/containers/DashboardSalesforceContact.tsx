@@ -105,7 +105,6 @@ function DashboardSalesforceContact () {
 
             return (
                 <Form>
-                    <p>{fetching ? "Fetching..." : "Finished"}</p>
                     <div className="relative max-w-xl bg-white rounded-md px-6 py-3 dark:border dark:border-dark-border dark:bg-dark-card-light dark:text-dark-text">
                         <div className="flex flex-col gap-2">          
                             {   

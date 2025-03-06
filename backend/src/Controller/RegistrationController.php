@@ -35,6 +35,7 @@ class RegistrationController extends AbstractController
         $user->setFullName($full_name);
         $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
         $user->setCreatedAt();
+        $user->setOdooToken(bin2hex(random_bytes(32)));
         $entityManager->persist($user);
         $entityManager->flush();
 

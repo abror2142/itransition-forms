@@ -20,8 +20,11 @@ function DashboardSalesforce () {
                     className={`px-4 py-1.5 bg-gray-200 dark:bg-dark-blue rounded-md ${contactActive && "bg-gray-300 dark:bg-dark-blue-light dark:text-dark-text-highlighted"}`}
                 >Contact</button>
             </div>
-            <DashboardSalesforceAccount />
-            <DashboardSalesforceContact />
+            {
+                contactActive 
+                ? <DashboardSalesforceContact />
+                : <DashboardSalesforceAccount />
+            }
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import DashboardTopMenu from "../containers/DashboardTopMenu";
 import DashboardSideMenu from "../containers/DashboardSideMenu";
+import Ticket from "../components/Ticket";
 
 function AdminLayout() {
     
@@ -12,6 +13,7 @@ function AdminLayout() {
                 <div className="bg-white dark:bg-dark-bg grow-1 m-8">
                     <Outlet />
                 </div>
+                <Ticket />
             </div>
         </div>
     );

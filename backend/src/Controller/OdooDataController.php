@@ -14,18 +14,46 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 final class OdooDataController extends AbstractController
 {
     private $finder;
     private SerializerInterface $serializer;
     private EntityManagerInterface $entityManager;
+    private Security $security;
 
-
-    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer, Security $security)
     {
         $this->serializer = $serializer;
         $this->entityManager = $entityManager;
+        $this->security = $security;
+    }
+
+    #[Route('/api/odoo/token', name: 'app_odoo_token', methods: 'GET')]
+    public function getOdooToken() {
+        $user = $this->security->getUser();
+        if(!$user)
+            return new JsonResponse(['error' => 'User not Found'], Response::HTTP_FORBIDDEN);
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+        $token = $user->getOdooToken();
+
+        return new JsonResponse(['token' => $token], Response::HTTP_OK);
+    }
+
+    #[Route('/api/odoo/token/refresh', name: 'app_odoo_token_refresh', methods: 'POST')]
+    public function getOdooTokenRefresh() {
+        $user = $this->security->getUser();
+        if(!$user)
+            return new JsonResponse(['error' => 'User not Found'], Response::HTTP_FORBIDDEN);
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
+        $newToken = bin2hex(random_bytes(32));
+        $user->setOdooToken($newToken);
+
+        $this->entityManager->flush();
+        return new JsonResponse(['token' => $user->getOdooToken()], Response::HTTP_OK);
     }
 
     #[Route('/api/odoo/template', name: 'app_odoo_template', methods: 'GET')]
