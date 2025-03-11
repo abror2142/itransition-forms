@@ -245,12 +245,12 @@ class SalesforceController extends AbstractController {
     {
         $account = [
             "Name" => $form->accountName,
-            "AccountNumber" => $form->accountNumber || null,
-            "AnnualRevenue" => $form->annualRevenue || null,
-            "Phone" => $form->accountPhone || null,
-            "Fax" => $form->accountFax || null,
-            "Website" => $form->accountWebsite || null,
-            "Description" => $form->accountDescription || null
+            "AccountNumber" => $form->accountNumber ? $form->accountNumber : null,
+            "AnnualRevenue" => $form->annualRevenue ? $form->annualRevenue : null,
+            "Phone" => $form->accountPhone ? $form->accountPhone : null,
+            "Fax" => $form->accountFax ? $form->accountFax : null,
+            "Website" => $form->accountWebsite ? $form->accountWebsite : null,
+            "Description" => $form->accountDescription ? $form->accountDescription : null
         ];
         return $account;
     }
@@ -258,15 +258,15 @@ class SalesforceController extends AbstractController {
     public function makeContactData(SalesforceContactDto $form)
     {
         $account = [
-            "FirstName" => $form->contactFirstName || null,
+            "FirstName" => $form->contactFirstName ? $form->contactFirstName : null,
             "LastName" => $form->contactLastName,
-            "Email" => $form->contactEmail || null,
-            "MobilePhone" => $form->contactMobile,
-            "Phone" => $form->contactPhone || null,
-            "HomePhone" => $form->contactHomePhone || null,
-            "Birthdate" => $form->birthDate || null,
-            "Description" => $form->contactDescription || null,
-            "Department" => $form->department || null
+            "Email" => $form->contactEmail ? $form->contactEmail : null,
+            "MobilePhone" => $form->contactMobile ? $form->contactMobile : null,
+            "Phone" => $form->contactPhone ? $form->contactPhone : null,
+            "HomePhone" => $form->contactHomePhone ? $form->contactHomePhone : null,
+            "Birthdate" => $form->birthDate ? $form->birthDate : null,
+            "Description" => $form->contactDescription ? $form->contactDescription : null,
+            "Department" => $form->department ? $form->department : null
         ];
         return $account;
     }

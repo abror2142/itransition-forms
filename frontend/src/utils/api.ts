@@ -111,7 +111,7 @@ export const logout = async () => {
 }
 
 export const register = async (data: string) => {
-    return axios.post(URLs().REGISTER, data);
+    return axios.post(URLs().REGISTER, data, CONTENT_TYPE_CONFIG);
 }
 
 export const refreshToken = async () => {

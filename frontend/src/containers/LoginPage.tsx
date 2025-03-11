@@ -17,7 +17,7 @@ const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
 
   return (
-    <div className='flex flex-col gap-4 items-center mx-auto px-8 py-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
+    <div className='my-5 flex flex-col gap-4 items-center mx-auto px-8 py-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700'>
       <div className='text-3xl w-[60px] h-[60px] rounded-full  bg-orange-400 dark:bg-orange-500 flex items-center justify-center '>
           <FontAwesomeIcon icon={faUnlock} />
       </div>

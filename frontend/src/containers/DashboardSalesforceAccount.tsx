@@ -26,23 +26,26 @@ function DashboardSalesforceAccount () {
     const [fetching, setFetching] = useState<boolean>(false);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    useEffect(() => {
-        const fetchMeta = async () => {
-            if(authToken){
-                setFetching(true)
-                try {
-                    const resp = await getSalesforceAccountMeta(authToken);
-                    const data = resp.data;
-                    setAccountInfo(data);
-                } catch(e) {
-                    console.log(e);
-                } finally {
-                    setFetching(false);
-                }
+    const fetchMeta = async () => {
+        if(authToken){
+            setFetching(true)
+            try {
+                const resp = await getSalesforceAccountMeta(authToken);
+                const data = resp.data;
+                setAccountInfo(data);
+            } catch(e) {
+                console.log(e);
+            } finally {
+                setFetching(false);
             }
         }
+    }
+
+    useEffect(() => {
         fetchMeta();
     }, [])
+
+    console.log(accountInfo)
 
     return (
         <Formik
@@ -68,6 +71,7 @@ function DashboardSalesforceAccount () {
                         const json = JSON.stringify(values);
                         try {
                             await createSalesforceAccount(json, authToken)
+                            fetchMeta();
                         } catch (e) {
                             console.log(e);
                         } finally {
@@ -87,6 +91,7 @@ function DashboardSalesforceAccount () {
                         const json = JSON.stringify(values);
                         try {
                             await updateSalesforceAccount(json, authToken)
+                            fetchMeta()
                         } catch (e) {
                             console.log(e);
                         } finally {
@@ -154,7 +159,8 @@ function DashboardSalesforceAccount () {
                                     >Update</button>
                                 }
                                 {
-                                    <button 
+                                    !accountInfo?.Id
+                                    && <button 
                                         type="button" 
                                         className="px-4 py-1.5 rounded-md bg-gray-200 dark:bg-dark-blue-light dark:hover:bg-dark-text"
                                         onClick={handleSave}

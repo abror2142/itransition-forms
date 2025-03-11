@@ -79,7 +79,7 @@ function Navbar() {
           </div>
         ) : (
           <div className="group relative">
-            <div className="flex items-center bg-indigo-50 gap-2 pl-2 pr-4 py-1 rounded-full dark:bg-dark-blue border border-indigo-100 dark:border-dark-border">
+            <div className="flex items-center min-h-[45px] bg-indigo-50 gap-2 pl-2 pr-4 py-1 rounded-full dark:bg-dark-blue border border-indigo-100 dark:border-dark-border">
               <div>
                 { 
                   user 

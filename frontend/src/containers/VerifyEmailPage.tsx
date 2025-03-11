@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { verifyEmail } from "../utils/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 function VerifyEmailPage() {
     const location = useLocation();
@@ -32,12 +34,20 @@ function VerifyEmailPage() {
     }, [token]);
 
     return (
-        <div className="px-4 py-2 bg-white shadow-2xl rounded-md border border-gray-300">
+        <div 
+            className="px-8 py-6 bg-white shadow-2xl rounded-md border border-gray-300 dark:bg-dark-card-light
+             dark:text-dark-text min-w-xl my-5"
+        >
             {submitting && <div>Verifying...</div>}
             {
                 message 
                 && !submitting 
-                && <p>{message}</p>
+                && <div className="flex flex-col gap-4 items-center">
+                    <p className="">
+                        {message}
+                    </p>
+                    <Link to={"/login"} className="max-w-min px-4 py-1.5 rounded-sm bg-amber-500 text-white flex gap-2 items-center"><FontAwesomeIcon icon={faArrowLeft} /> Login</Link>
+                </div>
             }
         </div>
     );
