@@ -41,7 +41,7 @@ class Comment
     private ?string $content = null;
 
     #[ORM\Column(nullable: true)]
-    private ?self $parent = null;
+    private ?Comment $parent = null;
 
     public function getId(): ?int
     {
